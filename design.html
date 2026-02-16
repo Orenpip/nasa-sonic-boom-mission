@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Mission: Aircraft Design Challenge</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="lesson-page">
+    <div class="starfield" id="starfield"></div>
+    <div class="radar-grid"></div>
+    
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <a href="dashboard.html" class="nav-back">← DASHBOARD</a>
+        <div class="nav-logo">FINAL MISSION // DESIGN</div>
+        <div class="nav-xp" id="currentXP">0 XP</div>
+    </nav>
+    
+    <div class="lesson-container">
+        <!-- Learning Section -->
+        <section class="learning-section">
+            <div class="mission-header">
+                <h1>Aircraft Design Challenge</h1>
+                <p class="mission-objective">Design a quieter supersonic aircraft using your knowledge</p>
+            </div>
+            
+            <div class="content-card">
+                <h2>The Challenge</h2>
+                <p>
+                    NASA and aircraft manufacturers are working to reduce sonic boom intensity. 
+                    One critical factor is the <strong>shape of the aircraft nose</strong>.
+                </p>
+                
+                <p>
+                    When an aircraft breaks the sound barrier, the nose is the first part to create 
+                    a shockwave. The nose shape determines how strong and focused that shockwave is, 
+                    which affects the loudness of the sonic boom heard on the ground.
+                </p>
+                
+                <div class="concept-box">
+                    <h3>Design Factors</h3>
+                    <p>
+                        The ideal supersonic aircraft should:
+                    </p>
+                    <ul class="design-list">
+                        <li><strong>Minimize shockwave strength</strong> - Weaker shockwaves = quieter booms</li>
+                        <li><strong>Spread pressure changes</strong> - Gradual pressure changes are less noticeable</li>
+                        <li><strong>Reduce ground impact</strong> - The boom should be less disruptive to communities</li>
+                        <li><strong>Maintain aerodynamic efficiency</strong> - Still needs to fly well</li>
+                    </ul>
+                </div>
+                
+                <div class="info-box">
+                    <h3>Real-World Example: NASA X-59</h3>
+                    <p>
+                        NASA's X-59 QueSST (Quiet SuperSonic Technology) is an experimental aircraft 
+                        designed to produce a "sonic thump" instead of a loud boom. It features a 
+                        long, slender nose that's 38 feet long - about one-third of the aircraft's 
+                        total length! This shape helps spread out the shockwaves.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Design Challenge -->
+            <div class="content-card interactive-card">
+                <h2>Your Design Mission</h2>
+                <p>
+                    Choose a nose shape for your supersonic aircraft. Each design has different 
+                    sonic boom characteristics:
+                </p>
+                
+                <div class="design-options">
+                    <div class="design-card" data-design="blunt">
+                        <div class="design-visual">
+                            <svg viewBox="0 0 200 100" class="aircraft-svg">
+                                <!-- Blunt nose aircraft -->
+                                <path d="M 10 50 L 50 30 L 180 30 L 190 50 L 180 70 L 50 70 Z" 
+                                      fill="#ff3366" stroke="#ff0033" stroke-width="2"/>
+                                <circle cx="30" cy="50" r="15" fill="#ff0033"/>
+                                <text x="100" y="55" fill="white" font-size="12" text-anchor="middle">BLUNT</text>
+                            </svg>
+                        </div>
+                        <h3>Blunt Nose</h3>
+                        <p class="design-description">
+                            A rounded, blunt front. Creates a strong, sudden shockwave.
+                        </p>
+                        <button class="design-select-btn" data-design="blunt">
+                            SELECT DESIGN
+                        </button>
+                    </div>
+                    
+                    <div class="design-card" data-design="sharp">
+                        <div class="design-visual">
+                            <svg viewBox="0 0 200 100" class="aircraft-svg">
+                                <!-- Sharp nose aircraft -->
+                                <path d="M 10 50 L 80 30 L 180 30 L 190 50 L 180 70 L 80 70 Z" 
+                                      fill="#ffaa00" stroke="#ff8800" stroke-width="2"/>
+                                <text x="100" y="55" fill="white" font-size="12" text-anchor="middle">SHARP</text>
+                            </svg>
+                        </div>
+                        <h3>Sharp Nose</h3>
+                        <p class="design-description">
+                            A pointed, angular front. Better than blunt but still abrupt.
+                        </p>
+                        <button class="design-select-btn" data-design="sharp">
+                            SELECT DESIGN
+                        </button>
+                    </div>
+                    
+                    <div class="design-card" data-design="slender">
+                        <div class="design-visual">
+                            <svg viewBox="0 0 200 100" class="aircraft-svg">
+                                <!-- Long slender nose aircraft -->
+                                <path d="M 10 50 L 120 35 L 180 35 L 190 50 L 180 65 L 120 65 Z" 
+                                      fill="#00ff88" stroke="#00dd66" stroke-width="2"/>
+                                <text x="100" y="55" fill="white" font-size="12" text-anchor="middle">SLENDER</text>
+                            </svg>
+                        </div>
+                        <h3>Long Slender Nose</h3>
+                        <p class="design-description">
+                            An elongated, gradually tapering front. Spreads out shockwaves.
+                        </p>
+                        <button class="design-select-btn" data-design="slender">
+                            SELECT DESIGN
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Results Panel -->
+                <div class="design-results hidden" id="designResults">
+                    <div class="results-header">
+                        <h3>Design Analysis</h3>
+                    </div>
+                    
+                    <div class="analysis-grid">
+                        <div class="analysis-metric">
+                            <div class="metric-label">Sonic Boom Intensity</div>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="boomIntensity"></div>
+                            </div>
+                            <div class="metric-value" id="boomValue">0/10</div>
+                        </div>
+                        
+                        <div class="analysis-metric">
+                            <div class="metric-label">Ground Impact</div>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="groundImpact"></div>
+                            </div>
+                            <div class="metric-value" id="impactValue">0/10</div>
+                        </div>
+                        
+                        <div class="analysis-metric">
+                            <div class="metric-label">NASA Rating</div>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="nasaRating"></div>
+                            </div>
+                            <div class="metric-value" id="ratingValue">0/10</div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-explanation" id="analysisText"></div>
+                    
+                    <div class="design-verdict" id="designVerdict"></div>
+                    
+                    <button class="try-another-btn" id="tryAnotherBtn">
+                        Try Another Design
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Completion Section -->
+        <section class="completion-section hidden" id="completionSection">
+            <div class="content-card completion-card">
+                <div class="completion-badge">
+                    <div class="badge-icon">🎖️</div>
+                    <h2>Mission Complete!</h2>
+                </div>
+                
+                <div class="completion-content">
+                    <p class="completion-message">
+                        Congratulations, Agent! You have successfully completed all NASA Sonic Boom 
+                        Missions and earned the rank of <strong>Flight Director</strong>.
+                    </p>
+                    
+                    <div class="completion-stats">
+                        <div class="stat">
+                            <span class="stat-value">+25 XP</span>
+                            <span class="stat-label">Final Mission Reward</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="totalXP">0 XP</span>
+                            <span class="stat-label">Total Career XP</span>
+                        </div>
+                    </div>
+                    
+                    <div class="completion-summary">
+                        <h3>What You've Learned</h3>
+                        <ul class="achievement-list">
+                            <li>✓ Sound wave fundamentals and frequency</li>
+                            <li>✓ Mach number calculations</li>
+                            <li>✓ Sonic boom physics and shockwave formation</li>
+                            <li>✓ Aircraft design for noise reduction</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="completion-next">
+                        <h3>Continue Your Journey</h3>
+                        <p>
+                            Want to learn more about aerospace engineering? Visit 
+                            <a href="https://www.nasa.gov/stem/" target="_blank" class="external-link">NASA STEM</a> 
+                            for more educational resources and activities.
+                        </p>
+                    </div>
+                </div>
+                
+                <a href="dashboard.html" class="return-button">Return to Dashboard</a>
+            </div>
+        </section>
+    </div>
+    
+    <script src="app.js"></script>
+    <script>
+        createStarfield();
+        displayCurrentXP();
+        
+        const designButtons = document.querySelectorAll('.design-select-btn');
+        const designResults = document.getElementById('designResults');
+        const completionSection = document.getElementById('completionSection');
+        const tryAnotherBtn = document.getElementById('tryAnotherBtn');
+        
+        let hasCompletedChallenge = false;
+        
+        const designData = {
+            blunt: {
+                boomIntensity: 9,
+                groundImpact: 9,
+                nasaRating: 3,
+                color: '#ff3366',
+                title: 'Blunt Nose Design',
+                explanation: 'Your blunt nose design creates a very strong shockwave. The abrupt shape causes air to compress suddenly, resulting in a loud, intense sonic boom. This design would be very disruptive to communities below the flight path.',
+                verdict: 'Not recommended for civilian supersonic flight. The sonic boom is too intense.',
+                isOptimal: false
+            },
+            sharp: {
+                boomIntensity: 6,
+                groundImpact: 6,
+                nasaRating: 6,
+                color: '#ffaa00',
+                title: 'Sharp Nose Design',
+                explanation: 'Your sharp nose design is better than a blunt nose. The pointed shape helps reduce shockwave intensity somewhat, but the pressure change is still fairly abrupt. This design shows improvement but isn\'t optimal for quiet supersonic flight.',
+                verdict: 'Moderate design. Better than blunt, but not quiet enough for unrestricted supersonic flight.',
+                isOptimal: false
+            },
+            slender: {
+                boomIntensity: 3,
+                groundImpact: 3,
+                nasaRating: 9,
+                color: '#00ff88',
+                title: 'Long Slender Nose Design',
+                explanation: 'Excellent choice! Your long slender nose design is similar to NASA\'s X-59 approach. The elongated, gradually tapering shape spreads out the shockwave over a longer distance. This creates a series of smaller pressure changes instead of one large shock, resulting in a much quieter "sonic thump" instead of a boom.',
+                verdict: '⭐ Optimal design! This is the type of nose shape NASA uses for quiet supersonic research.',
+                isOptimal: true
+            }
+        };
+        
+        designButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const design = this.dataset.design;
+                showDesignResults(design);
+            });
+        });
+        
+        function showDesignResults(design) {
+            const data = designData[design];
+            
+            // Show results panel
+            designResults.classList.remove('hidden');
+            designResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            // Update metrics with animation
+            setTimeout(() => {
+                updateMetric('boomIntensity', 'boomValue', data.boomIntensity, data.color);
+                updateMetric('groundImpact', 'impactValue', data.groundImpact, data.color);
+                updateMetric('nasaRating', 'ratingValue', data.nasaRating, data.color);
+            }, 200);
+            
+            // Update text
+            document.getElementById('analysisText').innerHTML = `
+                <h4>${data.title}</h4>
+                <p>${data.explanation}</p>
+            `;
+            
+            const verdictDiv = document.getElementById('designVerdict');
+            verdictDiv.textContent = data.verdict;
+            verdictDiv.style.background = data.isOptimal ? '#00ff8844' : '#ff336644';
+            verdictDiv.style.borderColor = data.color;
+            
+            // If optimal design, show completion
+            if (data.isOptimal && !hasCompletedChallenge) {
+                hasCompletedChallenge = true;
+                setTimeout(() => {
+                    showCompletion();
+                }, 2000);
+            }
+        }
+        
+        function updateMetric(fillId, valueId, score, color) {
+            const fill = document.getElementById(fillId);
+            const value = document.getElementById(valueId);
+            
+            fill.style.width = (score * 10) + '%';
+            fill.style.background = color;
+            value.textContent = score + '/10';
+        }
+        
+        function showCompletion() {
+            completionSection.classList.remove('hidden');
+            completionSection.scrollIntoView({ behavior: 'smooth' });
+            
+            // Save progress
+            saveProgress('design', 25, true);
+            
+            // Update total XP display
+            const progress = getProgress();
+            document.getElementById('totalXP').textContent = progress.totalXP + ' XP';
+        }
+        
+        tryAnotherBtn.addEventListener('click', () => {
+            designResults.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

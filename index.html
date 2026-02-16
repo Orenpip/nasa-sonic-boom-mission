@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Sonic Boom Mission - Recruitment</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="landing-page">
+    <!-- Animated starfield background -->
+    <div class="starfield" id="starfield"></div>
+    
+    <!-- Animated sound wave visualization -->
+    <canvas id="waveCanvas"></canvas>
+    
+    <!-- Main content -->
+    <div class="landing-container">
+        <!-- Mission briefing header -->
+        <div class="mission-badge">
+            <div class="badge-ring"></div>
+            <div class="badge-text">TOP SECRET</div>
+        </div>
+        
+        <h1 class="glitch-text" data-text="NASA NEEDS YOU">NASA NEEDS YOU</h1>
+        
+        <div class="briefing-box">
+            <div class="briefing-header">
+                <span class="status-indicator"></span>
+                <span>MISSION BRIEFING // CLASSIFIED</span>
+            </div>
+            <div class="briefing-content">
+                <p class="mono-text">
+                    <span class="typing-text">
+                        AGENT, WE HAVE A SITUATION.<br><br>
+                        
+                        Aircraft are breaking the sound barrier.<br>
+                        The shockwaves are causing sonic booms.<br>
+                        Communities are concerned.<br><br>
+                        
+                        NASA needs specialists who understand:<br>
+                        → Sound wave physics<br>
+                        → Mach number calculations<br>
+                        → Sonic boom mitigation<br><br>
+                        
+                        Your mission: Master these concepts.<br>
+                        Design quieter supersonic aircraft.<br>
+                        Help us solve the sonic boom problem.
+                    </span>
+                </p>
+            </div>
+        </div>
+        
+        <button class="mission-button" id="startMission">
+            <span class="button-bg"></span>
+            <span class="button-text">ACCEPT MISSION</span>
+            <span class="button-arrow">→</span>
+        </button>
+        
+        <div class="clearance-level">
+            CLEARANCE LEVEL: CADET // SONIC-1
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+    <script>
+        // Initialize starfield
+        createStarfield();
+        
+        // Initialize wave animation
+        initWaveAnimation();
+        
+        // Start mission button
+        document.getElementById('startMission').addEventListener('click', function() {
+            // Play sound effect if available
+            this.classList.add('activated');
+            
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 300);
+        });
+        
+        // Typing effect for briefing text
+        window.addEventListener('load', () => {
+            const briefingBox = document.querySelector('.briefing-box');
+            setTimeout(() => {
+                briefingBox.classList.add('visible');
+            }, 500);
+        });
+    </script>
+</body>
+</html>

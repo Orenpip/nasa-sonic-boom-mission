@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission 01: Sound Wave Fundamentals</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="lesson-page">
+    <div class="starfield" id="starfield"></div>
+    <div class="radar-grid"></div>
+    
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <a href="dashboard.html" class="nav-back">← DASHBOARD</a>
+        <div class="nav-logo">MISSION 01 // SOUND WAVES</div>
+        <div class="nav-xp" id="currentXP">0 XP</div>
+    </nav>
+    
+    <div class="lesson-container">
+        <!-- Learning Section -->
+        <section class="learning-section">
+            <div class="mission-header">
+                <h1>Sound Wave Fundamentals</h1>
+                <p class="mission-objective">Understand the physics of sound waves and their properties</p>
+            </div>
+            
+            <div class="content-card">
+                <h2>What Is Sound?</h2>
+                <p>
+                    Sound is a <strong>mechanical wave</strong> that travels through air (or other materials) 
+                    by creating areas of high pressure and low pressure. When an object vibrates, 
+                    it pushes air molecules together and then pulls them apart.
+                </p>
+                
+                <div class="concept-box">
+                    <h3>Key Concepts</h3>
+                    <div class="concept-grid">
+                        <div class="concept-item">
+                            <div class="concept-icon">🌊</div>
+                            <h4>Compression</h4>
+                            <p>Areas where air molecules are pushed together (high pressure)</p>
+                        </div>
+                        <div class="concept-item">
+                            <div class="concept-icon">💨</div>
+                            <h4>Rarefaction</h4>
+                            <p>Areas where air molecules are pulled apart (low pressure)</p>
+                        </div>
+                        <div class="concept-item">
+                            <div class="concept-icon">⚡</div>
+                            <h4>Frequency</h4>
+                            <p>How many waves pass a point per second (measured in Hertz)</p>
+                        </div>
+                        <div class="concept-item">
+                            <div class="concept-icon">📏</div>
+                            <h4>Wavelength</h4>
+                            <p>The distance between two compression zones</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <p>
+                    <strong>Higher frequency</strong> = more vibrations per second = higher pitch<br>
+                    <strong>Lower frequency</strong> = fewer vibrations per second = lower pitch
+                </p>
+                
+                <p>
+                    In air at room temperature, sound travels at approximately <strong>343 meters per second</strong> 
+                    (or about 767 miles per hour). This speed is what we call "Mach 1."
+                </p>
+            </div>
+            
+            <!-- Interactive Wave Simulator -->
+            <div class="content-card interactive-card">
+                <h2>Interactive Wave Simulator</h2>
+                <p>Adjust the frequency slider to see how sound waves change:</p>
+                
+                <div class="wave-simulator">
+                    <canvas id="waveSimulator" width="800" height="200"></canvas>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="frequencySlider">
+                                Frequency: <span id="frequencyValue">440</span> Hz
+                            </label>
+                            <input 
+                                type="range" 
+                                id="frequencySlider" 
+                                min="100" 
+                                max="1000" 
+                                value="440" 
+                                class="slider"
+                            >
+                            <div class="frequency-labels">
+                                <span>Low Pitch</span>
+                                <span>High Pitch</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="wave-info">
+                        <div class="info-item">
+                            <span class="info-label">Wavelength:</span>
+                            <span class="info-value" id="wavelengthValue">0.78 m</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Period:</span>
+                            <span class="info-value" id="periodValue">2.27 ms</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Quiz Section -->
+        <section class="quiz-section" id="quizSection">
+            <div class="content-card quiz-card">
+                <h2>Mission Quiz</h2>
+                <p class="quiz-intro">Test your knowledge to earn XP and complete the mission.</p>
+                
+                <div id="quizContainer">
+                    <!-- Question 1 -->
+                    <div class="quiz-question" data-question="1">
+                        <h3>Question 1 of 3</h3>
+                        <p class="question-text">What is compression in a sound wave?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Areas where air molecules spread apart
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                Areas where air molecules are pushed together
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                The speed at which sound travels
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                The loudness of a sound
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <!-- Question 2 -->
+                    <div class="quiz-question hidden" data-question="2">
+                        <h3>Question 2 of 3</h3>
+                        <p class="question-text">What does frequency measure?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                How loud a sound is
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                How many waves pass a point per second
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                The distance between two waves
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                How fast sound travels
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <!-- Question 3 -->
+                    <div class="quiz-question hidden" data-question="3">
+                        <h3>Question 3 of 3</h3>
+                        <p class="question-text">At room temperature, how fast does sound travel in air?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                186 miles per second
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                About 767 miles per hour (343 m/s)
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                1,000 miles per hour
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                100 meters per second
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <!-- Results -->
+                    <div class="quiz-results hidden" id="quizResults">
+                        <h3>Mission Complete!</h3>
+                        <div class="results-content">
+                            <div class="results-score">
+                                <span class="score-label">Score:</span>
+                                <span class="score-value" id="finalScore">0/3</span>
+                            </div>
+                            <p class="results-message" id="resultsMessage"></p>
+                            <div class="results-xp">
+                                <span class="xp-earned" id="xpEarned">+20 XP</span>
+                            </div>
+                        </div>
+                        <a href="dashboard.html" class="return-button">Return to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script src="app.js"></script>
+    <script>
+        createStarfield();
+        displayCurrentXP();
+        
+        // Initialize wave simulator
+        const canvas = document.getElementById('waveSimulator');
+        const ctx = canvas.getContext('2d');
+        const frequencySlider = document.getElementById('frequencySlider');
+        const frequencyValue = document.getElementById('frequencyValue');
+        const wavelengthValue = document.getElementById('wavelengthValue');
+        const periodValue = document.getElementById('periodValue');
+        
+        let animationFrame;
+        let time = 0;
+        const speedOfSound = 343; // m/s
+        
+        function drawWave() {
+            const frequency = parseInt(frequencySlider.value);
+            const wavelength = speedOfSound / frequency;
+            const period = 1 / frequency * 1000; // in milliseconds
+            
+            // Update display values
+            frequencyValue.textContent = frequency;
+            wavelengthValue.textContent = wavelength.toFixed(2) + ' m';
+            periodValue.textContent = period.toFixed(2) + ' ms';
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid
+            ctx.strokeStyle = 'rgba(0, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < canvas.height; i += 20) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(canvas.width, i);
+                ctx.stroke();
+            }
+            
+            // Draw centerline
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height / 2);
+            ctx.lineTo(canvas.width, canvas.height / 2);
+            ctx.stroke();
+            
+            // Draw wave
+            ctx.strokeStyle = '#00ffff';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const amplitude = 60;
+            const waveSpeed = frequency / 100; // Adjust speed for visualization
+            
+            for (let x = 0; x < canvas.width; x++) {
+                const y = canvas.height / 2 + 
+                         amplitude * Math.sin((x * 0.02 * frequency / 200) - time * waveSpeed);
+                
+                if (x === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.stroke();
+            
+            // Draw compression and rarefaction labels
+            ctx.font = '12px "Share Tech Mono"';
+            ctx.fillStyle = '#00ffff';
+            ctx.fillText('Compression', 50, 30);
+            ctx.fillText('Rarefaction', 50, canvas.height - 20);
+            
+            time += 0.05;
+            animationFrame = requestAnimationFrame(drawWave);
+        }
+        
+        frequencySlider.addEventListener('input', () => {
+            cancelAnimationFrame(animationFrame);
+            time = 0;
+            drawWave();
+        });
+        
+        drawWave();
+        
+        // Quiz functionality
+        let currentQuestion = 1;
+        let correctAnswers = 0;
+        
+        const quizOptions = document.querySelectorAll('.quiz-option');
+        
+        quizOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                if (this.classList.contains('selected')) return;
+                
+                const isCorrect = this.dataset.answer === 'correct';
+                const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
+                const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
+                
+                // Disable all options
+                allOptions.forEach(opt => opt.classList.add('selected'));
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
+                    correctAnswers++;
+                } else {
+                    this.classList.add('wrong');
+                    feedback.innerHTML = '<span class="wrong-feedback">✗ Incorrect. Try to understand why.</span>';
+                }
+                
+                // Show next question after delay
+                setTimeout(() => {
+                    if (currentQuestion < 3) {
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
+                        currentQuestion++;
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+                    } else {
+                        // Show results
+                        document.querySelector(`[data-question="3"]`).classList.add('hidden');
+                        showResults();
+                    }
+                }, 1500);
+            });
+        });
+        
+        function showResults() {
+            const resultsDiv = document.getElementById('quizResults');
+            const finalScore = document.getElementById('finalScore');
+            const resultsMessage = document.getElementById('resultsMessage');
+            const xpEarned = document.getElementById('xpEarned');
+            
+            finalScore.textContent = `${correctAnswers}/3`;
+            
+            let xp = 0;
+            let message = '';
+            
+            if (correctAnswers === 3) {
+                xp = 20;
+                message = 'Perfect score! You have mastered sound wave fundamentals.';
+            } else if (correctAnswers === 2) {
+                xp = 15;
+                message = 'Good work! You understand the basics but review the material.';
+            } else {
+                xp = 10;
+                message = 'Mission incomplete. Review the material and try again.';
+            }
+            
+            xpEarned.textContent = `+${xp} XP`;
+            resultsMessage.textContent = message;
+            
+            // Save progress
+            saveProgress('lesson1', xp, correctAnswers === 3);
+            
+            resultsDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

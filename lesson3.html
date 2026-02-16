@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission 03: Sonic Boom Simulation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="lesson-page">
+    <div class="starfield" id="starfield"></div>
+    <div class="radar-grid"></div>
+    
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <a href="dashboard.html" class="nav-back">← DASHBOARD</a>
+        <div class="nav-logo">MISSION 03 // SONIC BOOM</div>
+        <div class="nav-xp" id="currentXP">0 XP</div>
+    </nav>
+    
+    <div class="lesson-container">
+        <!-- Learning Section -->
+        <section class="learning-section">
+            <div class="mission-header">
+                <h1>Sonic Boom Simulation</h1>
+                <p class="mission-objective">Visualize shockwave formation when breaking the sound barrier</p>
+            </div>
+            
+            <div class="content-card">
+                <h2>What Is a Sonic Boom?</h2>
+                <p>
+                    A <strong>sonic boom</strong> is the loud sound associated with the shockwaves 
+                    created when an object travels through the air faster than the speed of sound.
+                </p>
+                
+                <div class="concept-box">
+                    <h3>How Sonic Booms Form</h3>
+                    <div class="boom-explanation">
+                        <div class="boom-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Subsonic Flight (Below Mach 1)</h4>
+                                <p>Sound waves spread out in all directions from the aircraft. 
+                                   Air has time to move out of the way smoothly.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="boom-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Reaching Mach 1</h4>
+                                <p>The aircraft catches up with its own sound waves. 
+                                   Pressure waves begin to pile up in front of the aircraft.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="boom-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Supersonic Flight (Above Mach 1)</h4>
+                                <p>The aircraft outruns its sound waves, creating a cone-shaped shockwave. 
+                                   This shockwave produces the sonic boom heard on the ground.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <h3>Important Facts</h3>
+                    <ul class="fact-list">
+                        <li><strong>The boom is continuous:</strong> It's not a one-time event. 
+                            As long as the aircraft flies faster than sound, it produces a shockwave cone.</li>
+                        <li><strong>Two booms:</strong> You typically hear two booms - one from the nose 
+                            and one from the tail of the aircraft.</li>
+                        <li><strong>Energy release:</strong> Sonic booms can be powerful enough to 
+                            rattle windows and disturb people and animals on the ground.</li>
+                        <li><strong>Mach cone angle:</strong> The faster the aircraft, the narrower 
+                            the cone angle becomes.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Interactive 3D Simulation -->
+            <div class="content-card interactive-card">
+                <h2>3D Shockwave Visualization</h2>
+                <p>Adjust the aircraft speed to see how the shockwave cone changes:</p>
+                
+                <div class="simulation-container">
+                    <div id="threeContainer"></div>
+                    
+                    <div class="simulation-controls">
+                        <div class="control-group">
+                            <label for="speedSlider">
+                                Aircraft Speed: <span id="speedDisplay">Mach 0.5</span>
+                            </label>
+                            <input 
+                                type="range" 
+                                id="speedSlider" 
+                                min="0.3" 
+                                max="3.0" 
+                                step="0.1" 
+                                value="0.5"
+                                class="slider"
+                            >
+                            <div class="speed-labels">
+                                <span>Subsonic</span>
+                                <span>Transonic</span>
+                                <span>Supersonic</span>
+                            </div>
+                        </div>
+                        
+                        <div class="simulation-info">
+                            <div class="info-panel" id="speedStatus">
+                                <div class="panel-label">Status:</div>
+                                <div class="panel-value">Subsonic - No Shockwave</div>
+                            </div>
+                            <div class="info-panel" id="coneAngle">
+                                <div class="panel-label">Mach Cone Angle:</div>
+                                <div class="panel-value">N/A</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="simulation-note">
+                    <strong>Note:</strong> The cyan cone represents the shockwave. 
+                    When speed exceeds Mach 1, the cone appears and becomes narrower at higher speeds.
+                </div>
+            </div>
+        </section>
+        
+        <!-- Quiz Section -->
+        <section class="quiz-section" id="quizSection">
+            <div class="content-card quiz-card">
+                <h2>Mission Quiz</h2>
+                <p class="quiz-intro">Test your understanding of sonic booms.</p>
+                
+                <div id="quizContainer">
+                    <!-- Question 1 -->
+                    <div class="quiz-question" data-question="1">
+                        <h3>Question 1 of 3</h3>
+                        <p class="question-text">What causes a sonic boom?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                The aircraft's engines being too loud
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                Shockwaves created when flying faster than sound
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Breaking through clouds
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                The aircraft hitting a sound wall
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <!-- Question 2 -->
+                    <div class="quiz-question hidden" data-question="2">
+                        <h3>Question 2 of 3</h3>
+                        <p class="question-text">At what speed does an aircraft create a sonic boom?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Any speed above 500 mph
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                When flying faster than the speed of sound (above Mach 1)
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Only at exactly Mach 1
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                When the engines reach full power
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <!-- Question 3 -->
+                    <div class="quiz-question hidden" data-question="3">
+                        <h3>Question 3 of 3</h3>
+                        <p class="question-text">What happens to the Mach cone as speed increases above Mach 1?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                It gets wider
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                It gets narrower
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                It stays the same
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                It disappears
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <!-- Results -->
+                    <div class="quiz-results hidden" id="quizResults">
+                        <h3>Mission Complete!</h3>
+                        <div class="results-content">
+                            <div class="results-score">
+                                <span class="score-label">Score:</span>
+                                <span class="score-value" id="finalScore">0/3</span>
+                            </div>
+                            <p class="results-message" id="resultsMessage"></p>
+                            <div class="results-xp">
+                                <span class="xp-earned" id="xpEarned">+30 XP</span>
+                            </div>
+                        </div>
+                        <a href="dashboard.html" class="return-button">Return to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script src="app.js"></script>
+    <script>
+        createStarfield();
+        displayCurrentXP();
+        
+        // Three.js Scene Setup
+        let scene, camera, renderer, aircraft, shockwaveCone;
+        let currentMach = 0.5;
+        
+        function initThreeJS() {
+            const container = document.getElementById('threeContainer');
+            const width = container.clientWidth;
+            const height = 400;
+            
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0a1a);
+            
+            // Camera
+            camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera.position.set(0, 5, 15);
+            camera.lookAt(0, 0, 0);
+            
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(width, height);
+            container.appendChild(renderer.domElement);
+            
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(5, 10, 5);
+            scene.add(directionalLight);
+            
+            // Grid helper
+            const gridHelper = new THREE.GridHelper(20, 20, 0x00ffff, 0x004444);
+            gridHelper.position.y = -2;
+            scene.add(gridHelper);
+            
+            // Aircraft (simple cone pointing right)
+            const aircraftGeometry = new THREE.ConeGeometry(0.5, 3, 8);
+            const aircraftMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xff3366,
+                emissive: 0xff0033,
+                emissiveIntensity: 0.3
+            });
+            aircraft = new THREE.Mesh(aircraftGeometry, aircraftMaterial);
+            aircraft.rotation.z = -Math.PI / 2; // Point to the right
+            scene.add(aircraft);
+            
+            // Shockwave cone (initially invisible)
+            const coneGeometry = new THREE.ConeGeometry(3, 6, 32, 1, true);
+            const coneMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x00ffff,
+                transparent: true,
+                opacity: 0.3,
+                side: THREE.DoubleSide,
+                wireframe: false
+            });
+            shockwaveCone = new THREE.Mesh(coneGeometry, coneMaterial);
+            shockwaveCone.rotation.z = Math.PI / 2; // Point to the right
+            shockwaveCone.visible = false;
+            scene.add(shockwaveCone);
+            
+            // Animation loop
+            animate();
+            
+            // Handle window resize
+            window.addEventListener('resize', onWindowResize);
+        }
+        
+        function onWindowResize() {
+            const container = document.getElementById('threeContainer');
+            const width = container.clientWidth;
+            const height = 400;
+            
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        }
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Rotate aircraft slowly
+            aircraft.rotation.y += 0.005;
+            
+            if (shockwaveCone.visible) {
+                shockwaveCone.rotation.y += 0.005;
+            }
+            
+            renderer.render(scene, camera);
+        }
+        
+        function updateSimulation(mach) {
+            currentMach = mach;
+            const speedDisplay = document.getElementById('speedDisplay');
+            const speedStatus = document.getElementById('speedStatus').querySelector('.panel-value');
+            const coneAngle = document.getElementById('coneAngle').querySelector('.panel-value');
+            
+            speedDisplay.textContent = `Mach ${mach.toFixed(1)}`;
+            
+            if (mach >= 1.0) {
+                // Supersonic - show shockwave
+                shockwaveCone.visible = true;
+                
+                // Calculate Mach cone angle: sin(α) = 1/M
+                const angleRadians = Math.asin(1 / mach);
+                const angleDegrees = angleRadians * (180 / Math.PI);
+                
+                // Adjust cone geometry based on Mach number
+                // Higher Mach = narrower cone
+                const coneRadius = 3 / mach;
+                const coneHeight = 6;
+                
+                shockwaveCone.geometry.dispose();
+                shockwaveCone.geometry = new THREE.ConeGeometry(coneRadius, coneHeight, 32, 1, true);
+                
+                speedStatus.textContent = 'Supersonic - Shockwave Present!';
+                speedStatus.style.color = '#ff3366';
+                coneAngle.textContent = `${(angleDegrees * 2).toFixed(1)}°`;
+            } else {
+                // Subsonic - hide shockwave
+                shockwaveCone.visible = false;
+                speedStatus.textContent = 'Subsonic - No Shockwave';
+                speedStatus.style.color = '#00ff88';
+                coneAngle.textContent = 'N/A';
+            }
+        }
+        
+        // Initialize Three.js when page loads
+        window.addEventListener('load', () => {
+            initThreeJS();
+            updateSimulation(0.5);
+        });
+        
+        // Speed slider control
+        const speedSlider = document.getElementById('speedSlider');
+        speedSlider.addEventListener('input', (e) => {
+            const mach = parseFloat(e.target.value);
+            updateSimulation(mach);
+        });
+        
+        // Quiz functionality
+        let currentQuestion = 1;
+        let correctAnswers = 0;
+        
+        const quizOptions = document.querySelectorAll('.quiz-option');
+        
+        quizOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                if (this.classList.contains('selected')) return;
+                
+                const isCorrect = this.dataset.answer === 'correct';
+                const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
+                const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
+                
+                allOptions.forEach(opt => opt.classList.add('selected'));
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
+                    correctAnswers++;
+                } else {
+                    this.classList.add('wrong');
+                    feedback.innerHTML = '<span class="wrong-feedback">✗ Incorrect.</span>';
+                }
+                
+                setTimeout(() => {
+                    if (currentQuestion < 3) {
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
+                        currentQuestion++;
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+                    } else {
+                        document.querySelector(`[data-question="3"]`).classList.add('hidden');
+                        showResults();
+                    }
+                }, 1500);
+            });
+        });
+        
+        function showResults() {
+            const resultsDiv = document.getElementById('quizResults');
+            const finalScore = document.getElementById('finalScore');
+            const resultsMessage = document.getElementById('resultsMessage');
+            const xpEarned = document.getElementById('xpEarned');
+            
+            finalScore.textContent = `${correctAnswers}/3`;
+            
+            let xp = 0;
+            let message = '';
+            
+            if (correctAnswers === 3) {
+                xp = 30;
+                message = 'Outstanding! You understand sonic boom physics perfectly.';
+            } else if (correctAnswers === 2) {
+                xp = 22;
+                message = 'Good work! You grasp the key concepts of sonic booms.';
+            } else {
+                xp = 15;
+                message = 'Review the material to strengthen your understanding.';
+            }
+            
+            xpEarned.textContent = `+${xp} XP`;
+            resultsMessage.textContent = message;
+            
+            saveProgress('lesson3', xp, correctAnswers === 3);
+            
+            resultsDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission 02: Mach Number Mastery</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="lesson-page">
+    <div class="starfield" id="starfield"></div>
+    <div class="radar-grid"></div>
+    
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <a href="dashboard.html" class="nav-back">← DASHBOARD</a>
+        <div class="nav-logo">MISSION 02 // MACH NUMBER</div>
+        <div class="nav-xp" id="currentXP">0 XP</div>
+    </nav>
+    
+    <div class="lesson-container">
+        <!-- Learning Section -->
+        <section class="learning-section">
+            <div class="mission-header">
+                <h1>Mach Number Mastery</h1>
+                <p class="mission-objective">Calculate and understand the speed classifications of flight</p>
+            </div>
+            
+            <div class="content-card">
+                <h2>What Is Mach Number?</h2>
+                <p>
+                    <strong>Mach number</strong> is a way to describe how fast something is moving 
+                    compared to the speed of sound. It's named after Austrian physicist Ernst Mach.
+                </p>
+                
+                <div class="formula-box">
+                    <h3>The Formula</h3>
+                    <div class="formula">
+                        Mach Number = <span class="formula-fraction">
+                            <span class="numerator">Object's Speed</span>
+                            <span class="denominator">Speed of Sound</span>
+                        </span>
+                    </div>
+                    <p class="formula-note">
+                        At sea level and 15°C (59°F), the speed of sound is approximately:<br>
+                        <strong>343 m/s</strong> or <strong>767 mph</strong> or <strong>1,235 km/h</strong>
+                    </p>
+                </div>
+                
+                <div class="concept-box">
+                    <h3>Speed Classifications</h3>
+                    <div class="speed-categories">
+                        <div class="speed-category subsonic">
+                            <div class="category-header">
+                                <span class="category-icon">🛩️</span>
+                                <h4>Subsonic</h4>
+                            </div>
+                            <div class="category-range">Mach 0 - 0.8</div>
+                            <p>Below the speed of sound. Most commercial airliners fly here.</p>
+                            <div class="example">Example: Boeing 747 cruises at Mach 0.85</div>
+                        </div>
+                        
+                        <div class="speed-category transonic">
+                            <div class="category-header">
+                                <span class="category-icon">✈️</span>
+                                <h4>Transonic</h4>
+                            </div>
+                            <div class="category-range">Mach 0.8 - 1.2</div>
+                            <p>Around the speed of sound. Airflow becomes turbulent and complex.</p>
+                            <div class="example">Example: Breaking the sound barrier occurs here</div>
+                        </div>
+                        
+                        <div class="speed-category supersonic">
+                            <div class="category-header">
+                                <span class="category-icon">🚀</span>
+                                <h4>Supersonic</h4>
+                            </div>
+                            <div class="category-range">Mach 1.2 - 5.0</div>
+                            <p>Faster than sound. Creates sonic booms.</p>
+                            <div class="example">Example: F-16 fighter jet can reach Mach 2+</div>
+                        </div>
+                        
+                        <div class="speed-category hypersonic">
+                            <div class="category-header">
+                                <span class="category-icon">🛸</span>
+                                <h4>Hypersonic</h4>
+                            </div>
+                            <div class="category-range">Mach 5+</div>
+                            <p>Extremely fast. Requires special heat-resistant materials.</p>
+                            <div class="example">Example: Space shuttle re-entry at Mach 25</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Interactive Mach Calculator -->
+            <div class="content-card interactive-card">
+                <h2>Mach Number Calculator</h2>
+                <p>Enter an aircraft speed to calculate its Mach number:</p>
+                
+                <div class="mach-calculator">
+                    <div class="calculator-input">
+                        <div class="input-group">
+                            <label for="speedInput">Speed:</label>
+                            <input 
+                                type="number" 
+                                id="speedInput" 
+                                placeholder="Enter speed" 
+                                min="0"
+                                class="speed-input"
+                            >
+                            <select id="unitSelect" class="unit-select">
+                                <option value="mph">mph</option>
+                                <option value="ms">m/s</option>
+                                <option value="kmh">km/h</option>
+                            </select>
+                        </div>
+                        <button id="calculateBtn" class="calculate-btn">CALCULATE</button>
+                    </div>
+                    
+                    <div class="calculator-result" id="calculatorResult">
+                        <div class="result-mach">
+                            <span class="result-label">Mach Number:</span>
+                            <span class="result-value" id="machNumber">--</span>
+                        </div>
+                        
+                        <div class="result-classification">
+                            <div class="classification-badge" id="classificationBadge">
+                                <span class="badge-icon">-</span>
+                                <span class="badge-text">Enter a speed</span>
+                            </div>
+                        </div>
+                        
+                        <div class="speed-indicator">
+                            <div class="indicator-track">
+                                <div class="indicator-marker" id="speedMarker"></div>
+                                <div class="indicator-labels">
+                                    <span data-mach="0">0</span>
+                                    <span data-mach="0.8">0.8</span>
+                                    <span data-mach="1.2">1.2</span>
+                                    <span data-mach="2">2</span>
+                                    <span data-mach="5">5+</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p class="result-explanation" id="resultExplanation"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Quiz Section -->
+        <section class="quiz-section" id="quizSection">
+            <div class="content-card quiz-card">
+                <h2>Mission Quiz</h2>
+                <p class="quiz-intro">Test your understanding of Mach numbers.</p>
+                
+                <div id="quizContainer">
+                    <!-- Question 1 -->
+                    <div class="quiz-question" data-question="1">
+                        <h3>Question 1 of 3</h3>
+                        <p class="question-text">If an aircraft is flying at Mach 2, how fast is it going?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                At the speed of sound
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                Twice the speed of sound
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Half the speed of sound
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                200 miles per hour
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <!-- Question 2 -->
+                    <div class="quiz-question hidden" data-question="2">
+                        <h3>Question 2 of 3</h3>
+                        <p class="question-text">What speed range is considered transonic?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Mach 0 - 0.5
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                Mach 0.8 - 1.2
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Mach 2 - 5
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Mach 5+
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <!-- Question 3 -->
+                    <div class="quiz-question hidden" data-question="3">
+                        <h3>Question 3 of 3</h3>
+                        <p class="question-text">A commercial airliner cruising at 550 mph is flying at approximately what Mach number?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Mach 1.5
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                Mach 0.72
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Mach 2.0
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Mach 0.3
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <!-- Results -->
+                    <div class="quiz-results hidden" id="quizResults">
+                        <h3>Mission Complete!</h3>
+                        <div class="results-content">
+                            <div class="results-score">
+                                <span class="score-label">Score:</span>
+                                <span class="score-value" id="finalScore">0/3</span>
+                            </div>
+                            <p class="results-message" id="resultsMessage"></p>
+                            <div class="results-xp">
+                                <span class="xp-earned" id="xpEarned">+25 XP</span>
+                            </div>
+                        </div>
+                        <a href="dashboard.html" class="return-button">Return to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script src="app.js"></script>
+    <script>
+        createStarfield();
+        displayCurrentXP();
+        
+        // Mach Calculator
+        const speedInput = document.getElementById('speedInput');
+        const unitSelect = document.getElementById('unitSelect');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const machNumber = document.getElementById('machNumber');
+        const classificationBadge = document.getElementById('classificationBadge');
+        const speedMarker = document.getElementById('speedMarker');
+        const resultExplanation = document.getElementById('resultExplanation');
+        
+        const speedOfSound = {
+            mph: 767,
+            ms: 343,
+            kmh: 1235
+        };
+        
+        calculateBtn.addEventListener('click', calculateMach);
+        speedInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') calculateMach();
+        });
+        
+        function calculateMach() {
+            const speed = parseFloat(speedInput.value);
+            const unit = unitSelect.value;
+            
+            if (isNaN(speed) || speed < 0) {
+                alert('Please enter a valid speed');
+                return;
+            }
+            
+            const mach = speed / speedOfSound[unit];
+            machNumber.textContent = mach.toFixed(3);
+            
+            // Update classification
+            let classification, icon, color, explanation;
+            
+            if (mach < 0.8) {
+                classification = 'Subsonic';
+                icon = '🛩️';
+                color = '#00ff88';
+                explanation = 'This speed is below the speed of sound. The aircraft flies in the subsonic regime where airflow is relatively smooth.';
+            } else if (mach < 1.2) {
+                classification = 'Transonic';
+                icon = '✈️';
+                color = '#ffaa00';
+                explanation = 'This speed is in the transonic zone where airflow becomes complex. Some parts of the aircraft experience supersonic flow while others remain subsonic.';
+            } else if (mach < 5.0) {
+                classification = 'Supersonic';
+                icon = '🚀';
+                color = '#ff3366';
+                explanation = 'This speed is faster than sound! The aircraft creates a sonic boom and must be designed to handle supersonic airflow and aerodynamic heating.';
+            } else {
+                classification = 'Hypersonic';
+                icon = '🛸';
+                color = '#9933ff';
+                explanation = 'This is extreme hypersonic speed! The aircraft experiences intense heat and requires special materials. This is the realm of spacecraft and experimental vehicles.';
+            }
+            
+            classificationBadge.innerHTML = `
+                <span class="badge-icon">${icon}</span>
+                <span class="badge-text">${classification}</span>
+            `;
+            classificationBadge.style.background = color;
+            
+            resultExplanation.textContent = explanation;
+            
+            // Update speed indicator
+            const markerPosition = Math.min((mach / 5) * 100, 100);
+            speedMarker.style.left = markerPosition + '%';
+            speedMarker.style.background = color;
+        }
+        
+        // Quiz functionality
+        let currentQuestion = 1;
+        let correctAnswers = 0;
+        
+        const quizOptions = document.querySelectorAll('.quiz-option');
+        
+        quizOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                if (this.classList.contains('selected')) return;
+                
+                const isCorrect = this.dataset.answer === 'correct';
+                const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
+                const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
+                
+                allOptions.forEach(opt => opt.classList.add('selected'));
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
+                    correctAnswers++;
+                } else {
+                    this.classList.add('wrong');
+                    feedback.innerHTML = '<span class="wrong-feedback">✗ Incorrect.</span>';
+                }
+                
+                setTimeout(() => {
+                    if (currentQuestion < 3) {
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
+                        currentQuestion++;
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+                    } else {
+                        document.querySelector(`[data-question="3"]`).classList.add('hidden');
+                        showResults();
+                    }
+                }, 1500);
+            });
+        });
+        
+        function showResults() {
+            const resultsDiv = document.getElementById('quizResults');
+            const finalScore = document.getElementById('finalScore');
+            const resultsMessage = document.getElementById('resultsMessage');
+            const xpEarned = document.getElementById('xpEarned');
+            
+            finalScore.textContent = `${correctAnswers}/3`;
+            
+            let xp = 0;
+            let message = '';
+            
+            if (correctAnswers === 3) {
+                xp = 25;
+                message = 'Excellent! You are now a Mach number expert.';
+            } else if (correctAnswers === 2) {
+                xp = 18;
+                message = 'Good work! You understand the basics of Mach numbers.';
+            } else {
+                xp = 12;
+                message = 'Review the material to improve your understanding.';
+            }
+            
+            xpEarned.textContent = `+${xp} XP`;
+            resultsMessage.textContent = message;
+            
+            saveProgress('lesson2', xp, correctAnswers === 3);
+            
+            resultsDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

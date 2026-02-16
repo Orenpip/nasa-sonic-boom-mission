@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Dashboard - NASA Sonic Boom</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <!-- Starfield background -->
+    <div class="starfield" id="starfield"></div>
+    
+    <!-- Radar grid background -->
+    <div class="radar-grid"></div>
+    
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <div class="nav-logo">NASA // SONIC BOOM MISSION</div>
+        <div class="nav-time" id="missionTime">00:00:00</div>
+    </nav>
+    
+    <div class="dashboard-container">
+        <!-- Agent Profile Card -->
+        <div class="profile-card">
+            <div class="card-header">
+                <span class="status-dot"></span>
+                AGENT PROFILE
+            </div>
+            <div class="profile-content">
+                <div class="rank-display">
+                    <div class="rank-icon" id="rankIcon">⭐</div>
+                    <div class="rank-info">
+                        <div class="rank-title" id="rankTitle">CADET</div>
+                        <div class="rank-subtitle">Entry Level Agent</div>
+                    </div>
+                </div>
+                
+                <div class="xp-section">
+                    <div class="xp-label">
+                        <span>EXPERIENCE POINTS</span>
+                        <span class="xp-value" id="xpValue">0 XP</span>
+                    </div>
+                    <div class="xp-bar">
+                        <div class="xp-fill" id="xpFill"></div>
+                    </div>
+                    <div class="xp-next" id="xpNext">50 XP to Engineer</div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="missionsCompleted">0</div>
+                        <div class="stat-label">Missions</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalQuizzes">0</div>
+                        <div class="stat-label">Quizzes</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="accuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Missions Grid -->
+        <div class="missions-section">
+            <h2 class="section-title">
+                <span class="title-line"></span>
+                AVAILABLE MISSIONS
+                <span class="title-line"></span>
+            </h2>
+            
+            <div class="missions-grid">
+                <!-- Mission 1: Sound Waves -->
+                <div class="mission-card" data-mission="1">
+                    <div class="mission-status" id="status1">
+                        <span class="status-badge">AVAILABLE</span>
+                    </div>
+                    <div class="mission-number">MISSION 01</div>
+                    <h3 class="mission-title">Sound Wave Fundamentals</h3>
+                    <p class="mission-description">
+                        Learn about sound waves, compression, rarefaction, and frequency. 
+                        Master the physics that makes sonic booms possible.
+                    </p>
+                    <div class="mission-rewards">
+                        <span class="reward-item">+20 XP</span>
+                        <span class="reward-item">Wave Expert Badge</span>
+                    </div>
+                    <a href="lesson1.html" class="mission-launch-btn">
+                        <span>LAUNCH MISSION</span>
+                        <span class="launch-arrow">→</span>
+                    </a>
+                </div>
+                
+                <!-- Mission 2: Mach Number -->
+                <div class="mission-card" data-mission="2">
+                    <div class="mission-status" id="status2">
+                        <span class="status-badge locked">LOCKED</span>
+                    </div>
+                    <div class="mission-number">MISSION 02</div>
+                    <h3 class="mission-title">Mach Number Mastery</h3>
+                    <p class="mission-description">
+                        Calculate Mach numbers and understand the difference between 
+                        subsonic, transonic, and supersonic flight.
+                    </p>
+                    <div class="mission-rewards">
+                        <span class="reward-item">+25 XP</span>
+                        <span class="reward-item">Speed Calculator Badge</span>
+                    </div>
+                    <a href="lesson2.html" class="mission-launch-btn" id="launch2">
+                        <span>LAUNCH MISSION</span>
+                        <span class="launch-arrow">→</span>
+                    </a>
+                </div>
+                
+                <!-- Mission 3: Sonic Boom -->
+                <div class="mission-card" data-mission="3">
+                    <div class="mission-status" id="status3">
+                        <span class="status-badge locked">LOCKED</span>
+                    </div>
+                    <div class="mission-number">MISSION 03</div>
+                    <h3 class="mission-title">Sonic Boom Simulation</h3>
+                    <p class="mission-description">
+                        Experience a 3D visualization of shockwave formation. 
+                        See how sonic booms are created when breaking the sound barrier.
+                    </p>
+                    <div class="mission-rewards">
+                        <span class="reward-item">+30 XP</span>
+                        <span class="reward-item">Shockwave Expert Badge</span>
+                    </div>
+                    <a href="lesson3.html" class="mission-launch-btn" id="launch3">
+                        <span>LAUNCH MISSION</span>
+                        <span class="launch-arrow">→</span>
+                    </a>
+                </div>
+                
+                <!-- Mission 4: Design Challenge -->
+                <div class="mission-card" data-mission="4">
+                    <div class="mission-status" id="status4">
+                        <span class="status-badge locked">LOCKED</span>
+                    </div>
+                    <div class="mission-number">FINAL MISSION</div>
+                    <h3 class="mission-title">Aircraft Design Challenge</h3>
+                    <p class="mission-description">
+                        Apply your knowledge to design a quieter supersonic aircraft. 
+                        Choose the nose shape that minimizes sonic boom intensity.
+                    </p>
+                    <div class="mission-rewards">
+                        <span class="reward-item">+25 XP</span>
+                        <span class="reward-item">Flight Director Promotion</span>
+                    </div>
+                    <a href="design.html" class="mission-launch-btn" id="launch4">
+                        <span>LAUNCH MISSION</span>
+                        <span class="launch-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+    <script>
+        // Initialize dashboard
+        createStarfield();
+        updateDashboard();
+        startMissionClock();
+        
+        // Update mission statuses based on progress
+        updateMissionStatuses();
+    </script>
+</body>
+</html>
