@@ -1,1 +1,0 @@
-# nasa-sonic-boom-mission
