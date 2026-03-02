@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission 05: Sound Wave Race!</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="lesson-page">
+    <div class="starfield" id="starfield"></div>
+    <div class="radar-grid"></div>
+    
+    <nav class="nav-bar">
+        <a href="dashboard.html" class="nav-back">← DASHBOARD</a>
+        <div class="nav-logo">MISSION 05 // SOUND WAVE RACE</div>
+        <div class="nav-xp" id="currentXP">0 ⭐</div>
+    </nav>
+    
+    <div class="lesson-container">
+        <section class="learning-section">
+            <div class="mission-header">
+                <h1>🏁 Sound Wave Race Game!</h1>
+                <p class="mission-objective">Watch objects race against sound waves!</p>
+            </div>
+            
+            <div class="content-card">
+                <h2>💨 How Fast Does Sound Travel?</h2>
+                <p class="simple-text">
+                    Sound travels REALLY fast! It moves at about <strong>767 miles per hour</strong>.
+                </p>
+                <p class="simple-text">
+                    That's faster than a race car, but slower than an airplane!
+                </p>
+                
+                <div class="speed-comparison">
+                    <div class="speed-item slow">
+                        <div class="speed-emoji">🏃</div>
+                        <div class="speed-label">Person Running</div>
+                        <div class="speed-value">15 mph</div>
+                        <div class="speed-bar" style="width: 5%"></div>
+                    </div>
+                    <div class="speed-item medium">
+                        <div class="speed-emoji">🏎️</div>
+                        <div class="speed-label">Race Car</div>
+                        <div class="speed-value">200 mph</div>
+                        <div class="speed-bar" style="width: 26%"></div>
+                    </div>
+                    <div class="speed-item fast">
+                        <div class="speed-emoji">🔊</div>
+                        <div class="speed-label">Sound</div>
+                        <div class="speed-value">767 mph</div>
+                        <div class="speed-bar" style="width: 100%"></div>
+                    </div>
+                    <div class="speed-item superfast">
+                        <div class="speed-emoji">✈️</div>
+                        <div class="speed-label">Jet Plane</div>
+                        <div class="speed-value">1,500 mph</div>
+                        <div class="speed-bar" style="width: 100%"></div>
+                        <div class="faster-badge">FASTER THAN SOUND!</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- INTERACTIVE RACE GAME -->
+            <div class="content-card interactive-card">
+                <h2>🎮 Play the Race Game!</h2>
+                <p class="simple-text">
+                    Choose an object and watch it race against sound waves!
+                </p>
+                
+                <div class="race-controls">
+                    <h3>Pick Your Racer:</h3>
+                    <div class="racer-buttons">
+                        <button class="racer-btn" data-speed="15" data-name="Person" data-emoji="🏃">
+                            🏃 Person<br><small>15 mph</small>
+                        </button>
+                        <button class="racer-btn" data-speed="60" data-name="Car" data-emoji="🚗">
+                            🚗 Car<br><small>60 mph</small>
+                        </button>
+                        <button class="racer-btn" data-speed="200" data-name="Race Car" data-emoji="🏎️">
+                            🏎️ Race Car<br><small>200 mph</small>
+                        </button>
+                        <button class="racer-btn" data-speed="500" data-name="Plane" data-emoji="✈️">
+                            ✈️ Plane<br><small>500 mph</small>
+                        </button>
+                        <button class="racer-btn" data-speed="1500" data-name="Jet" data-emoji="🚀">
+                            🚀 Jet<br><small>1500 mph</small>
+                        </button>
+                    </div>
+                    
+                    <button class="start-race-btn" id="startRaceBtn">START RACE!</button>
+                </div>
+                
+                <div class="race-track" id="raceTrack">
+                    <div class="race-lane">
+                        <div class="lane-label">SOUND WAVE 🔊</div>
+                        <div class="race-line"></div>
+                        <div class="racer-sprite sound-racer" id="soundRacer">
+                            <span class="wave-emoji">〰️</span>
+                        </div>
+                        <div class="finish-flag">🏁</div>
+                    </div>
+                    
+                    <div class="race-lane">
+                        <div class="lane-label" id="objectLabel">PICK A RACER</div>
+                        <div class="race-line"></div>
+                        <div class="racer-sprite object-racer" id="objectRacer">
+                            <span class="object-emoji" id="objectEmoji">❓</span>
+                        </div>
+                        <div class="finish-flag">🏁</div>
+                    </div>
+                </div>
+                
+                <div class="race-result" id="raceResult"></div>
+            </div>
+            
+            <div class="content-card">
+                <h2>🎯 What Did You Learn?</h2>
+                <div class="learning-points">
+                    <div class="point-item">
+                        <span class="point-icon">✓</span>
+                        <p>Sound travels at 767 miles per hour</p>
+                    </div>
+                    <div class="point-item">
+                        <span class="point-icon">✓</span>
+                        <p>Most things (people, cars) are SLOWER than sound</p>
+                    </div>
+                    <div class="point-item">
+                        <span class="point-icon">✓</span>
+                        <p>Some airplanes can go FASTER than sound!</p>
+                    </div>
+                    <div class="point-item">
+                        <span class="point-icon">✓</span>
+                        <p>When something goes faster than sound, it makes a SONIC BOOM!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Quiz Section -->
+        <section class="quiz-section">
+            <div class="content-card quiz-card">
+                <h2>🧠 Check What You Learned!</h2>
+                <p class="quiz-intro">Answer these questions to earn your stars!</p>
+                
+                <div id="quizContainer">
+                    <div class="quiz-question" data-question="1">
+                        <h3>Question 1 of 3</h3>
+                        <p class="question-text">About how fast does sound travel?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                15 miles per hour
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                767 miles per hour
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                10 miles per hour
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="quiz-question hidden" data-question="2">
+                        <h3>Question 2 of 3</h3>
+                        <p class="question-text">Is a person running faster or slower than sound?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="correct">
+                                Much slower than sound
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Faster than sound
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                The same speed as sound
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="quiz-question hidden" data-question="3">
+                        <h3>Question 3 of 3</h3>
+                        <p class="question-text">What happens when something goes faster than sound?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Nothing special
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                It makes a sonic boom
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                It disappears
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="quiz-results hidden" id="quizResults">
+                        <h3>🎉 Mission Complete!</h3>
+                        <div class="results-content">
+                            <div class="results-score">
+                                <span class="score-label">You got:</span>
+                                <span class="score-value" id="finalScore">0/3</span>
+                            </div>
+                            <p class="results-message" id="resultsMessage"></p>
+                            <div class="results-xp">
+                                <span class="xp-earned" id="xpEarned">+20 ⭐</span>
+                            </div>
+                        </div>
+                        <a href="dashboard.html" class="return-button">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script src="app.js"></script>
+    <script>
+        createStarfield();
+        displayCurrentXP();
+        
+        // Race Game Logic
+        let selectedSpeed = 0;
+        let selectedName = '';
+        let selectedEmoji = '';
+        let isRacing = false;
+        
+        const racerButtons = document.querySelectorAll('.racer-btn');
+        const startRaceBtn = document.getElementById('startRaceBtn');
+        const soundRacer = document.getElementById('soundRacer');
+        const objectRacer = document.getElementById('objectRacer');
+        const objectLabel = document.getElementById('objectLabel');
+        const objectEmoji = document.getElementById('objectEmoji');
+        const raceResult = document.getElementById('raceResult');
+        
+        const SOUND_SPEED = 767; // mph
+        const RACE_DURATION = 3000; // 3 seconds
+        
+        racerButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (isRacing) return;
+                
+                racerButtons.forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                selectedSpeed = parseInt(this.dataset.speed);
+                selectedName = this.dataset.name;
+                selectedEmoji = this.dataset.emoji;
+                
+                objectLabel.textContent = selectedName.toUpperCase();
+                objectEmoji.textContent = selectedEmoji;
+                
+                raceResult.textContent = '';
+            });
+        });
+        
+        startRaceBtn.addEventListener('click', function() {
+            if (isRacing || selectedSpeed === 0) {
+                if (selectedSpeed === 0) {
+                    alert('Pick a racer first!');
+                }
+                return;
+            }
+            
+            startRace();
+        });
+        
+        function startRace() {
+            isRacing = true;
+            raceResult.textContent = '🏁 Racing...';
+            raceResult.className = 'race-result racing';
+            
+            // Reset positions
+            soundRacer.style.left = '0%';
+            objectRacer.style.left = '0%';
+            
+            // Calculate speeds (as percentage of track per frame)
+            const soundProgress = 100 / (RACE_DURATION / 16); // 60fps
+            const objectProgress = (selectedSpeed / SOUND_SPEED) * soundProgress;
+            
+            let soundPos = 0;
+            let objectPos = 0;
+            
+            const raceInterval = setInterval(() => {
+                soundPos += soundProgress;
+                objectPos += objectProgress;
+                
+                soundRacer.style.left = Math.min(soundPos, 95) + '%';
+                objectRacer.style.left = Math.min(objectPos, 95) + '%';
+                
+                if (soundPos >= 95 || objectPos >= 95) {
+                    clearInterval(raceInterval);
+                    finishRace(objectPos >= soundPos);
+                }
+            }, 16);
+        }
+        
+        function finishRace(objectWon) {
+            isRacing = false;
+            
+            if (objectWon) {
+                raceResult.innerHTML = `
+                    <div class="result-winner">
+                        <h3>🎉 ${selectedEmoji} ${selectedName} WON!</h3>
+                        <p><strong>${selectedName}</strong> is FASTER than sound!</p>
+                        <p>Speed: ${selectedSpeed} mph > 767 mph</p>
+                        <p class="sonic-note">💥 This makes a SONIC BOOM!</p>
+                    </div>
+                `;
+                raceResult.className = 'race-result winner';
+            } else {
+                raceResult.innerHTML = `
+                    <div class="result-loser">
+                        <h3>🔊 Sound Wave Won!</h3>
+                        <p><strong>${selectedName}</strong> is slower than sound.</p>
+                        <p>Speed: ${selectedSpeed} mph < 767 mph</p>
+                        <p class="info-note">Most things are slower than sound!</p>
+                    </div>
+                `;
+                raceResult.className = 'race-result loser';
+            }
+            
+            setTimeout(() => {
+                soundRacer.style.left = '0%';
+                objectRacer.style.left = '0%';
+            }, 3000);
+        }
+        
+        // Quiz functionality
+        let currentQuestion = 1;
+        let correctAnswers = 0;
+        
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                if (this.classList.contains('selected')) return;
+                
+                const isCorrect = this.dataset.answer === 'correct';
+                const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
+                const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
+                
+                allOptions.forEach(opt => opt.classList.add('selected'));
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
+                    correctAnswers++;
+                } else {
+                    this.classList.add('wrong');
+                    feedback.innerHTML = '<span class="wrong-feedback">Not quite right.</span>';
+                }
+                
+                setTimeout(() => {
+                    if (currentQuestion < 3) {
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
+                        currentQuestion++;
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+                    } else {
+                        document.querySelector(`[data-question="3"]`).classList.add('hidden');
+                        showResults();
+                    }
+                }, 1500);
+            });
+        });
+        
+        function showResults() {
+            const resultsDiv = document.getElementById('quizResults');
+            const finalScore = document.getElementById('finalScore');
+            const resultsMessage = document.getElementById('resultsMessage');
+            const xpEarned = document.getElementById('xpEarned');
+            
+            finalScore.textContent = `${correctAnswers}/3`;
+            
+            let stars = 0;
+            let message = '';
+            
+            if (correctAnswers === 3) {
+                stars = 20;
+                message = '🌟 Perfect! You understand speed and sound!';
+            } else if (correctAnswers === 2) {
+                stars = 16;
+                message = '😊 Good job! You learned about sound speed!';
+            } else {
+                stars = 12;
+                message = '👍 Nice try! Review the race results!';
+            }
+            
+            xpEarned.textContent = `+${stars} ⭐`;
+            resultsMessage.textContent = message;
+            
+            saveProgress('lesson5', stars, correctAnswers >= 2, correctAnswers);
+            
+            resultsDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

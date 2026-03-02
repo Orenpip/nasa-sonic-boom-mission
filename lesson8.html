@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission 08: Paper Airplane Challenge!</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="lesson-page">
+    <div class="starfield" id="starfield"></div>
+    <div class="radar-grid"></div>
+    
+    <nav class="nav-bar">
+        <a href="dashboard.html" class="nav-back">← DASHBOARD</a>
+        <div class="nav-logo">MISSION 08 // PAPER AIRPLANE CHALLENGE</div>
+        <div class="nav-xp" id="currentXP">0 ⭐</div>
+    </nav>
+    
+    <div class="lesson-container">
+        <section class="learning-section">
+            <div class="mission-header">
+                <h1>🛩️ Paper Airplane Challenge!</h1>
+                <p class="mission-objective">Build, test, and share your airplane designs!</p>
+            </div>
+            
+            <div class="content-card celebrate-card">
+                <div class="celebrate-badge">🎉</div>
+                <h2>Congratulations, Sound Explorer!</h2>
+                <p class="simple-text">
+                    You've learned SO much about sound! Now it's time for a 
+                    real engineering challenge!
+                </p>
+                <p class="simple-text">
+                    Just like NASA engineers design airplanes to fly fast and quiet, 
+                    YOU will design paper airplanes!
+                </p>
+            </div>
+            
+            <div class="content-card">
+                <h2>🎯 Your Challenge</h2>
+                <div class="challenge-steps">
+                    <div class="challenge-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Build 3 Paper Airplanes</h3>
+                            <p>Follow the instructions below to make 3 different designs</p>
+                        </div>
+                    </div>
+                    <div class="challenge-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Test Each Design</h3>
+                            <p>Fly each airplane and measure how far it goes</p>
+                        </div>
+                    </div>
+                    <div class="challenge-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Take Photos & Upload</h3>
+                            <p>Take a photo of your best airplane and upload it using the QR code!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h2>✈️ Airplane Designs</h2>
+                <p class="simple-text">Try all 3 designs and see which flies farthest!</p>
+                
+                <div class="airplane-designs">
+                    <div class="design-card">
+                        <h3>Design 1: The Dart</h3>
+                        <div class="design-image">
+                            <svg viewBox="0 0 200 150" class="airplane-diagram">
+                                <path d="M100,20 L160,80 L140,80 L140,130 L60,130 L60,80 L40,80 Z" 
+                                      fill="#00ffff" stroke="#fff" stroke-width="2"/>
+                                <text x="100" y="90" fill="#000" font-size="14" text-anchor="middle" font-weight="bold">DART</text>
+                            </svg>
+                        </div>
+                        <p>
+                            <strong>Best for:</strong> Long distance<br>
+                            <strong>Tip:</strong> Make sharp, crisp folds
+                        </p>
+                        <a href="https://www.foldnfly.com/1.html" target="_blank" class="instructions-link">
+                            📋 Folding Instructions
+                        </a>
+                    </div>
+                    
+                    <div class="design-card">
+                        <h3>Design 2: The Glider</h3>
+                        <div class="design-image">
+                            <svg viewBox="0 0 200 150" class="airplane-diagram">
+                                <path d="M100,30 L180,90 L160,100 L120,120 L80,120 L40,100 L20,90 Z" 
+                                      fill="#ff3366" stroke="#fff" stroke-width="2"/>
+                                <text x="100" y="90" fill="#fff" font-size="14" text-anchor="middle" font-weight="bold">GLIDER</text>
+                            </svg>
+                        </div>
+                        <p>
+                            <strong>Best for:</strong> Smooth flight<br>
+                            <strong>Tip:</strong> Use wide wings
+                        </p>
+                        <a href="https://www.foldnfly.com/6.html" target="_blank" class="instructions-link">
+                            📋 Folding Instructions
+                        </a>
+                    </div>
+                    
+                    <div class="design-card">
+                        <h3>Design 3: The Stunt Plane</h3>
+                        <div class="design-image">
+                            <svg viewBox="0 0 200 150" class="airplane-diagram">
+                                <path d="M100,25 L170,70 L150,85 L130,120 L70,120 L50,85 L30,70 Z" 
+                                      fill="#ffaa00" stroke="#fff" stroke-width="2"/>
+                                <rect x="95" y="70" width="10" height="40" fill="#fff"/>
+                                <text x="100" y="95" fill="#000" font-size="14" text-anchor="middle" font-weight="bold">STUNT</text>
+                            </svg>
+                        </div>
+                        <p>
+                            <strong>Best for:</strong> Tricks and loops<br>
+                            <strong>Tip:</strong> Fold fins on the wings
+                        </p>
+                        <a href="https://www.foldnfly.com/3.html" target="_blank" class="instructions-link">
+                            📋 Folding Instructions
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h2>📏 Testing Your Airplanes</h2>
+                <div class="testing-guide">
+                    <div class="test-step">
+                        <span class="test-icon">📍</span>
+                        <p><strong>Stand at a starting line</strong> (or make one with tape)</p>
+                    </div>
+                    <div class="test-step">
+                        <span class="test-icon">🎯</span>
+                        <p><strong>Throw each airplane</strong> three times</p>
+                    </div>
+                    <div class="test-step">
+                        <span class="test-icon">📏</span>
+                        <p><strong>Measure the distance</strong> where it lands (use steps or a ruler)</p>
+                    </div>
+                    <div class="test-step">
+                        <span class="test-icon">📝</span>
+                        <p><strong>Write down which design</strong> flew the farthest</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card upload-card">
+                <h2>📸 Upload Your Photos!</h2>
+                <p class="simple-text">
+                    Take a photo of your BEST airplane design and upload it to share 
+                    with your class!
+                </p>
+                
+                <div class="qr-section">
+                    <div class="qr-code-container">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://forms.gle/paperairplane" 
+                             alt="QR Code for Upload" 
+                             class="qr-code"
+                             id="qrCode">
+                        <p class="qr-instruction">
+                            Scan this QR code with a phone or tablet
+                        </p>
+                    </div>
+                    
+                    <div class="upload-instructions">
+                        <h3>How to Upload:</h3>
+                        <ol class="upload-steps">
+                            <li>Open your camera app on a phone/tablet</li>
+                            <li>Point it at the QR code above</li>
+                            <li>Tap the notification to open the link</li>
+                            <li>Upload your photo and enter your name</li>
+                            <li>Tell us which design flew farthest!</li>
+                        </ol>
+                        
+                        <div class="manual-link">
+                            <p><strong>Or upload manually:</strong></p>
+                            <a href="#" target="_blank" class="upload-link" id="uploadLink">
+                                📤 Click Here to Upload
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="teacher-note">
+                    <strong>📌 Teachers:</strong> 
+                    <a href="#" class="teacher-setup-link" id="teacherSetup">
+                        Click here to set up your Google Form
+                    </a> for photo uploads.
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h2>🏆 What Makes a Good Design?</h2>
+                <div class="design-tips">
+                    <div class="tip-card">
+                        <div class="tip-icon">🎯</div>
+                        <h4>Pointy Nose</h4>
+                        <p>Sharp noses cut through air better (less air resistance!)</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">⚖️</div>
+                        <h4>Good Balance</h4>
+                        <p>Weight in the front helps it fly straight</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">✈️</div>
+                        <h4>Even Wings</h4>
+                        <p>Both wings should be exactly the same size</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">📐</div>
+                        <h4>Straight Folds</h4>
+                        <p>Neat, straight folds = better flight!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Completion Section -->
+        <section class="completion-section">
+            <div class="content-card completion-card">
+                <div class="completion-badge">
+                    <div class="badge-icon">🎖️</div>
+                    <h2>🎉 You Did It!</h2>
+                </div>
+                
+                <div class="completion-content">
+                    <p class="simple-text">
+                        <strong>Congratulations!</strong> You completed all 8 missions!
+                    </p>
+                    
+                    <p class="simple-text">
+                        You are now an official <strong>NASA Sound Explorer</strong>!
+                    </p>
+                    
+                    <div class="achievements">
+                        <h3>🌟 What You Learned:</h3>
+                        <ul class="achievement-list">
+                            <li>✓ What sound is (vibrations!)</li>
+                            <li>✓ How sound travels through air</li>
+                            <li>✓ High sounds vs low sounds</li>
+                            <li>✓ Loud sounds vs quiet sounds</li>
+                            <li>✓ Speed of sound (767 mph!)</li>
+                            <li>✓ Breaking the sound barrier</li>
+                            <li>✓ What sonic booms are</li>
+                            <li>✓ How to design flying objects</li>
+                        </ul>
+                    </div>
+                    
+                    <button class="complete-mission-btn" id="completeMissionBtn">
+                        Complete Final Mission (+30 ⭐)
+                    </button>
+                    
+                    <div class="certificate-note">
+                        <p>🎓 Ask your teacher for your NASA Sound Explorer certificate!</p>
+                    </div>
+                </div>
+                
+                <a href="dashboard.html" class="return-button">Back to Dashboard</a>
+            </div>
+        </section>
+    </div>
+    
+    <script src="app.js"></script>
+    <script>
+        createStarfield();
+        displayCurrentXP();
+        
+        // Teacher Setup Instructions
+        document.getElementById('teacherSetup').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert(`TEACHER SETUP INSTRUCTIONS:
+
+1. Go to Google Forms (forms.google.com)
+2. Create a new form titled "Paper Airplane Challenge"
+3. Add these fields:
+   - Student Name (Short answer)
+   - Which design flew farthest? (Multiple choice: Dart, Glider, Stunt Plane)
+   - How far did it fly? (Short answer)
+   - Upload your airplane photo (File upload)
+4. Get the shareable link
+5. Update the QR code with your form link
+6. Share the link with students!
+
+Tip: Go to Settings > Responses to collect photos in Google Drive!`);
+        });
+        
+        // Update upload link with teacher's form
+        const uploadLink = document.getElementById('uploadLink');
+        uploadLink.href = 'https://forms.gle/paperairplane'; // Replace with actual form
+        uploadLink.addEventListener('click', function(e) {
+            if (this.href.includes('paperairplane')) {
+                e.preventDefault();
+                alert('Ask your teacher for the upload link!');
+            }
+        });
+        
+        // Complete mission button
+        document.getElementById('completeMissionBtn').addEventListener('click', function() {
+            this.disabled = true;
+            this.textContent = '✓ Mission Complete!';
+            this.style.background = '#00ff88';
+            this.style.borderColor = '#00ff88';
+            
+            saveProgress('lesson8', 30, true, 3);
+            
+            setTimeout(() => {
+                alert('🎉 Congratulations! You earned 30 stars!\n\nYou are now a NASA Sound Explorer!\n\nCheck your dashboard to see your final rank!');
+            }, 500);
+        });
+    </script>
+</body>
+</html>
