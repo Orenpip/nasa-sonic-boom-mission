@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mission Dashboard - NASA Sound Explorer</title>
+    <title>Mission Dashboard</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body class="dashboard-page">
@@ -19,7 +17,7 @@
     </nav>
     
     <div class="dashboard-container">
-        <!-- Agent Profile Card -->
+        <!-- Profile Card -->
         <div class="profile-card">
             <div class="card-header">
                 <span class="status-dot"></span>
@@ -48,7 +46,7 @@
                 <div class="stats-grid">
                     <div class="stat-item">
                         <div class="stat-number" id="missionsCompleted">0</div>
-                        <div class="stat-label">Missions</div>
+                        <div class="stat-label">Completed</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-number" id="totalGames">0</div>
@@ -76,16 +74,15 @@
             </h2>
             
             <div class="missions-grid">
-                <!-- Mission 1 -->
+                <!-- MISSION 1 - UNLOCKED -->
                 <div class="mission-card" data-mission="1">
                     <div class="mission-status" id="status1">
-                        <span class="status-badge">START HERE</span>
+                        <span class="status-badge">START HERE!</span>
                     </div>
                     <div class="mission-number">MISSION 01</div>
                     <h3 class="mission-title">What is Sound?</h3>
                     <p class="mission-description">
-                        Discover what sound is and how vibrations make noise. 
-                        Play with interactive sounds!
+                        Play games! Click buttons! Watch animations! Learn what sound is and how vibrations work.
                     </p>
                     <div class="mission-rewards">
                         <span class="reward-item">+15 ⭐</span>
@@ -96,144 +93,131 @@
                     </a>
                 </div>
                 
-                <!-- Mission 2 -->
-                <div class="mission-card" data-mission="2">
+                <!-- MISSIONS 2-8 - ALL LOCKED -->
+                <div class="mission-card locked-card" data-mission="2">
                     <div class="mission-status" id="status2">
-                        <span class="status-badge locked">LOCKED</span>
+                        <span class="status-badge locked">🔒 LOCKED</span>
                     </div>
                     <div class="mission-number">MISSION 02</div>
                     <h3 class="mission-title">How Sound Travels</h3>
                     <p class="mission-description">
-                        Learn how sound moves through air, water, and solid objects. 
-                        Watch cool animations!
+                        Complete Mission 1 to unlock!
                     </p>
                     <div class="mission-rewards">
                         <span class="reward-item">+15 ⭐</span>
                     </div>
-                    <a href="lesson2.html" class="mission-launch-btn" id="launch2">
-                        <span>START MISSION</span>
-                        <span class="launch-arrow">→</span>
+                    <a href="#" class="mission-launch-btn locked" id="launch2">
+                        <span>LOCKED</span>
+                        <span class="launch-arrow">🔒</span>
                     </a>
                 </div>
                 
-                <!-- Mission 3 -->
-                <div class="mission-card" data-mission="3">
+                <div class="mission-card locked-card" data-mission="3">
                     <div class="mission-status" id="status3">
-                        <span class="status-badge locked">LOCKED</span>
+                        <span class="status-badge locked">🔒 LOCKED</span>
                     </div>
                     <div class="mission-number">MISSION 03</div>
                     <h3 class="mission-title">High & Low Sounds</h3>
                     <p class="mission-description">
-                        Play a matching game! Learn about pitch and frequency 
-                        with fun sound examples.
+                        Complete Mission 2 to unlock!
                     </p>
                     <div class="mission-rewards">
                         <span class="reward-item">+15 ⭐</span>
                     </div>
-                    <a href="lesson3.html" class="mission-launch-btn" id="launch3">
-                        <span>START MISSION</span>
-                        <span class="launch-arrow">→</span>
+                    <a href="#" class="mission-launch-btn locked" id="launch3">
+                        <span>LOCKED</span>
+                        <span class="launch-arrow">🔒</span>
                     </a>
                 </div>
                 
-                <!-- Mission 4 -->
-                <div class="mission-card" data-mission="4">
+                <div class="mission-card locked-card" data-mission="4">
                     <div class="mission-status" id="status4">
-                        <span class="status-badge locked">LOCKED</span>
+                        <span class="status-badge locked">🔒 LOCKED</span>
                     </div>
                     <div class="mission-number">MISSION 04</div>
                     <h3 class="mission-title">Loud & Quiet Sounds</h3>
                     <p class="mission-description">
-                        Discover volume and amplitude. See how sound waves 
-                        get bigger and smaller!
+                        Complete Mission 3 to unlock!
                     </p>
                     <div class="mission-rewards">
                         <span class="reward-item">+15 ⭐</span>
                     </div>
-                    <a href="lesson4.html" class="mission-launch-btn" id="launch4">
-                        <span>START MISSION</span>
-                        <span class="launch-arrow">→</span>
+                    <a href="#" class="mission-launch-btn locked" id="launch4">
+                        <span>LOCKED</span>
+                        <span class="launch-arrow">🔒</span>
                     </a>
                 </div>
                 
-                <!-- Mission 5 -->
-                <div class="mission-card" data-mission="5">
+                <div class="mission-card locked-card" data-mission="5">
                     <div class="mission-status" id="status5">
-                        <span class="status-badge locked">LOCKED</span>
+                        <span class="status-badge locked">🔒 LOCKED</span>
                     </div>
                     <div class="mission-number">MISSION 05</div>
-                    <h3 class="mission-title">Sound Wave Race</h3>
+                    <h3 class="mission-title">Sound Wave Race!</h3>
                     <p class="mission-description">
-                        Play a race game! Watch objects move faster and slower 
-                        than sound waves. Super fun!
+                        Complete Mission 4 to unlock the race game!
                     </p>
                     <div class="mission-rewards">
                         <span class="reward-item">+20 ⭐</span>
                     </div>
-                    <a href="lesson5.html" class="mission-launch-btn" id="launch5">
-                        <span>START MISSION</span>
-                        <span class="launch-arrow">→</span>
+                    <a href="#" class="mission-launch-btn locked" id="launch5">
+                        <span>LOCKED</span>
+                        <span class="launch-arrow">🔒</span>
                     </a>
                 </div>
                 
-                <!-- Mission 6 -->
-                <div class="mission-card" data-mission="6">
+                <div class="mission-card locked-card" data-mission="6">
                     <div class="mission-status" id="status6">
-                        <span class="status-badge locked">LOCKED</span>
+                        <span class="status-badge locked">🔒 LOCKED</span>
                     </div>
                     <div class="mission-number">MISSION 06</div>
                     <h3 class="mission-title">Breaking Sound Barrier</h3>
                     <p class="mission-description">
-                        Learn what happens when things go faster than sound! 
-                        Simple and amazing.
+                        Complete Mission 5 to unlock!
                     </p>
                     <div class="mission-rewards">
                         <span class="reward-item">+20 ⭐</span>
                     </div>
-                    <a href="lesson6.html" class="mission-launch-btn" id="launch6">
-                        <span>START MISSION</span>
-                        <span class="launch-arrow">→</span>
+                    <a href="#" class="mission-launch-btn locked" id="launch6">
+                        <span>LOCKED</span>
+                        <span class="launch-arrow">🔒</span>
                     </a>
                 </div>
                 
-                <!-- Mission 7 -->
-                <div class="mission-card" data-mission="7">
+                <div class="mission-card locked-card" data-mission="7">
                     <div class="mission-status" id="status7">
-                        <span class="status-badge locked">LOCKED</span>
+                        <span class="status-badge locked">🔒 LOCKED</span>
                     </div>
                     <div class="mission-number">MISSION 07</div>
                     <h3 class="mission-title">Sonic Booms</h3>
                     <p class="mission-description">
-                        See a 3D simulation of sonic booms! Control the speed 
-                        and watch the shockwave.
+                        Complete Mission 6 to unlock!
                     </p>
                     <div class="mission-rewards">
                         <span class="reward-item">+20 ⭐</span>
                     </div>
-                    <a href="lesson7.html" class="mission-launch-btn" id="launch7">
-                        <span>START MISSION</span>
-                        <span class="launch-arrow">→</span>
+                    <a href="#" class="mission-launch-btn locked" id="launch7">
+                        <span>LOCKED</span>
+                        <span class="launch-arrow">🔒</span>
                     </a>
                 </div>
                 
-                <!-- Mission 8 -->
-                <div class="mission-card special-mission" data-mission="8">
+                <div class="mission-card locked-card special-mission" data-mission="8">
                     <div class="mission-status" id="status8">
-                        <span class="status-badge locked">LOCKED</span>
+                        <span class="status-badge locked">🔒 LOCKED</span>
                     </div>
                     <div class="mission-number">FINAL MISSION</div>
                     <h3 class="mission-title">🛩️ Paper Airplane Challenge!</h3>
                     <p class="mission-description">
-                        Build and test 3 paper airplane designs! Take photos 
-                        and upload them. Win prizes!
+                        Complete Mission 7 to unlock!
                     </p>
                     <div class="mission-rewards">
                         <span class="reward-item">+30 ⭐</span>
                         <span class="reward-item">🏆 Certificate</span>
                     </div>
-                    <a href="lesson8.html" class="mission-launch-btn" id="launch8">
-                        <span>START MISSION</span>
-                        <span class="launch-arrow">→</span>
+                    <a href="#" class="mission-launch-btn locked" id="launch8">
+                        <span>LOCKED</span>
+                        <span class="launch-arrow">🔒</span>
                     </a>
                 </div>
             </div>
@@ -248,7 +232,7 @@
         updateMissionStatuses();
         
         document.getElementById('resetProgressBtn').addEventListener('click', function() {
-            if (confirm('⚠️ This will delete all your stars and progress.\n\nAre you sure?')) {
+            if (confirm('⚠️ Delete all progress?\n\nAre you sure?')) {
                 resetProgress();
             }
         });
