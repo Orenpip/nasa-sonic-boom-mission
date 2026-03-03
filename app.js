@@ -97,7 +97,7 @@ function initializeProgress() {
                 lesson5: { completed: false, xp: 0, score: 0 },
                 lesson6: { completed: false, xp: 0, score: 0 },
                 lesson7: { completed: false, xp: 0, score: 0 },
-                lesson8: { completed: false, xp: 0 }
+                lesson8: { completed: false, xp: 0, score: 0 }
             },
             rank: 'Explorer',
             startTime: Date.now()
@@ -118,7 +118,7 @@ function saveProgress(missionId, xpEarned, completed, score = 0) {
     
     // Update mission data
     if (!progress.missionScores[missionId]) {
-        progress.missionScores[missionId] = {};
+        progress.missionScores[missionId] = { completed: false, xp: 0, score: 0 };
     }
     
     // Only add XP if this mission hasn't been completed before
@@ -138,6 +138,9 @@ function saveProgress(missionId, xpEarned, completed, score = 0) {
     } else {
         // Mission not completed, partial XP
         progress.totalXP += xpEarned;
+        if (!progress.missionScores[missionId].xp) {
+            progress.missionScores[missionId].xp = 0;
+        }
         progress.missionScores[missionId].xp += xpEarned;
     }
     
@@ -228,17 +231,22 @@ function updateDashboard() {
     if (totalGames) {
         let gameCount = 0;
         Object.keys(progress.missionScores).forEach(key => {
-            if (progress.missionScores[key].completed) gameCount++;
+            if (progress.missionScores[key] && progress.missionScores[key].completed) {
+                gameCount++;
+            }
         });
         totalGames.textContent = gameCount;
     }
     
     if (accuracy) {
-        // Calculate average score from quiz missions
+        // Calculate average score from quiz missions - WITH NULL CHECKS
         let totalScore = 0;
         let quizCount = 0;
         ['lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson5', 'lesson6', 'lesson7'].forEach(lesson => {
-            if (progress.missionScores[lesson].score) {
+            // THIS IS THE FIX - Check if mission exists AND has a score
+            if (progress.missionScores[lesson] && 
+                progress.missionScores[lesson].score && 
+                progress.missionScores[lesson].score > 0) {
                 totalScore += progress.missionScores[lesson].score;
                 quizCount++;
             }
@@ -370,11 +378,8 @@ function displayCurrentXP() {
 
 // ===== RESET PROGRESS =====
 function resetProgress() {
-    if (confirm('⚠️ This will delete ALL your progress!\n\nAre you sure you want to start over?')) {
-        localStorage.removeItem('nasaSonicBoomProgress');
-        alert('✅ Progress reset! You are now a Sound Explorer again!');
-        window.location.reload();
-    }
+    localStorage.removeItem('nasaSonicBoomProgress');
+    window.location.reload();
 }
 
 // Add reset button to console
