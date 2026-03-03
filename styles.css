@@ -2109,6 +2109,337 @@ body {
         grid-template-columns: 1fr;
     }
 }
+/* ===== LESSON 4 SPECIFIC STYLES ===== */
+
+/* Decibel Scale */
+.decibel-scale {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 350px;
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+}
+
+.db-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    max-width: 150px;
+}
+
+.db-bar {
+    width: 60px;
+    height: var(--db-height);
+    background: linear-gradient(to top, #00ff88, #ffaa00, #ff3366);
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    animation: growBar 1s ease-out;
+}
+
+@keyframes growBar {
+    from { height: 0; }
+    to { height: var(--db-height); }
+}
+
+.db-icon {
+    font-size: 30px;
+}
+
+.db-name {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: white;
+    font-weight: 700;
+    text-align: center;
+}
+
+.db-value {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    color: var(--electric-cyan);
+    font-weight: 700;
+}
+
+.db-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--warning-orange);
+    text-align: center;
+}
+
+/* Volume Game */
+.volume-game {
+    margin-top: 25px;
+}
+
+#volumeWaveCanvas {
+    width: 100%;
+    max-width: 700px;
+    height: 200px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--electric-cyan);
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto 25px;
+}
+
+.volume-slider-container {
+    margin-bottom: 25px;
+}
+
+.volume-icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.vol-icon {
+    font-size: 30px;
+}
+
+.volume-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding: 20px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid var(--electric-cyan);
+    border-radius: 10px;
+}
+
+.vol-level {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--electric-cyan);
+    font-weight: 900;
+}
+
+.vol-db {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    color: var(--warning-orange);
+    font-weight: 700;
+}
+
+.volume-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.vol-info-card {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--electric-cyan);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.vol-card-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--gray-medium);
+    margin-bottom: 10px;
+}
+
+.vol-card-value {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: white;
+    font-weight: 700;
+}
+
+/* Volume Sorter */
+.volume-sorter {
+    margin: 25px 0;
+}
+
+.sortable-sounds {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    min-height: 300px;
+}
+
+.sort-sound {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 25px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid var(--electric-cyan);
+    border-radius: 10px;
+    cursor: grab;
+    transition: all 0.3s ease;
+}
+
+.sort-sound:hover {
+    background: rgba(0, 255, 255, 0.2);
+    transform: translateX(10px);
+}
+
+.sort-sound.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+}
+
+.sort-sound.correct-order {
+    background: rgba(0, 255, 136, 0.3);
+    border-color: var(--success-green);
+}
+
+.sort-emoji {
+    font-size: 35px;
+}
+
+.sort-name {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+}
+
+.check-order-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--neon-pink);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.check-order-btn:hover {
+    box-shadow: var(--glow-pink);
+    transform: translateY(-2px);
+}
+
+.order-result {
+    text-align: center;
+    padding: 20px;
+    font-family: var(--font-display);
+    min-height: 60px;
+}
+
+/* Volume Quiz Game */
+.volume-quiz-game {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 25px 0;
+}
+
+.vol-quiz-card {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--electric-cyan);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+.vol-quiz-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.vol-quiz-question {
+    font-family: var(--font-display);
+    font-size: 15px;
+    color: white;
+    margin-bottom: 15px;
+    min-height: 40px;
+}
+
+.vol-quiz-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.vol-quiz-btn {
+    padding: 12px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid var(--electric-cyan);
+    border-radius: 8px;
+    color: white;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.vol-quiz-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+}
+
+.vol-quiz-btn.correct {
+    background: rgba(0, 255, 136, 0.3);
+    border-color: var(--success-green);
+    color: var(--success-green);
+}
+
+.vol-quiz-btn.wrong {
+    background: rgba(255, 51, 102, 0.3);
+    border-color: var(--neon-pink);
+    color: var(--neon-pink);
+}
+
+.vol-quiz-btn.answered {
+    cursor: not-allowed;
+}
+
+.vol-quiz-feedback {
+    margin-top: 10px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    min-height: 24px;
+}
+
+.vol-quiz-score {
+    text-align: center;
+    padding: 15px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid var(--electric-cyan);
+    border-radius: 10px;
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--electric-cyan);
+    font-weight: 700;
+}
+
+/* Responsive for Lesson 4 */
+@media (max-width: 768px) {
+    .decibel-scale {
+        height: 300px;
+    }
+    
+    .db-bar {
+        width: 40px;
+    }
+    
+    .volume-info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .volume-quiz-game {
+        grid-template-columns: 1fr;
+    }
+}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
