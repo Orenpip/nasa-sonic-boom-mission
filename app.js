@@ -267,6 +267,7 @@ function updateMissionStatuses() {
         const missionId = missions[missionNum];
         const statusBadge = document.querySelector(`#status${missionNum} .status-badge`);
         const launchBtn = document.getElementById(`launch${missionNum}`);
+        const missionCard = document.querySelector(`[data-mission="${missionNum}"]`);
         
         if (!statusBadge) return;
         
@@ -277,9 +278,10 @@ function updateMissionStatuses() {
                 statusBadge.classList.remove('locked');
                 statusBadge.classList.add('completed');
             } else {
-                statusBadge.textContent = 'START HERE';
+                statusBadge.textContent = 'START HERE!';
                 statusBadge.classList.remove('locked');
             }
+            if (missionCard) missionCard.classList.remove('locked-card');
             return;
         }
         
@@ -295,22 +297,30 @@ function updateMissionStatuses() {
                 statusBadge.classList.remove('locked');
                 statusBadge.classList.add('completed');
             } else {
-                statusBadge.textContent = 'READY';
+                statusBadge.textContent = 'READY!';
                 statusBadge.classList.remove('locked');
             }
             
+            if (missionCard) missionCard.classList.remove('locked-card');
+            
             if (launchBtn) {
-                launchBtn.style.opacity = '1';
-                launchBtn.style.pointerEvents = 'auto';
+                launchBtn.classList.remove('locked');
+                launchBtn.href = `lesson${missionNum}.html`;
+                launchBtn.querySelector('span').textContent = 'START MISSION';
+                launchBtn.querySelector('.launch-arrow').textContent = '→';
             }
         } else {
             // Keep locked
-            statusBadge.textContent = 'LOCKED';
+            statusBadge.textContent = '🔒 LOCKED';
             statusBadge.classList.add('locked');
             
+            if (missionCard) missionCard.classList.add('locked-card');
+            
             if (launchBtn) {
-                launchBtn.style.opacity = '0.5';
-                launchBtn.style.pointerEvents = 'none';
+                launchBtn.classList.add('locked');
+                launchBtn.href = '#';
+                launchBtn.querySelector('span').textContent = 'LOCKED';
+                launchBtn.querySelector('.launch-arrow').textContent = '🔒';
             }
         }
     });
@@ -353,10 +363,10 @@ function displayCurrentXP() {
     currentXPElement.textContent = progress.totalXP + ' ⭐';
 }
 
-// ===== RESET PROGRESS (for testing) =====
+// ===== RESET PROGRESS =====
 function resetProgress() {
     localStorage.removeItem('nasaSonicBoomProgress');
-    alert('✅ All progress has been reset. You are now a Cadet again!');
+    alert('✅ All progress has been reset. You are now a Sound Explorer again!');
     window.location.reload();
 }
 
