@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mission 03: High & Low Sounds</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body class="lesson-page">
@@ -23,121 +21,288 @@
         <section class="learning-section">
             <div class="mission-header">
                 <h1>High & Low Sounds</h1>
-                <p class="mission-objective">Learn how vibrations make sound!</p>
+                <p class="mission-objective">Discover pitch and frequency!</p>
             </div>
             
+            <!-- INTRO -->
             <div class="content-card">
-                <h2>🎵 Sound is Everywhere!</h2>
+                <h2>🎵 What is Pitch?</h2>
                 <p class="simple-text">
-                    Sound is all around us! Music, talking, birds singing, cars beeping - 
-                    it's all sound!
-                </p>
-                
-                <p class="simple-text">
-                    But what IS sound? Sound happens when something <strong>vibrates</strong>.
+                    <strong>Pitch</strong> is how HIGH or LOW a sound is. A whistle is HIGH pitch. 
+                    Thunder is LOW pitch!
                 </p>
                 
                 <div class="big-idea-box">
                     <div class="big-idea-icon">💡</div>
                     <div class="big-idea-text">
-                        <strong>Big Idea:</strong> When things vibrate (shake back and forth), 
-                        they make sound!
+                        <strong>Big Idea:</strong> FAST vibrations make HIGH sounds. 
+                        SLOW vibrations make LOW sounds!
                     </div>
                 </div>
                 
                 <div class="example-grid">
                     <div class="example-card">
-                        <div class="example-emoji">🎸</div>
-                        <h3>Guitar String</h3>
-                        <p>Pluck a guitar string. It vibrates and makes sound!</p>
+                        <div class="example-emoji">🐦</div>
+                        <h3>High Pitch</h3>
+                        <p>Birds, whistles, squeaky toys!</p>
                     </div>
                     <div class="example-card">
                         <div class="example-emoji">🥁</div>
-                        <h3>Drum</h3>
-                        <p>Hit a drum. The drum head vibrates and makes sound!</p>
+                        <h3>Low Pitch</h3>
+                        <p>Drums, thunder, big bells!</p>
                     </div>
                     <div class="example-card">
-                        <div class="example-emoji">🔔</div>
-                        <h3>Bell</h3>
-                        <p>Ring a bell. The metal vibrates and makes sound!</p>
+                        <div class="example-emoji">🎹</div>
+                        <h3>Piano Keys</h3>
+                        <p>Left = LOW, Right = HIGH!</p>
                     </div>
                     <div class="example-card">
-                        <div class="example-emoji">👄</div>
-                        <h3>Your Voice</h3>
-                        <p>When you talk, parts in your throat vibrate!</p>
+                        <div class="example-emoji">👶</div>
+                        <h3>Voices</h3>
+                        <p>Kids = higher than adults!</p>
                     </div>
                 </div>
             </div>
             
+            <!-- FREQUENCY EXPLANATION -->
             <div class="content-card">
-                <h2>🌊 Sound Makes Waves</h2>
+                <h2>⚡ Frequency: Counting Vibrations</h2>
                 <p class="simple-text">
-                    When something vibrates, it pushes the air around it.
-                </p>
-                <p class="simple-text">
-                    The air moves in <strong>waves</strong> - like waves in water!
-                </p>
-                <p class="simple-text">
-                    These sound waves travel through the air to your ears. 
-                    That's how you hear things!
+                    <strong>Frequency</strong> means how many times something vibrates in one second. 
+                    We measure it in <strong>Hertz (Hz)</strong>.
                 </p>
                 
-                <div class="wave-demo">
-                    <canvas id="soundWaveCanvas" width="600" height="150"></canvas>
-                    <p class="demo-caption">👆 This is what a sound wave looks like!</p>
+                <div class="frequency-examples">
+                    <div class="freq-item">
+                        <div class="freq-icon">🥁</div>
+                        <div class="freq-name">Bass Drum</div>
+                        <div class="freq-bar" style="width: 20%; background: #00ff88;"></div>
+                        <div class="freq-value">80 Hz</div>
+                        <div class="freq-label">LOW PITCH</div>
+                    </div>
+                    <div class="freq-item">
+                        <div class="freq-icon">🗣️</div>
+                        <div class="freq-name">Talking</div>
+                        <div class="freq-bar" style="width: 40%; background: #ffaa00;"></div>
+                        <div class="freq-value">300 Hz</div>
+                        <div class="freq-label">MEDIUM</div>
+                    </div>
+                    <div class="freq-item">
+                        <div class="freq-icon">😙</div>
+                        <div class="freq-name">Whistle</div>
+                        <div class="freq-bar" style="width: 70%; background: #ff3366;"></div>
+                        <div class="freq-value">1000 Hz</div>
+                        <div class="freq-label">HIGH PITCH</div>
+                    </div>
+                    <div class="freq-item">
+                        <div class="freq-icon">🐦</div>
+                        <div class="freq-name">Bird Chirp</div>
+                        <div class="freq-bar" style="width: 100%; background: #ff0066;"></div>
+                        <div class="freq-value">3000 Hz</div>
+                        <div class="freq-label">VERY HIGH!</div>
+                    </div>
+                </div>
+                
+                <p class="simple-text" style="margin-top: 25px;">
+                    <strong>More Hz = Higher Pitch!</strong>
+                </p>
+            </div>
+            
+            <!-- GAME 1: PITCH SORTER -->
+            <div class="content-card interactive-card">
+                <h2>🎮 GAME 1: Pitch Sorter!</h2>
+                <p class="simple-text">
+                    Drag each sound to the correct box - HIGH or LOW pitch!
+                </p>
+                
+                <div class="pitch-sorter-game">
+                    <div class="sound-items">
+                        <div class="draggable-sound" draggable="true" data-pitch="high" data-sound="bird">
+                            🐦 Bird
+                        </div>
+                        <div class="draggable-sound" draggable="true" data-pitch="low" data-sound="drum">
+                            🥁 Drum
+                        </div>
+                        <div class="draggable-sound" draggable="true" data-pitch="high" data-sound="whistle">
+                            😙 Whistle
+                        </div>
+                        <div class="draggable-sound" draggable="true" data-pitch="low" data-sound="thunder">
+                            ⚡ Thunder
+                        </div>
+                        <div class="draggable-sound" draggable="true" data-pitch="high" data-sound="violin">
+                            🎻 Violin
+                        </div>
+                        <div class="draggable-sound" draggable="true" data-pitch="low" data-sound="tuba">
+                            🎺 Tuba
+                        </div>
+                    </div>
+                    
+                    <div class="sorting-boxes">
+                        <div class="sort-box" data-type="high">
+                            <h3>HIGH PITCH 🔊</h3>
+                            <div class="drop-zone" data-accepts="high"></div>
+                        </div>
+                        <div class="sort-box" data-type="low">
+                            <h3>LOW PITCH 🔉</h3>
+                            <div class="drop-zone" data-accepts="low"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="sorter-score">
+                        Correct: <span id="sorterScore">0</span> / 6
+                    </div>
                 </div>
             </div>
             
+            <!-- GAME 2: PITCH SLIDER -->
             <div class="content-card interactive-card">
-                <h2>🎮 Try It Yourself!</h2>
+                <h2>🎮 GAME 2: Pitch Controller!</h2>
                 <p class="simple-text">
-                    Click the buttons to see different things that make sound:
+                    Move the slider to change the pitch! Watch the wave change!
                 </p>
                 
-                <div class="interactive-buttons">
-                    <button class="sound-btn" data-sound="drum">
-                        <span class="btn-emoji">🥁</span>
-                        <span class="btn-text">Drum</span>
-                    </button>
-                    <button class="sound-btn" data-sound="bell">
-                        <span class="btn-emoji">🔔</span>
-                        <span class="btn-text">Bell</span>
-                    </button>
-                    <button class="sound-btn" data-sound="guitar">
-                        <span class="btn-emoji">🎸</span>
-                        <span class="btn-text">Guitar</span>
-                    </button>
-                    <button class="sound-btn" data-sound="whistle">
-                        <span class="btn-emoji">😙</span>
-                        <span class="btn-text">Whistle</span>
-                    </button>
+                <div class="pitch-controller">
+                    <canvas id="pitchWaveCanvas" width="700" height="150"></canvas>
+                    
+                    <div class="pitch-controls">
+                        <div class="pitch-slider-container">
+                            <label>
+                                Pitch: <span id="pitchLabel">MEDIUM</span>
+                            </label>
+                            <input 
+                                type="range" 
+                                id="pitchSlider" 
+                                min="1" 
+                                max="10" 
+                                value="5" 
+                                class="slider"
+                            >
+                            <div class="pitch-slider-labels">
+                                <span>LOW (Slow vibrations)</span>
+                                <span>HIGH (Fast vibrations)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="pitch-display">
+                            <div class="pitch-info-box">
+                                <div class="pitch-emoji" id="pitchEmoji">🎵</div>
+                                <div class="pitch-example" id="pitchExample">Person Talking</div>
+                                <div class="pitch-freq" id="pitchFreq">~300 Hz</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- GAME 3: PITCH MATCHER -->
+            <div class="content-card interactive-card">
+                <h2>🎮 GAME 3: Match the Pitch!</h2>
+                <p class="simple-text">
+                    Can you match each sound to HIGH or LOW? Click to guess!
+                </p>
+                
+                <div class="pitch-matcher">
+                    <div class="match-card">
+                        <div class="match-icon">🦁</div>
+                        <p class="match-question">Is a lion's roar HIGH or LOW?</p>
+                        <div class="match-buttons">
+                            <button class="pitch-guess" data-correct="false">HIGH</button>
+                            <button class="pitch-guess" data-correct="true">LOW</button>
+                        </div>
+                        <div class="match-result"></div>
+                    </div>
+                    
+                    <div class="match-card">
+                        <div class="match-icon">🚗</div>
+                        <p class="match-question">Is a car horn HIGH or LOW?</p>
+                        <div class="match-buttons">
+                            <button class="pitch-guess" data-correct="true">HIGH</button>
+                            <button class="pitch-guess" data-correct="false">LOW</button>
+                        </div>
+                        <div class="match-result"></div>
+                    </div>
+                    
+                    <div class="match-card">
+                        <div class="match-icon">📯</div>
+                        <p class="match-question">Is a trumpet HIGH or LOW?</p>
+                        <div class="match-buttons">
+                            <button class="pitch-guess" data-correct="true">HIGH</button>
+                            <button class="pitch-guess" data-correct="false">LOW</button>
+                        </div>
+                        <div class="match-result"></div>
+                    </div>
+                    
+                    <div class="match-card">
+                        <div class="match-icon">🐋</div>
+                        <p class="match-question">Is a whale song HIGH or LOW?</p>
+                        <div class="match-buttons">
+                            <button class="pitch-guess" data-correct="false">HIGH</button>
+                            <button class="pitch-guess" data-correct="true">LOW</button>
+                        </div>
+                        <div class="match-result"></div>
+                    </div>
                 </div>
                 
-                <div class="vibration-display" id="vibrationDisplay">
-                    <p>Click a button to see it vibrate!</p>
+                <div class="matcher-score">
+                    Score: <span id="matcherScore">0</span> / 4
+                </div>
+            </div>
+            
+            <!-- FUN FACTS -->
+            <div class="content-card">
+                <h2>🎯 Cool Pitch Facts!</h2>
+                <div class="hearing-steps">
+                    <div class="hear-step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h4>Tiny Voices</h4>
+                            <p>Kids have higher voices because their vocal cords are smaller and vibrate faster!</p>
+                        </div>
+                    </div>
+                    <div class="hear-step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h4>Dog Whistles</h4>
+                            <p>Some whistles are SO high-pitched that only dogs can hear them!</p>
+                        </div>
+                    </div>
+                    <div class="hear-step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h4>Musical Instruments</h4>
+                            <p>Big instruments make low sounds. Small instruments make high sounds!</p>
+                        </div>
+                    </div>
+                    <div class="hear-step">
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <h4>Hearing Range</h4>
+                            <p>Humans can hear from 20 Hz to 20,000 Hz - that's a LOT of different pitches!</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
         
-        <!-- Quiz Section -->
+        <!-- QUIZ -->
         <section class="quiz-section">
             <div class="content-card quiz-card">
-                <h2>🧠 Check What You Learned!</h2>
-                <p class="quiz-intro">Answer these questions to earn your stars!</p>
+                <h2>🧠 Mission Quiz!</h2>
+                <p class="quiz-intro">Answer these questions to complete the mission!</p>
                 
                 <div id="quizContainer">
                     <div class="quiz-question" data-question="1">
                         <h3>Question 1 of 3</h3>
-                        <p class="question-text">What makes sound?</p>
+                        <p class="question-text">What makes a HIGH pitch sound?</p>
                         <div class="quiz-options">
                             <button class="quiz-option" data-answer="correct">
-                                Things that vibrate (shake)
+                                Fast vibrations
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                Things that are colorful
+                                Slow vibrations
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                Things that are heavy
+                                Big vibrations
                             </button>
                         </div>
                         <div class="quiz-feedback"></div>
@@ -145,16 +310,16 @@
                     
                     <div class="quiz-question hidden" data-question="2">
                         <h3>Question 2 of 3</h3>
-                        <p class="question-text">How does sound travel from something that vibrates to your ears?</p>
+                        <p class="question-text">Which makes a LOW pitch sound?</p>
                         <div class="quiz-options">
                             <button class="quiz-option" data-answer="wrong">
-                                Through light beams
+                                A bird chirping
                             </button>
                             <button class="quiz-option" data-answer="correct">
-                                Through sound waves in the air
+                                A big drum
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                Through electricity
+                                A whistle
                             </button>
                         </div>
                         <div class="quiz-feedback"></div>
@@ -162,16 +327,16 @@
                     
                     <div class="quiz-question hidden" data-question="3">
                         <h3>Question 3 of 3</h3>
-                        <p class="question-text">Which of these makes sound by vibrating?</p>
+                        <p class="question-text">What do we call the number of vibrations per second?</p>
                         <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Volume
+                            </button>
                             <button class="quiz-option" data-answer="correct">
-                                A guitar string
+                                Frequency
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                A rock sitting still
-                            </button>
-                            <button class="quiz-option" data-answer="wrong">
-                                A picture on the wall
+                                Speed
                             </button>
                         </div>
                         <div class="quiz-feedback"></div>
@@ -201,56 +366,139 @@
         createStarfield();
         displayCurrentXP();
         
-        // Animate sound wave
-        const canvas = document.getElementById('soundWaveCanvas');
-        const ctx = canvas.getContext('2d');
-        let time = 0;
+        // ===== GAME 1: PITCH SORTER (DRAG & DROP) =====
+        let sorterScore = 0;
+        const draggables = document.querySelectorAll('.draggable-sound');
+        const dropZones = document.querySelectorAll('.drop-zone');
         
-        function drawSoundWave() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = '#00ffff';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
+        draggables.forEach(draggable => {
+            draggable.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('pitch', draggable.dataset.pitch);
+                e.dataTransfer.setData('sound', draggable.dataset.sound);
+                draggable.classList.add('dragging');
+            });
             
-            for (let x = 0; x < canvas.width; x++) {
-                const y = canvas.height / 2 + 40 * Math.sin((x * 0.02) - time);
-                if (x === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            }
-            ctx.stroke();
-            time += 0.05;
-            requestAnimationFrame(drawSoundWave);
-        }
-        drawSoundWave();
-        
-        // Interactive buttons
-        const soundButtons = document.querySelectorAll('.sound-btn');
-        const vibrationDisplay = document.getElementById('vibrationDisplay');
-        
-        soundButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const sound = this.dataset.sound;
-                const emoji = this.querySelector('.btn-emoji').textContent;
-                const name = this.querySelector('.btn-text').textContent;
-                
-                vibrationDisplay.innerHTML = `
-                    <div class="vibrating-item">
-                        <div class="vibrate-emoji">${emoji}</div>
-                        <p><strong>${name}</strong> is vibrating and making sound!</p>
-                        <div class="vibration-lines">
-                            <span>〰️</span><span>〰️</span><span>〰️</span>
-                        </div>
-                    </div>
-                `;
-                
-                vibrationDisplay.classList.add('active');
-                setTimeout(() => {
-                    vibrationDisplay.classList.remove('active');
-                }, 2000);
+            draggable.addEventListener('dragend', () => {
+                draggable.classList.remove('dragging');
             });
         });
         
-        // Quiz functionality
+        dropZones.forEach(zone => {
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                zone.classList.add('drag-over');
+            });
+            
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('drag-over');
+            });
+            
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('drag-over');
+                
+                const pitch = e.dataTransfer.getData('pitch');
+                const sound = e.dataTransfer.getData('sound');
+                const accepts = zone.dataset.accepts;
+                
+                const draggable = document.querySelector(`[data-sound="${sound}"]`);
+                
+                if (pitch === accepts) {
+                    zone.appendChild(draggable);
+                    draggable.classList.add('correct-drop');
+                    draggable.draggable = false;
+                    sorterScore++;
+                    document.getElementById('sorterScore').textContent = sorterScore;
+                } else {
+                    draggable.classList.add('wrong-shake');
+                    setTimeout(() => {
+                        draggable.classList.remove('wrong-shake');
+                    }, 500);
+                }
+            });
+        });
+        
+        // ===== GAME 2: PITCH SLIDER =====
+        const pitchCanvas = document.getElementById('pitchWaveCanvas');
+        const pitchCtx = pitchCanvas.getContext('2d');
+        const pitchSlider = document.getElementById('pitchSlider');
+        const pitchLabel = document.getElementById('pitchLabel');
+        const pitchEmoji = document.getElementById('pitchEmoji');
+        const pitchExample = document.getElementById('pitchExample');
+        const pitchFreq = document.getElementById('pitchFreq');
+        
+        let pitchTime = 0;
+        
+        const pitchData = {
+            1: { label: 'VERY LOW', emoji: '🥁', example: 'Bass Drum', freq: '80 Hz', color: '#00ff88' },
+            2: { label: 'LOW', emoji: '⚡', example: 'Thunder', freq: '100 Hz', color: '#00dd88' },
+            3: { label: 'LOW-MED', emoji: '🦁', example: 'Lion Roar', freq: '200 Hz', color: '#ffaa00' },
+            4: { label: 'MEDIUM', emoji: '🗣️', example: 'Talking', freq: '300 Hz', color: '#ffaa00' },
+            5: { label: 'MEDIUM', emoji: '🎵', example: 'Singing', freq: '500 Hz', color: '#ffaa00' },
+            6: { label: 'MED-HIGH', emoji: '🎺', example: 'Trumpet', freq: '800 Hz', color: '#ff8844' },
+            7: { label: 'HIGH', emoji: '😙', example: 'Whistle', freq: '1000 Hz', color: '#ff3366' },
+            8: { label: 'HIGH', emoji: '🚗', example: 'Car Horn', freq: '1500 Hz', color: '#ff3366' },
+            9: { label: 'VERY HIGH', emoji: '🐦', example: 'Bird', freq: '2500 Hz', color: '#ff0066' },
+            10: { label: 'SUPER HIGH', emoji: '🦇', example: 'Bat Squeak', freq: '4000 Hz', color: '#ff0066' }
+        };
+        
+        function animatePitchWave() {
+            const value = parseInt(pitchSlider.value);
+            const data = pitchData[value];
+            
+            pitchLabel.textContent = data.label;
+            pitchEmoji.textContent = data.emoji;
+            pitchExample.textContent = data.example;
+            pitchFreq.textContent = data.freq;
+            
+            pitchCtx.clearRect(0, 0, pitchCanvas.width, pitchCanvas.height);
+            pitchCtx.strokeStyle = data.color;
+            pitchCtx.lineWidth = 4;
+            pitchCtx.beginPath();
+            
+            const frequency = value * 0.3;
+            
+            for (let x = 0; x < pitchCanvas.width; x++) {
+                const y = pitchCanvas.height / 2 + 50 * Math.sin((x * 0.02 * frequency) - pitchTime);
+                if (x === 0) pitchCtx.moveTo(x, y);
+                else pitchCtx.lineTo(x, y);
+            }
+            pitchCtx.stroke();
+            
+            pitchTime += 0.05;
+            requestAnimationFrame(animatePitchWave);
+        }
+        
+        animatePitchWave();
+        
+        // ===== GAME 3: PITCH MATCHER =====
+        let matcherScore = 0;
+        const pitchGuessButtons = document.querySelectorAll('.pitch-guess');
+        
+        pitchGuessButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const card = this.closest('.match-card');
+                const buttons = card.querySelectorAll('.pitch-guess');
+                const result = card.querySelector('.match-result');
+                
+                if (buttons[0].classList.contains('answered')) return;
+                
+                buttons.forEach(b => b.classList.add('answered'));
+                
+                if (this.dataset.correct === 'true') {
+                    this.classList.add('correct');
+                    result.innerHTML = '<span style="color: #00ff88;">✓ Correct!</span>';
+                    matcherScore++;
+                } else {
+                    this.classList.add('wrong');
+                    result.innerHTML = '<span style="color: #ff3366;">✗ Try again!</span>';
+                }
+                
+                document.getElementById('matcherScore').textContent = matcherScore;
+            });
+        });
+        
+        // ===== QUIZ =====
         let currentQuestion = 1;
         let correctAnswers = 0;
         
@@ -266,11 +514,11 @@
                 
                 if (isCorrect) {
                     this.classList.add('correct');
-                    feedback.innerHTML = '<span class="correct-feedback">✓ Yes! That\'s right!</span>';
+                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
                     correctAnswers++;
                 } else {
                     this.classList.add('wrong');
-                    feedback.innerHTML = '<span class="wrong-feedback">Not quite. Try to remember!</span>';
+                    feedback.innerHTML = '<span class="wrong-feedback">Not quite!</span>';
                 }
                 
                 setTimeout(() => {
@@ -299,13 +547,13 @@
             
             if (correctAnswers === 3) {
                 stars = 15;
-                message = '🌟 Perfect! You\'re a sound expert!';
+                message = '🌟 Perfect! You know all about pitch!';
             } else if (correctAnswers === 2) {
                 stars = 12;
-                message = '😊 Good job! You learned a lot!';
+                message = '😊 Great job learning about pitch!';
             } else {
                 stars = 10;
-                message = '👍 Nice try! Review and try again!';
+                message = '👍 Good try! Play the games again!';
             }
             
             xpEarned.textContent = `+${stars} ⭐`;
