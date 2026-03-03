@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission 06: Breaking the Sound Barrier</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="lesson-page">
+    <div class="starfield" id="starfield"></div>
+    <div class="radar-grid"></div>
+    
+    <nav class="nav-bar">
+        <a href="dashboard.html" class="nav-back">← DASHBOARD</a>
+        <div class="nav-logo">MISSION 06 // BREAKING SOUND BARRIER</div>
+        <div class="nav-xp" id="currentXP">0 ⭐</div>
+    </nav>
+    
+    <div class="lesson-container">
+        <section class="learning-section">
+            <div class="mission-header">
+                <h1>Breaking the Sound Barrier</h1>
+                <p class="mission-objective">Discover what happens at Mach 1!</p>
+            </div>
+            
+            <!-- INTRO -->
+            <div class="content-card">
+                <h2>🚀 What is the Sound Barrier?</h2>
+                <p class="simple-text">
+                    The <strong>"sound barrier"</strong> is what happens when something flies 
+                    as fast as sound - that's called <strong>Mach 1</strong>!
+                </p>
+                
+                <div class="big-idea-box">
+                    <div class="big-idea-icon">💡</div>
+                    <div class="big-idea-text">
+                        <strong>Big Idea:</strong> When you fly as fast as sound, AIR PILES UP 
+                        in front of you! It's like pushing through an invisible wall!
+                    </div>
+                </div>
+                
+                <div class="example-grid">
+                    <div class="example-card">
+                        <div class="example-emoji">🐌</div>
+                        <h3>Subsonic</h3>
+                        <p>SLOWER than sound - air moves aside smoothly</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-emoji">⚡</div>
+                        <h3>Transonic</h3>
+                        <p>AT speed of sound - air starts piling up!</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-emoji">🚀</div>
+                        <h3>Supersonic</h3>
+                        <p>FASTER than sound - you broke through!</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-emoji">💥</div>
+                        <h3>The Boom!</h3>
+                        <p>Breaking through makes a SONIC BOOM!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MACH NUMBER EXPLANATION -->
+            <div class="content-card">
+                <h2>📊 Understanding Mach Numbers</h2>
+                <p class="simple-text">
+                    <strong>Mach number</strong> tells us how fast something is compared to the speed of sound.
+                </p>
+                
+                <div class="mach-scale">
+                    <div class="mach-item">
+                        <div class="mach-bar" style="width: 50%; background: #00ff88;"></div>
+                        <div class="mach-label">
+                            <span class="mach-num">Mach 0.5</span>
+                            <span class="mach-desc">Half the speed of sound</span>
+                        </div>
+                    </div>
+                    <div class="mach-item">
+                        <div class="mach-bar" style="width: 100%; background: #ffaa00;"></div>
+                        <div class="mach-label">
+                            <span class="mach-num">Mach 1.0</span>
+                            <span class="mach-desc">THE SOUND BARRIER! 767 mph</span>
+                        </div>
+                    </div>
+                    <div class="mach-item">
+                        <div class="mach-bar" style="width: 150%; background: #ff3366;"></div>
+                        <div class="mach-label">
+                            <span class="mach-num">Mach 2.0</span>
+                            <span class="mach-desc">Twice the speed of sound!</span>
+                        </div>
+                    </div>
+                    <div class="mach-item">
+                        <div class="mach-bar" style="width: 200%; background: #ff0066;"></div>
+                        <div class="mach-label">
+                            <span class="mach-num">Mach 3.0+</span>
+                            <span class="mach-desc">SUPER FAST! Fighter jets</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- GAME 1: SPEED SIMULATOR -->
+            <div class="content-card interactive-card">
+                <h2>🎮 GAME 1: Speed Simulator!</h2>
+                <p class="simple-text">
+                    Move the slider to see what happens at different speeds!
+                </p>
+                
+                <div class="speed-simulator">
+                    <div class="sim-display">
+                        <canvas id="speedSimCanvas" width="700" height="300"></canvas>
+                    </div>
+                    
+                    <div class="sim-controls">
+                        <div class="speed-slider-container">
+                            <label>
+                                Speed: <span id="machValue">Mach 0.5</span>
+                            </label>
+                            <input 
+                                type="range" 
+                                id="machSlider" 
+                                min="0" 
+                                max="30" 
+                                value="5" 
+                                class="slider"
+                            >
+                            <div class="speed-labels">
+                                <span>Slow (Mach 0)</span>
+                                <span>SUPER FAST! (Mach 3.0)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="sim-info">
+                            <div class="sim-status" id="simStatus">SUBSONIC</div>
+                            <div class="sim-description" id="simDescription">
+                                Air flows smoothly around the plane
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- GAME 2: BARRIER BREAKER -->
+            <div class="content-card interactive-card">
+                <h2>🎮 GAME 2: Barrier Breaker!</h2>
+                <p class="simple-text">
+                    Help the plane break through the sound barrier! Click to add speed!
+                </p>
+                
+                <div class="barrier-game">
+                    <div class="barrier-track">
+                        <div class="barrier-plane" id="barrierPlane">✈️</div>
+                        <div class="sound-barrier" id="soundBarrier">
+                            <div class="barrier-line"></div>
+                            <div class="barrier-label">SOUND BARRIER</div>
+                        </div>
+                        <div class="barrier-finish">🏁</div>
+                    </div>
+                    
+                    <div class="barrier-controls">
+                        <div class="speed-display">
+                            <div class="speed-gauge">
+                                <div class="gauge-fill" id="gaugeFill"></div>
+                            </div>
+                            <div class="speed-text">
+                                <span id="currentMach">Mach 0.0</span>
+                                <span id="currentMph">0 mph</span>
+                            </div>
+                        </div>
+                        
+                        <button class="boost-btn" id="boostBtn">
+                            <span class="boost-icon">🚀</span>
+                            ADD SPEED!
+                        </button>
+                        
+                        <div class="barrier-result" id="barrierResult"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- GAME 3: TRUE OR FALSE -->
+            <div class="content-card interactive-card">
+                <h2>🎮 GAME 3: Sound Barrier Facts!</h2>
+                <p class="simple-text">
+                    True or False? Test your knowledge!
+                </p>
+                
+                <div class="true-false-game">
+                    <div class="tf-question" data-question="1">
+                        <p class="tf-statement">The sound barrier is an actual physical wall in the sky.</p>
+                        <div class="tf-buttons">
+                            <button class="tf-btn" data-answer="false">TRUE</button>
+                            <button class="tf-btn" data-answer="true">FALSE</button>
+                        </div>
+                        <div class="tf-feedback"></div>
+                    </div>
+                    
+                    <div class="tf-question" data-question="2">
+                        <p class="tf-statement">Mach 1 is the speed of sound.</p>
+                        <div class="tf-buttons">
+                            <button class="tf-btn" data-answer="true">TRUE</button>
+                            <button class="tf-btn" data-answer="false">FALSE</button>
+                        </div>
+                        <div class="tf-feedback"></div>
+                    </div>
+                    
+                    <div class="tf-question" data-question="3">
+                        <p class="tf-statement">Air piles up in front of objects moving at supersonic speeds.</p>
+                        <div class="tf-buttons">
+                            <button class="tf-btn" data-answer="true">TRUE</button>
+                            <button class="tf-btn" data-answer="false">FALSE</button>
+                        </div>
+                        <div class="tf-feedback"></div>
+                    </div>
+                    
+                    <div class="tf-question" data-question="4">
+                        <p class="tf-statement">Chuck Yeager was the first person to break the sound barrier.</p>
+                        <div class="tf-buttons">
+                            <button class="tf-btn" data-answer="true">TRUE</button>
+                            <button class="tf-btn" data-answer="false">FALSE</button>
+                        </div>
+                        <div class="tf-feedback"></div>
+                    </div>
+                </div>
+                
+                <div class="tf-score">
+                    Score: <span id="tfScore">0</span> / 4
+                </div>
+            </div>
+            
+            <!-- HISTORY -->
+            <div class="content-card">
+                <h2>📜 Sound Barrier History</h2>
+                <div class="hearing-steps">
+                    <div class="hear-step">
+                        <div class="step-num">1947</div>
+                        <div class="step-content">
+                            <h4>Chuck Yeager</h4>
+                            <p>First person to break the sound barrier in the Bell X-1 rocket plane!</p>
+                        </div>
+                    </div>
+                    <div class="hear-step">
+                        <div class="step-num">✈️</div>
+                        <div class="step-content">
+                            <h4>Concorde</h4>
+                            <p>Passenger jet that flew at Mach 2 - twice the speed of sound!</p>
+                        </div>
+                    </div>
+                    <div class="hear-step">
+                        <div class="step-num">🚀</div>
+                        <div class="step-content">
+                            <h4>Fighter Jets</h4>
+                            <p>Many military jets can fly faster than sound - some reach Mach 3!</p>
+                        </div>
+                    </div>
+                    <div class="hear-step">
+                        <div class="step-num">🔬</div>
+                        <div class="step-content">
+                            <h4>NASA Today</h4>
+                            <p>NASA is working on quiet supersonic planes that don't make loud booms!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- QUIZ -->
+        <section class="quiz-section">
+            <div class="content-card quiz-card">
+                <h2>🧠 Mission Quiz!</h2>
+                <p class="quiz-intro">Answer these questions to complete the mission!</p>
+                
+                <div id="quizContainer">
+                    <div class="quiz-question" data-question="1">
+                        <h3>Question 1 of 3</h3>
+                        <p class="question-text">What is Mach 1?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                100 miles per hour
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                The speed of sound
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                The speed of light
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="quiz-question hidden" data-question="2">
+                        <h3>Question 2 of 3</h3>
+                        <p class="question-text">What happens to air when something flies at the speed of sound?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Nothing special
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                It piles up in front
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                It disappears
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="quiz-question hidden" data-question="3">
+                        <h3>Question 3 of 3</h3>
+                        <p class="question-text">Who was the first person to break the sound barrier?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Neil Armstrong
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                Chuck Yeager
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Amelia Earhart
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="quiz-results hidden" id="quizResults">
+                        <h3>🎉 Mission Complete!</h3>
+                        <div class="results-content">
+                            <div class="results-score">
+                                <span class="score-label">You got:</span>
+                                <span class="score-value" id="finalScore">0/3</span>
+                            </div>
+                            <p class="results-message" id="resultsMessage"></p>
+                            <div class="results-xp">
+                                <span class="xp-earned" id="xpEarned">+20 ⭐</span>
+                            </div>
+                        </div>
+                        <a href="dashboard.html" class="return-button">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script src="app.js"></script>
+    <script>
+        createStarfield();
+        displayCurrentXP();
+        
+        // ===== GAME 1: SPEED SIMULATOR =====
+        const simCanvas = document.getElementById('speedSimCanvas');
+        const simCtx = simCanvas.getContext('2d');
+        const machSlider = document.getElementById('machSlider');
+        const machValue = document.getElementById('machValue');
+        const simStatus = document.getElementById('simStatus');
+        const simDescription = document.getElementById('simDescription');
+        
+        let simTime = 0;
+        
+        function animateSpeedSim() {
+            const value = parseInt(machSlider.value);
+            const mach = value / 10;
+            
+            machValue.textContent = `Mach ${mach.toFixed(1)}`;
+            
+            // Update status
+            if (mach < 0.8) {
+                simStatus.textContent = 'SUBSONIC';
+                simStatus.style.color = '#00ff88';
+                simDescription.textContent = 'Air flows smoothly around the plane';
+            } else if (mach < 1.2) {
+                simStatus.textContent = 'TRANSONIC - AT THE BARRIER!';
+                simStatus.style.color = '#ffaa00';
+                simDescription.textContent = 'Air is piling up! Shockwaves forming!';
+            } else {
+                simStatus.textContent = 'SUPERSONIC!';
+                simStatus.style.color = '#ff3366';
+                simDescription.textContent = 'You broke through! Shockwave behind you!';
+            }
+            
+            simCtx.clearRect(0, 0, simCanvas.width, simCanvas.height);
+            
+            // Draw plane
+            const planeX = 100;
+            const planeY = simCanvas.height / 2;
+            simCtx.font = '50px Arial';
+            simCtx.fillText('✈️', planeX, planeY + 15);
+            
+            // Draw air pressure lines
+            if (mach < 0.8) {
+                // Smooth airflow
+                for (let i = 0; i < 5; i++) {
+                    simCtx.strokeStyle = 'rgba(0, 255, 255, 0.3)';
+                    simCtx.lineWidth = 2;
+                    simCtx.beginPath();
+                    const offset = i * 40;
+                    simCtx.moveTo(planeX + 80, planeY - 60 + offset);
+                    simCtx.quadraticCurveTo(planeX + 200, planeY, planeX + 80, planeY + 60 - offset);
+                    simCtx.stroke();
+                }
+            } else if (mach < 1.2) {
+                // Air piling up
+                for (let i = 0; i < 8; i++) {
+                    simCtx.strokeStyle = `rgba(255, 170, 0, ${0.8 - i * 0.1})`;
+                    simCtx.lineWidth = 3;
+                    simCtx.beginPath();
+                    simCtx.moveTo(planeX + 60 + i * 10, planeY - 80);
+                    simCtx.lineTo(planeX + 60 + i * 10, planeY + 80);
+                    simCtx.stroke();
+                }
+            } else {
+                // Shockwave cone
+                simCtx.strokeStyle = 'rgba(255, 51, 102, 0.8)';
+                simCtx.lineWidth = 4;
+                simCtx.beginPath();
+                simCtx.moveTo(planeX + 80, planeY);
+                simCtx.lineTo(planeX + 300, planeY - 100);
+                simCtx.moveTo(planeX + 80, planeY);
+                simCtx.lineTo(planeX + 300, planeY + 100);
+                simCtx.stroke();
+                
+                // Shock waves behind
+                for (let i = 0; i < 3; i++) {
+                    simCtx.strokeStyle = `rgba(255, 51, 102, ${0.6 - i * 0.2})`;
+                    simCtx.lineWidth = 2;
+                    simCtx.beginPath();
+                    simCtx.arc(planeX + 80, planeY, 40 + i * 30 + (simTime % 30), 0, Math.PI * 2);
+                    simCtx.stroke();
+                }
+            }
+            
+            simTime++;
+            requestAnimationFrame(animateSpeedSim);
+        }
+        
+        animateSpeedSim();
+        
+        // ===== GAME 2: BARRIER BREAKER =====
+        const barrierPlane = document.getElementById('barrierPlane');
+        const soundBarrier = document.getElementById('soundBarrier');
+        const gaugeFill = document.getElementById('gaugeFill');
+        const currentMach = document.getElementById('currentMach');
+        const currentMph = document.getElementById('currentMph');
+        const boostBtn = document.getElementById('boostBtn');
+        const barrierResult = document.getElementById('barrierResult');
+        
+        let planeSpeed = 0;
+        let planeMach = 0;
+        
+        boostBtn.addEventListener('click', () => {
+            planeSpeed += 150;
+            planeMach = planeSpeed / 767;
+            
+            currentMach.textContent = `Mach ${planeMach.toFixed(1)}`;
+            currentMph.textContent = `${planeSpeed} mph`;
+            
+            const progress = Math.min((planeSpeed / 767) * 100, 100);
+            gaugeFill.style.width = progress + '%';
+            barrierPlane.style.left = progress * 0.8 + '%';
+            
+            if (planeMach >= 1.0 && planeMach < 1.5) {
+                barrierResult.innerHTML = `
+                    <div style="color: #ffaa00; font-size: 24px; font-weight: 900;">
+                        💥 BOOM! You broke the sound barrier!
+                    </div>
+                `;
+                barrierPlane.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    barrierPlane.style.animation = '';
+                }, 500);
+            } else if (planeMach >= 1.5) {
+                barrierResult.innerHTML = `
+                    <div style="color: #ff3366; font-size: 24px; font-weight: 900;">
+                        🚀 SUPERSONIC! You're flying faster than sound!
+                    </div>
+                `;
+            } else {
+                barrierResult.innerHTML = `
+                    <div style="color: #00ffff;">
+                        Keep going! ${(767 - planeSpeed).toFixed(0)} mph to go!
+                    </div>
+                `;
+            }
+        });
+        
+        // ===== GAME 3: TRUE/FALSE =====
+        const tfCorrectAnswers = {
+            1: 'true',  // False - not a physical wall
+            2: 'true',  // True - Mach 1 is speed of sound
+            3: 'true',  // True - air does pile up
+            4: 'true'   // True - Chuck Yeager
+        };
+        
+        let tfScore = 0;
+        const tfButtons = document.querySelectorAll('.tf-btn');
+        
+        tfButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const question = this.closest('.tf-question');
+                const qNum = question.dataset.question;
+                const answer = this.dataset.answer;
+                const feedback = question.querySelector('.tf-feedback');
+                const buttons = question.querySelectorAll('.tf-btn');
+                
+                if (buttons[0].classList.contains('answered')) return;
+                
+                buttons.forEach(b => b.classList.add('answered'));
+                
+                if (answer === tfCorrectAnswers[qNum]) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<span style="color: #00ff88;">✓ Correct!</span>';
+                    tfScore++;
+                } else {
+                    this.classList.add('wrong');
+                    feedback.innerHTML = '<span style="color: #ff3366;">✗ Incorrect!</span>';
+                }
+                
+                document.getElementById('tfScore').textContent = tfScore;
+            });
+        });
+        
+        // ===== QUIZ =====
+        let currentQuestion = 1;
+        let correctAnswers = 0;
+        
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                if (this.classList.contains('selected')) return;
+                
+                const isCorrect = this.dataset.answer === 'correct';
+                const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
+                const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
+                
+                allOptions.forEach(opt => opt.classList.add('selected'));
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
+                    correctAnswers++;
+                } else {
+                    this.classList.add('wrong');
+                    feedback.innerHTML = '<span class="wrong-feedback">Not quite!</span>';
+                }
+                
+                setTimeout(() => {
+                    if (currentQuestion < 3) {
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
+                        currentQuestion++;
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+                    } else {
+                        document.querySelector(`[data-question="3"]`).classList.add('hidden');
+                        showResults();
+                    }
+                }, 1500);
+            });
+        });
+        
+        function showResults() {
+            const resultsDiv = document.getElementById('quizResults');
+            const finalScore = document.getElementById('finalScore');
+            const resultsMessage = document.getElementById('resultsMessage');
+            const xpEarned = document.getElementById('xpEarned');
+            
+            finalScore.textContent = `${correctAnswers}/3`;
+            
+            let stars = 0;
+            let message = '';
+            
+            if (correctAnswers === 3) {
+                stars = 20;
+                message = '🌟 Perfect! You understand the sound barrier!';
+            } else if (correctAnswers === 2) {
+                stars = 16;
+                message = '😊 Great job learning about supersonic flight!';
+            } else {
+                stars = 12;
+                message = '👍 Good try! Play the games again!';
+            }
+            
+            xpEarned.textContent = `+${stars} ⭐`;
+            resultsMessage.textContent = message;
+            
+            saveProgress('lesson6', stars, correctAnswers >= 2, correctAnswers);
+            
+            resultsDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
