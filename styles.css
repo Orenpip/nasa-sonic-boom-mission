@@ -1440,6 +1440,322 @@ body {
 .hidden {
     display: none !important;
 }
+/* ===== LESSON 2 SPECIFIC STYLES ===== */
+
+/* Material Display */
+.material-display {
+    min-height: 300px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--electric-cyan);
+    border-radius: 10px;
+    padding: 30px;
+    margin-top: 25px;
+}
+
+.material-info {
+    margin-bottom: 25px;
+}
+
+.material-info h3 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--electric-cyan);
+    margin-bottom: 20px;
+}
+
+.speed-meter {
+    margin: 20px 0;
+}
+
+.speed-label {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--gray-light);
+    margin-bottom: 10px;
+}
+
+.speed-value {
+    font-family: var(--font-display);
+    font-size: 28px;
+    color: var(--electric-cyan);
+    font-weight: 900;
+    margin-bottom: 15px;
+}
+
+.speed-bar-container {
+    width: 100%;
+    height: 25px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--electric-cyan);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.speed-bar-fill {
+    height: 100%;
+    background: var(--electric-cyan);
+    transition: width 0.8s ease, background 0.5s ease;
+    border-radius: 13px;
+    box-shadow: 0 0 20px currentColor;
+}
+
+.material-fact {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--gray-light);
+    margin-top: 20px;
+}
+
+#materialWaveCanvas {
+    width: 100%;
+    max-width: 600px;
+    height: 150px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Speed Comparison Table */
+.speed-comparison-table {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.speed-row {
+    display: grid;
+    grid-template-columns: 50px 120px 1fr 120px;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.speed-icon {
+    font-size: 30px;
+    text-align: center;
+}
+
+.speed-name {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+}
+
+.speed-bar-bg {
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.speed-bar {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 1s ease;
+}
+
+.speed-num {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--electric-cyan);
+    text-align: right;
+}
+
+/* Race Controls */
+.race-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.racer-select {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.racer-select label {
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: var(--electric-cyan);
+    min-width: 80px;
+}
+
+.material-select {
+    flex: 1;
+    padding: 12px 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--electric-cyan);
+    border-radius: 8px;
+    color: white;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.race-start-btn {
+    padding: 15px 30px;
+    background: var(--neon-pink);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.race-start-btn:hover {
+    box-shadow: var(--glow-pink);
+    transform: translateY(-2px);
+}
+
+/* Race Track */
+.race-track {
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--electric-cyan);
+    border-radius: 10px;
+    padding: 30px;
+    margin: 25px 0;
+}
+
+.race-lane {
+    position: relative;
+    height: 60px;
+    margin-bottom: 30px;
+}
+
+.lane-label {
+    font-family: var(--font-display);
+    font-size: 14px;
+    color: var(--electric-cyan);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.track-line {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.racer {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    font-size: 35px;
+    transition: left 0s linear;
+    z-index: 10;
+}
+
+.finish {
+    position: absolute;
+    right: 0;
+    top: 15px;
+    font-size: 30px;
+}
+
+.race-result {
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid var(--electric-cyan);
+    border-radius: 10px;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* True/False Game */
+.true-false-game {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin: 25px 0;
+}
+
+.tf-question {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--electric-cyan);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.tf-statement {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.tf-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.tf-btn {
+    padding: 15px 30px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid var(--electric-cyan);
+    border-radius: 10px;
+    color: white;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tf-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.tf-btn.correct {
+    background: rgba(0, 255, 136, 0.3);
+    border-color: var(--success-green);
+    color: var(--success-green);
+}
+
+.tf-btn.wrong {
+    background: rgba(255, 51, 102, 0.3);
+    border-color: var(--neon-pink);
+    color: var(--neon-pink);
+}
+
+.tf-btn.answered {
+    cursor: not-allowed;
+}
+
+.tf-feedback {
+    margin-top: 15px;
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.tf-score {
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid var(--electric-cyan);
+    border-radius: 10px;
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--electric-cyan);
+    font-weight: 700;
+}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
