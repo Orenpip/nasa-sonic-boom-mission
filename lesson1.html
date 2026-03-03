@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mission 01: What is Sound?</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body class="lesson-page">
@@ -23,25 +21,20 @@
         <section class="learning-section">
             <div class="mission-header">
                 <h1>What is Sound?</h1>
-                <p class="mission-objective">Learn how vibrations make sound!</p>
+                <p class="mission-objective">Discover vibrations, waves, and how we hear!</p>
             </div>
             
+            <!-- INTRO SECTION -->
             <div class="content-card">
                 <h2>🎵 Sound is Everywhere!</h2>
                 <p class="simple-text">
-                    Sound is all around us! Music, talking, birds singing, cars beeping - 
-                    it's all sound!
-                </p>
-                
-                <p class="simple-text">
-                    But what IS sound? Sound happens when something <strong>vibrates</strong>.
+                    Music, talking, birds singing, cars honking - it's all SOUND!
                 </p>
                 
                 <div class="big-idea-box">
                     <div class="big-idea-icon">💡</div>
                     <div class="big-idea-text">
-                        <strong>Big Idea:</strong> When things vibrate (shake back and forth), 
-                        they make sound!
+                        <strong>Big Idea:</strong> Sound happens when something VIBRATES (shakes back and forth really fast)!
                     </div>
                 </div>
                 
@@ -49,81 +42,246 @@
                     <div class="example-card">
                         <div class="example-emoji">🎸</div>
                         <h3>Guitar String</h3>
-                        <p>Pluck a guitar string. It vibrates and makes sound!</p>
+                        <p>Pluck it - it vibrates and makes sound!</p>
                     </div>
                     <div class="example-card">
                         <div class="example-emoji">🥁</div>
                         <h3>Drum</h3>
-                        <p>Hit a drum. The drum head vibrates and makes sound!</p>
+                        <p>Hit it - the drum head vibrates!</p>
                     </div>
                     <div class="example-card">
                         <div class="example-emoji">🔔</div>
                         <h3>Bell</h3>
-                        <p>Ring a bell. The metal vibrates and makes sound!</p>
+                        <p>Ring it - metal vibrates and rings!</p>
                     </div>
                     <div class="example-card">
                         <div class="example-emoji">👄</div>
                         <h3>Your Voice</h3>
-                        <p>When you talk, parts in your throat vibrate!</p>
+                        <p>Talk - your throat vibrates!</p>
                     </div>
                 </div>
             </div>
             
-            <div class="content-card">
-                <h2>🌊 Sound Makes Waves</h2>
-                <p class="simple-text">
-                    When something vibrates, it pushes the air around it.
-                </p>
-                <p class="simple-text">
-                    The air moves in <strong>waves</strong> - like waves in water!
-                </p>
-                <p class="simple-text">
-                    These sound waves travel through the air to your ears. 
-                    That's how you hear things!
-                </p>
-                
-                <div class="wave-demo">
-                    <canvas id="soundWaveCanvas" width="600" height="150"></canvas>
-                    <p class="demo-caption">👆 This is what a sound wave looks like!</p>
-                </div>
-            </div>
-            
+            <!-- INTERACTIVE GAME 1: VIBRATION SIMULATOR -->
             <div class="content-card interactive-card">
-                <h2>🎮 Try It Yourself!</h2>
+                <h2>🎮 GAME 1: Make Things Vibrate!</h2>
                 <p class="simple-text">
-                    Click the buttons to see different things that make sound:
+                    Click each object to make it vibrate and create sound!
                 </p>
                 
                 <div class="interactive-buttons">
-                    <button class="sound-btn" data-sound="drum">
+                    <button class="sound-btn" data-sound="drum" data-speed="slow">
                         <span class="btn-emoji">🥁</span>
                         <span class="btn-text">Drum</span>
                     </button>
-                    <button class="sound-btn" data-sound="bell">
+                    <button class="sound-btn" data-sound="bell" data-speed="medium">
                         <span class="btn-emoji">🔔</span>
                         <span class="btn-text">Bell</span>
                     </button>
-                    <button class="sound-btn" data-sound="guitar">
+                    <button class="sound-btn" data-sound="guitar" data-speed="fast">
                         <span class="btn-emoji">🎸</span>
                         <span class="btn-text">Guitar</span>
                     </button>
-                    <button class="sound-btn" data-sound="whistle">
+                    <button class="sound-btn" data-sound="whistle" data-speed="veryfast">
                         <span class="btn-emoji">😙</span>
                         <span class="btn-text">Whistle</span>
+                    </button>
+                    <button class="sound-btn" data-sound="thunder" data-speed="slow">
+                        <span class="btn-emoji">⚡</span>
+                        <span class="btn-text">Thunder</span>
+                    </button>
+                    <button class="sound-btn" data-sound="bird" data-speed="veryfast">
+                        <span class="btn-emoji">🐦</span>
+                        <span class="btn-text">Bird</span>
                     </button>
                 </div>
                 
                 <div class="vibration-display" id="vibrationDisplay">
-                    <p>Click a button to see it vibrate!</p>
+                    <div class="vibration-meter">
+                        <div class="meter-label">Vibration Speed:</div>
+                        <div class="meter-bar">
+                            <div class="meter-fill" id="vibrationFill"></div>
+                        </div>
+                        <div class="meter-text" id="vibrationText">Click a sound!</div>
+                    </div>
+                    <canvas id="vibrationCanvas" width="600" height="150"></canvas>
+                </div>
+            </div>
+            
+            <!-- SOUND WAVES SECTION -->
+            <div class="content-card">
+                <h2>🌊 Sound Makes Waves!</h2>
+                <p class="simple-text">
+                    When something vibrates, it pushes and pulls the air around it. 
+                    This creates <strong>sound waves</strong> that travel through the air!
+                </p>
+                
+                <div class="wave-concepts">
+                    <div class="concept-item">
+                        <div class="concept-icon">➡️</div>
+                        <div class="concept-text">
+                            <h4>Compression</h4>
+                            <p>Air molecules pushed TOGETHER</p>
+                        </div>
+                    </div>
+                    <div class="concept-item">
+                        <div class="concept-icon">⬅️</div>
+                        <div class="concept-text">
+                            <h4>Rarefaction</h4>
+                            <p>Air molecules pulled APART</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="wave-demo">
+                    <canvas id="soundWaveCanvas" width="800" height="180"></canvas>
+                    <p class="demo-caption">👆 This is what a sound wave looks like!</p>
+                </div>
+            </div>
+            
+            <!-- INTERACTIVE GAME 2: WAVE SPEED CONTROL -->
+            <div class="content-card interactive-card">
+                <h2>🎮 GAME 2: Control the Wave!</h2>
+                <p class="simple-text">
+                    Move the slider to change how fast the wave vibrates!
+                </p>
+                
+                <div class="wave-controller">
+                    <div class="controller-display">
+                        <canvas id="controlWaveCanvas" width="700" height="150"></canvas>
+                    </div>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="frequencySlider">
+                                Vibration Speed: <span id="frequencyValue">MEDIUM</span>
+                            </label>
+                            <input 
+                                type="range" 
+                                id="frequencySlider" 
+                                min="1" 
+                                max="10" 
+                                value="5" 
+                                class="slider"
+                            >
+                            <div class="frequency-labels">
+                                <span>SLOW (Low Sound)</span>
+                                <span>FAST (High Sound)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="wave-info">
+                        <div class="info-box">
+                            <div class="info-label">Sound Type:</div>
+                            <div class="info-value" id="soundType">Medium Pitch</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Example:</div>
+                            <div class="info-value" id="soundExample">Person Talking</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- INTERACTIVE GAME 3: SOUND MATCHING -->
+            <div class="content-card interactive-card">
+                <h2>🎮 GAME 3: Match the Sound!</h2>
+                <p class="simple-text">
+                    Can you match each sound to what makes it? Click to find out!
+                </p>
+                
+                <div class="matching-game" id="matchingGame">
+                    <div class="matching-item" data-match="vibration">
+                        <div class="match-question">
+                            <span class="match-emoji">🎸</span>
+                            <p>What makes a guitar sound?</p>
+                        </div>
+                        <div class="match-options">
+                            <button class="match-btn" data-answer="wrong">Light</button>
+                            <button class="match-btn" data-answer="correct">Vibrating strings</button>
+                            <button class="match-btn" data-answer="wrong">Heat</button>
+                        </div>
+                        <div class="match-feedback"></div>
+                    </div>
+                    
+                    <div class="matching-item" data-match="vibration">
+                        <div class="match-question">
+                            <span class="match-emoji">🥁</span>
+                            <p>What makes a drum sound?</p>
+                        </div>
+                        <div class="match-options">
+                            <button class="match-btn" data-answer="wrong">Wind</button>
+                            <button class="match-btn" data-answer="wrong">Color</button>
+                            <button class="match-btn" data-answer="correct">Vibrating drum head</button>
+                        </div>
+                        <div class="match-feedback"></div>
+                    </div>
+                    
+                    <div class="matching-item" data-match="vibration">
+                        <div class="match-question">
+                            <span class="match-emoji">👄</span>
+                            <p>What makes your voice?</p>
+                        </div>
+                        <div class="match-options">
+                            <button class="match-btn" data-answer="correct">Vibrating vocal cords</button>
+                            <button class="match-btn" data-answer="wrong">Your tongue moving</button>
+                            <button class="match-btn" data-answer="wrong">Air in your lungs</button>
+                        </div>
+                        <div class="match-feedback"></div>
+                    </div>
+                </div>
+                
+                <div class="game-score" id="gameScore">
+                    <p>Correct: <span id="scoreCount">0</span> / 3</p>
+                </div>
+            </div>
+            
+            <!-- HOW WE HEAR -->
+            <div class="content-card">
+                <h2>👂 How Do We Hear Sound?</h2>
+                <p class="simple-text">
+                    Sound waves travel through the air and into your ears!
+                </p>
+                
+                <div class="hearing-steps">
+                    <div class="hear-step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h4>Sound waves enter your ear</h4>
+                            <p>They go into the ear canal</p>
+                        </div>
+                    </div>
+                    <div class="hear-step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h4>They hit your eardrum</h4>
+                            <p>Your eardrum vibrates!</p>
+                        </div>
+                    </div>
+                    <div class="hear-step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h4>Tiny bones vibrate</h4>
+                            <p>Three tiny bones move</p>
+                        </div>
+                    </div>
+                    <div class="hear-step">
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <h4>Your brain understands</h4>
+                            <p>You hear the sound!</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
         
-        <!-- Quiz Section -->
+        <!-- QUIZ SECTION -->
         <section class="quiz-section">
             <div class="content-card quiz-card">
-                <h2>🧠 Check What You Learned!</h2>
-                <p class="quiz-intro">Answer these questions to earn your stars!</p>
+                <h2>🧠 Mission Quiz!</h2>
+                <p class="quiz-intro">Answer these questions to complete the mission!</p>
                 
                 <div id="quizContainer">
                     <div class="quiz-question" data-question="1">
@@ -145,7 +303,7 @@
                     
                     <div class="quiz-question hidden" data-question="2">
                         <h3>Question 2 of 3</h3>
-                        <p class="question-text">How does sound travel from something that vibrates to your ears?</p>
+                        <p class="question-text">How does sound travel to your ears?</p>
                         <div class="quiz-options">
                             <button class="quiz-option" data-answer="wrong">
                                 Through light beams
@@ -154,7 +312,7 @@
                                 Through sound waves in the air
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                Through electricity
+                                Through magic
                             </button>
                         </div>
                         <div class="quiz-feedback"></div>
@@ -162,7 +320,7 @@
                     
                     <div class="quiz-question hidden" data-question="3">
                         <h3>Question 3 of 3</h3>
-                        <p class="question-text">Which of these makes sound by vibrating?</p>
+                        <p class="question-text">Which makes sound by vibrating?</p>
                         <div class="quiz-options">
                             <button class="quiz-option" data-answer="correct">
                                 A guitar string
@@ -201,56 +359,188 @@
         createStarfield();
         displayCurrentXP();
         
-        // Animate sound wave
-        const canvas = document.getElementById('soundWaveCanvas');
-        const ctx = canvas.getContext('2d');
-        let time = 0;
-        
-        function drawSoundWave() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = '#00ffff';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            
-            for (let x = 0; x < canvas.width; x++) {
-                const y = canvas.height / 2 + 40 * Math.sin((x * 0.02) - time);
-                if (x === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            }
-            ctx.stroke();
-            time += 0.05;
-            requestAnimationFrame(drawSoundWave);
-        }
-        drawSoundWave();
-        
-        // Interactive buttons
+        // ===== GAME 1: VIBRATION SIMULATOR =====
         const soundButtons = document.querySelectorAll('.sound-btn');
         const vibrationDisplay = document.getElementById('vibrationDisplay');
+        const vibrationFill = document.getElementById('vibrationFill');
+        const vibrationText = document.getElementById('vibrationText');
+        const vibCanvas = document.getElementById('vibrationCanvas');
+        const vibCtx = vibCanvas.getContext('2d');
+        
+        let vibAnimationFrame;
+        let vibTime = 0;
         
         soundButtons.forEach(btn => {
             btn.addEventListener('click', function() {
                 const sound = this.dataset.sound;
+                const speed = this.dataset.speed;
                 const emoji = this.querySelector('.btn-emoji').textContent;
                 const name = this.querySelector('.btn-text').textContent;
                 
-                vibrationDisplay.innerHTML = `
-                    <div class="vibrating-item">
-                        <div class="vibrate-emoji">${emoji}</div>
-                        <p><strong>${name}</strong> is vibrating and making sound!</p>
-                        <div class="vibration-lines">
-                            <span>〰️</span><span>〰️</span><span>〰️</span>
-                        </div>
-                    </div>
-                `;
+                // Update meter
+                const speedMap = {
+                    'slow': { width: 30, text: 'SLOW', color: '#00ff88' },
+                    'medium': { width: 60, text: 'MEDIUM', color: '#ffaa00' },
+                    'fast': { width: 80, text: 'FAST', color: '#ff3366' },
+                    'veryfast': { width: 100, text: 'VERY FAST', color: '#ff0066' }
+                };
                 
-                vibrationDisplay.classList.add('active');
-                setTimeout(() => {
-                    vibrationDisplay.classList.remove('active');
-                }, 2000);
+                const speedData = speedMap[speed];
+                vibrationFill.style.width = speedData.width + '%';
+                vibrationFill.style.background = speedData.color;
+                vibrationText.textContent = `${name} - ${speedData.text} vibrations!`;
+                vibrationText.style.color = speedData.color;
+                
+                // Animate vibration
+                cancelAnimationFrame(vibAnimationFrame);
+                vibTime = 0;
+                drawVibration(speed);
             });
         });
         
-        // Quiz functionality
+        function drawVibration(speed) {
+            vibCtx.clearRect(0, 0, vibCanvas.width, vibCanvas.height);
+            
+            const speedMultiplier = {
+                'slow': 0.5,
+                'medium': 1,
+                'fast': 2,
+                'veryfast': 3
+            }[speed];
+            
+            // Draw wave
+            vibCtx.strokeStyle = vibrationFill.style.background || '#00ffff';
+            vibCtx.lineWidth = 4;
+            vibCtx.beginPath();
+            
+            for (let x = 0; x < vibCanvas.width; x++) {
+                const y = vibCanvas.height / 2 + 50 * Math.sin((x * 0.03 * speedMultiplier) - vibTime);
+                if (x === 0) vibCtx.moveTo(x, y);
+                else vibCtx.lineTo(x, y);
+            }
+            vibCtx.stroke();
+            
+            vibTime += 0.1;
+            vibAnimationFrame = requestAnimationFrame(() => drawVibration(speed));
+        }
+        
+        // ===== CONTINUOUS SOUND WAVE ANIMATION =====
+        const waveCanvas = document.getElementById('soundWaveCanvas');
+        const waveCtx = waveCanvas.getContext('2d');
+        let waveTime = 0;
+        
+        function animateSoundWave() {
+            waveCtx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+            
+            // Draw center line
+            waveCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            waveCtx.lineWidth = 1;
+            waveCtx.beginPath();
+            waveCtx.moveTo(0, waveCanvas.height / 2);
+            waveCtx.lineTo(waveCanvas.width, waveCanvas.height / 2);
+            waveCtx.stroke();
+            
+            // Draw wave
+            waveCtx.strokeStyle = '#00ffff';
+            waveCtx.lineWidth = 3;
+            waveCtx.beginPath();
+            
+            for (let x = 0; x < waveCanvas.width; x++) {
+                const y = waveCanvas.height / 2 + 60 * Math.sin((x * 0.02) - waveTime);
+                if (x === 0) waveCtx.moveTo(x, y);
+                else waveCtx.lineTo(x, y);
+            }
+            waveCtx.stroke();
+            
+            // Labels
+            waveCtx.fillStyle = '#00ffff';
+            waveCtx.font = '14px "Share Tech Mono"';
+            waveCtx.fillText('Compression', 20, 30);
+            waveCtx.fillText('Rarefaction', 20, waveCanvas.height - 20);
+            
+            waveTime += 0.05;
+            requestAnimationFrame(animateSoundWave);
+        }
+        animateSoundWave();
+        
+        // ===== GAME 2: WAVE SPEED CONTROL =====
+        const controlCanvas = document.getElementById('controlWaveCanvas');
+        const controlCtx = controlCanvas.getContext('2d');
+        const frequencySlider = document.getElementById('frequencySlider');
+        const frequencyValue = document.getElementById('frequencyValue');
+        const soundType = document.getElementById('soundType');
+        const soundExample = document.getElementById('soundExample');
+        
+        let controlTime = 0;
+        
+        function animateControlWave() {
+            const freq = parseInt(frequencySlider.value);
+            
+            controlCtx.clearRect(0, 0, controlCanvas.width, controlCanvas.height);
+            
+            // Update labels
+            if (freq <= 3) {
+                frequencyValue.textContent = 'SLOW';
+                soundType.textContent = 'Low Pitch';
+                soundExample.textContent = 'Drum, Thunder';
+                controlCtx.strokeStyle = '#00ff88';
+            } else if (freq <= 7) {
+                frequencyValue.textContent = 'MEDIUM';
+                soundType.textContent = 'Medium Pitch';
+                soundExample.textContent = 'Person Talking';
+                controlCtx.strokeStyle = '#ffaa00';
+            } else {
+                frequencyValue.textContent = 'FAST';
+                soundType.textContent = 'High Pitch';
+                soundExample.textContent = 'Bird, Whistle';
+                controlCtx.strokeStyle = '#ff3366';
+            }
+            
+            // Draw wave
+            controlCtx.lineWidth = 4;
+            controlCtx.beginPath();
+            
+            for (let x = 0; x < controlCanvas.width; x++) {
+                const y = controlCanvas.height / 2 + 50 * Math.sin((x * 0.01 * freq) - controlTime);
+                if (x === 0) controlCtx.moveTo(x, y);
+                else controlCtx.lineTo(x, y);
+            }
+            controlCtx.stroke();
+            
+            controlTime += 0.05;
+            requestAnimationFrame(animateControlWave);
+        }
+        animateControlWave();
+        
+        // ===== GAME 3: SOUND MATCHING =====
+        let matchScore = 0;
+        const matchButtons = document.querySelectorAll('.match-btn');
+        
+        matchButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.classList.contains('answered')) return;
+                
+                const isCorrect = this.dataset.answer === 'correct';
+                const item = this.closest('.matching-item');
+                const feedback = item.querySelector('.match-feedback');
+                const allBtns = item.querySelectorAll('.match-btn');
+                
+                allBtns.forEach(b => b.classList.add('answered'));
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<span style="color: #00ff88;">✓ Correct!</span>';
+                    matchScore++;
+                } else {
+                    this.classList.add('wrong');
+                    feedback.innerHTML = '<span style="color: #ff3366;">✗ Try again!</span>';
+                }
+                
+                document.getElementById('scoreCount').textContent = matchScore;
+            });
+        });
+        
+        // ===== QUIZ FUNCTIONALITY =====
         let currentQuestion = 1;
         let correctAnswers = 0;
         
@@ -266,11 +556,11 @@
                 
                 if (isCorrect) {
                     this.classList.add('correct');
-                    feedback.innerHTML = '<span class="correct-feedback">✓ Yes! That\'s right!</span>';
+                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
                     correctAnswers++;
                 } else {
                     this.classList.add('wrong');
-                    feedback.innerHTML = '<span class="wrong-feedback">Not quite. Try to remember!</span>';
+                    feedback.innerHTML = '<span class="wrong-feedback">Not quite!</span>';
                 }
                 
                 setTimeout(() => {
@@ -299,13 +589,13 @@
             
             if (correctAnswers === 3) {
                 stars = 15;
-                message = '🌟 Perfect! You\'re a sound expert!';
+                message = '🌟 Perfect! You are a sound expert!';
             } else if (correctAnswers === 2) {
                 stars = 12;
-                message = '😊 Good job! You learned a lot!';
+                message = '😊 Great job! You learned a lot!';
             } else {
                 stars = 10;
-                message = '👍 Nice try! Review and try again!';
+                message = '👍 Good try! Play the games again!';
             }
             
             xpEarned.textContent = `+${stars} ⭐`;
