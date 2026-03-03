@@ -273,7 +273,7 @@ function updateMissionStatuses() {
         
         // Mission 1 is always available
         if (missionNum === '1') {
-            if (progress.missionScores[missionId].completed) {
+            if (progress.missionScores[missionId] && progress.missionScores[missionId].completed) {
                 statusBadge.textContent = '✓ DONE';
                 statusBadge.classList.remove('locked');
                 statusBadge.classList.add('completed');
@@ -288,11 +288,11 @@ function updateMissionStatuses() {
         // Check if previous mission is completed
         const prevMissionNum = parseInt(missionNum) - 1;
         const prevMissionId = missions[prevMissionNum];
-        const prevCompleted = progress.missionScores[prevMissionId].completed;
+        const prevCompleted = progress.missionScores[prevMissionId] && progress.missionScores[prevMissionId].completed;
         
         if (prevCompleted) {
             // Unlock this mission
-            if (progress.missionScores[missionId].completed) {
+            if (progress.missionScores[missionId] && progress.missionScores[missionId].completed) {
                 statusBadge.textContent = '✓ DONE';
                 statusBadge.classList.remove('locked');
                 statusBadge.classList.add('completed');
@@ -306,21 +306,26 @@ function updateMissionStatuses() {
             if (launchBtn) {
                 launchBtn.classList.remove('locked');
                 launchBtn.href = `lesson${missionNum}.html`;
-                launchBtn.querySelector('span').textContent = 'START MISSION';
-                launchBtn.querySelector('.launch-arrow').textContent = '→';
+                const btnText = launchBtn.querySelector('span:first-child');
+                const btnArrow = launchBtn.querySelector('.launch-arrow');
+                if (btnText) btnText.textContent = 'START MISSION';
+                if (btnArrow) btnArrow.textContent = '→';
             }
         } else {
             // Keep locked
             statusBadge.textContent = '🔒 LOCKED';
             statusBadge.classList.add('locked');
+            statusBadge.classList.remove('completed');
             
             if (missionCard) missionCard.classList.add('locked-card');
             
             if (launchBtn) {
                 launchBtn.classList.add('locked');
                 launchBtn.href = '#';
-                launchBtn.querySelector('span').textContent = 'LOCKED';
-                launchBtn.querySelector('.launch-arrow').textContent = '🔒';
+                const btnText = launchBtn.querySelector('span:first-child');
+                const btnArrow = launchBtn.querySelector('.launch-arrow');
+                if (btnText) btnText.textContent = 'LOCKED';
+                if (btnArrow) btnArrow.textContent = '🔒';
             }
         }
     });
@@ -365,9 +370,11 @@ function displayCurrentXP() {
 
 // ===== RESET PROGRESS =====
 function resetProgress() {
-    localStorage.removeItem('nasaSonicBoomProgress');
-    alert('✅ All progress has been reset. You are now a Sound Explorer again!');
-    window.location.reload();
+    if (confirm('⚠️ This will delete ALL your progress!\n\nAre you sure you want to start over?')) {
+        localStorage.removeItem('nasaSonicBoomProgress');
+        alert('✅ Progress reset! You are now a Sound Explorer again!');
+        window.location.reload();
+    }
 }
 
 // Add reset button to console
