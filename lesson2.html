@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mission 02: How Sound Travels</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body class="lesson-page">
@@ -26,141 +24,273 @@
                 <p class="mission-objective">Discover how sound moves through different materials!</p>
             </div>
             
+            <!-- INTRO SECTION -->
             <div class="content-card">
                 <h2>🌊 Sound Needs Something to Travel Through</h2>
                 <p class="simple-text">
-                    Remember: sound is made when things vibrate. But how does it get to your ears?
-                </p>
-                
-                <p class="simple-text">
-                    Sound travels in <strong>waves</strong>. But sound waves can't travel through 
-                    empty space - they need something to move through!
+                    Sound can't travel through empty space! It needs a <strong>medium</strong> - 
+                    something for the vibrations to move through.
                 </p>
                 
                 <div class="big-idea-box">
                     <div class="big-idea-icon">💡</div>
                     <div class="big-idea-text">
-                        <strong>Big Idea:</strong> Sound travels through air, water, and solid objects. 
-                        It travels at different speeds in different materials!
+                        <strong>Big Idea:</strong> Sound travels through AIR, WATER, and SOLID objects. 
+                        But it travels at different speeds through each one!
                     </div>
                 </div>
                 
                 <div class="example-grid">
                     <div class="example-card">
                         <div class="example-emoji">💨</div>
-                        <h3>Air</h3>
-                        <p>Sound travels through air. That's how you hear people talking!</p>
+                        <h3>Through Air</h3>
+                        <p>We hear most sounds through air!</p>
                     </div>
                     <div class="example-card">
                         <div class="example-emoji">🌊</div>
-                        <h3>Water</h3>
-                        <p>Sound travels through water. Whales and dolphins talk underwater!</p>
+                        <h3>Through Water</h3>
+                        <p>Whales "talk" underwater!</p>
                     </div>
                     <div class="example-card">
                         <div class="example-emoji">🪵</div>
-                        <h3>Solids</h3>
-                        <p>Sound travels through solid things like wood, metal, and walls!</p>
+                        <h3>Through Solids</h3>
+                        <p>Sound travels through walls and doors!</p>
                     </div>
                     <div class="example-card">
                         <div class="example-emoji">🚫</div>
-                        <h3>Empty Space</h3>
-                        <p>Sound CANNOT travel in space - there's no air or anything there!</p>
+                        <h3>Not Through Space</h3>
+                        <p>No sound in outer space - no air!</p>
                     </div>
                 </div>
             </div>
             
-            <div class="content-card">
-                <h2>🏃‍♂️ Sound Travels at Different Speeds</h2>
+            <!-- INTERACTIVE GAME 1: MATERIAL EXPLORER -->
+            <div class="content-card interactive-card">
+                <h2>🎮 GAME 1: Material Explorer!</h2>
                 <p class="simple-text">
-                    Sound moves faster through some materials than others!
+                    Click each material to see how sound travels through it!
                 </p>
                 
-                <div class="speed-comparison">
-                    <div class="speed-item slow">
-                        <div class="speed-emoji">💨</div>
-                        <div class="speed-label">Through Air</div>
-                        <div class="speed-value">767 mph</div>
-                        <div class="speed-bar" style="width: 33%"></div>
+                <div class="interactive-buttons">
+                    <button class="sound-btn" data-material="air" data-speed="767">
+                        <span class="btn-emoji">💨</span>
+                        <span class="btn-text">Air</span>
+                    </button>
+                    <button class="sound-btn" data-material="water" data-speed="3300">
+                        <span class="btn-emoji">🌊</span>
+                        <span class="btn-text">Water</span>
+                    </button>
+                    <button class="sound-btn" data-material="wood" data-speed="10000">
+                        <span class="btn-emoji">🪵</span>
+                        <span class="btn-text">Wood</span>
+                    </button>
+                    <button class="sound-btn" data-material="metal" data-speed="13000">
+                        <span class="btn-emoji">🔩</span>
+                        <span class="btn-text">Metal</span>
+                    </button>
+                    <button class="sound-btn" data-material="space" data-speed="0">
+                        <span class="btn-emoji">🌌</span>
+                        <span class="btn-text">Space</span>
+                    </button>
+                    <button class="sound-btn" data-material="glass" data-speed="12000">
+                        <span class="btn-emoji">🪟</span>
+                        <span class="btn-text">Glass</span>
+                    </button>
+                </div>
+                
+                <div class="material-display" id="materialDisplay">
+                    <div class="material-info">
+                        <h3 id="materialName">Choose a material!</h3>
+                        <div class="speed-meter">
+                            <div class="speed-label">Speed of Sound:</div>
+                            <div class="speed-value" id="speedValue">??? mph</div>
+                            <div class="speed-bar-container">
+                                <div class="speed-bar-fill" id="speedBarFill"></div>
+                            </div>
+                        </div>
+                        <p id="materialFact" class="material-fact">Click a material to learn more!</p>
                     </div>
-                    <div class="speed-item medium">
-                        <div class="speed-emoji">🌊</div>
-                        <div class="speed-label">Through Water</div>
-                        <div class="speed-value">3,300 mph</div>
-                        <div class="speed-bar" style="width: 70%"></div>
+                    <canvas id="materialWaveCanvas" width="600" height="150"></canvas>
+                </div>
+            </div>
+            
+            <!-- SPEED COMPARISON -->
+            <div class="content-card">
+                <h2>🏃 Speed Comparison</h2>
+                <p class="simple-text">
+                    Sound travels at VERY different speeds in different materials!
+                </p>
+                
+                <div class="speed-comparison-table">
+                    <div class="speed-row">
+                        <div class="speed-icon">💨</div>
+                        <div class="speed-name">Air</div>
+                        <div class="speed-bar-bg">
+                            <div class="speed-bar" style="width: 6%; background: #00ff88;"></div>
+                        </div>
+                        <div class="speed-num">767 mph</div>
                     </div>
-                    <div class="speed-item fast">
-                        <div class="speed-emoji">🔩</div>
-                        <div class="speed-label">Through Steel</div>
-                        <div class="speed-value">13,000 mph</div>
-                        <div class="speed-bar" style="width: 100%"></div>
-                        <div class="faster-badge">FASTEST!</div>
+                    <div class="speed-row">
+                        <div class="speed-icon">🌊</div>
+                        <div class="speed-name">Water</div>
+                        <div class="speed-bar-bg">
+                            <div class="speed-bar" style="width: 25%; background: #00aaff;"></div>
+                        </div>
+                        <div class="speed-num">3,300 mph</div>
+                    </div>
+                    <div class="speed-row">
+                        <div class="speed-icon">🪵</div>
+                        <div class="speed-name">Wood</div>
+                        <div class="speed-bar-bg">
+                            <div class="speed-bar" style="width: 77%; background: #ffaa00;"></div>
+                        </div>
+                        <div class="speed-num">10,000 mph</div>
+                    </div>
+                    <div class="speed-row">
+                        <div class="speed-icon">🔩</div>
+                        <div class="speed-name">Metal (Steel)</div>
+                        <div class="speed-bar-bg">
+                            <div class="speed-bar" style="width: 100%; background: #ff3366;"></div>
+                        </div>
+                        <div class="speed-num">13,000 mph</div>
                     </div>
                 </div>
                 
-                <p class="simple-text" style="margin-top: 20px;">
-                    <strong>Why?</strong> In solid objects like steel, the molecules are closer together. 
+                <p class="simple-text" style="margin-top: 25px;">
+                    <strong>Why?</strong> In solid materials, molecules are packed VERY close together. 
                     They can pass vibrations faster!
                 </p>
             </div>
             
+            <!-- INTERACTIVE GAME 2: SOUND RACE -->
             <div class="content-card interactive-card">
-                <h2>🎮 Try It Yourself!</h2>
+                <h2>🎮 GAME 2: Sound Race!</h2>
                 <p class="simple-text">
-                    Click each material to see how sound travels through it:
+                    Watch sound race through different materials! Pick two to compare.
                 </p>
                 
-                <div class="interactive-buttons">
-                    <button class="sound-btn" data-material="air">
-                        <span class="btn-emoji">💨</span>
-                        <span class="btn-text">Air</span>
-                    </button>
-                    <button class="sound-btn" data-material="water">
-                        <span class="btn-emoji">🌊</span>
-                        <span class="btn-text">Water</span>
-                    </button>
-                    <button class="sound-btn" data-material="wood">
-                        <span class="btn-emoji">🪵</span>
-                        <span class="btn-text">Wood</span>
-                    </button>
-                    <button class="sound-btn" data-material="metal">
-                        <span class="btn-emoji">🔩</span>
-                        <span class="btn-text">Metal</span>
-                    </button>
+                <div class="race-controls">
+                    <div class="racer-select">
+                        <label>Racer 1:</label>
+                        <select id="racer1Select" class="material-select">
+                            <option value="air">💨 Air (767 mph)</option>
+                            <option value="water">🌊 Water (3,300 mph)</option>
+                            <option value="wood">🪵 Wood (10,000 mph)</option>
+                            <option value="metal">🔩 Metal (13,000 mph)</option>
+                        </select>
+                    </div>
+                    <div class="racer-select">
+                        <label>Racer 2:</label>
+                        <select id="racer2Select" class="material-select">
+                            <option value="air">💨 Air (767 mph)</option>
+                            <option value="water" selected>🌊 Water (3,300 mph)</option>
+                            <option value="wood">🪵 Wood (10,000 mph)</option>
+                            <option value="metal">🔩 Metal (13,000 mph)</option>
+                        </select>
+                    </div>
+                    <button class="race-start-btn" id="startRaceBtn">START RACE!</button>
                 </div>
                 
-                <div class="vibration-display" id="materialDisplay">
-                    <p>Click a material to see how sound travels through it!</p>
+                <div class="race-track">
+                    <div class="race-lane">
+                        <div class="lane-label" id="racer1Label">💨 Air</div>
+                        <div class="track-line"></div>
+                        <div class="racer" id="racer1">🔊</div>
+                        <div class="finish">🏁</div>
+                    </div>
+                    <div class="race-lane">
+                        <div class="lane-label" id="racer2Label">🌊 Water</div>
+                        <div class="track-line"></div>
+                        <div class="racer" id="racer2">🔊</div>
+                        <div class="finish">🏁</div>
+                    </div>
+                </div>
+                
+                <div class="race-result" id="raceResult"></div>
+            </div>
+            
+            <!-- INTERACTIVE GAME 3: TRUE OR FALSE -->
+            <div class="content-card interactive-card">
+                <h2>🎮 GAME 3: True or False?</h2>
+                <p class="simple-text">
+                    Test your knowledge! Click TRUE or FALSE for each statement.
+                </p>
+                
+                <div class="true-false-game">
+                    <div class="tf-question" data-question="1">
+                        <p class="tf-statement">Sound can travel through water.</p>
+                        <div class="tf-buttons">
+                            <button class="tf-btn" data-answer="true">TRUE</button>
+                            <button class="tf-btn" data-answer="false">FALSE</button>
+                        </div>
+                        <div class="tf-feedback"></div>
+                    </div>
+                    
+                    <div class="tf-question" data-question="2">
+                        <p class="tf-statement">Sound travels faster in air than in metal.</p>
+                        <div class="tf-buttons">
+                            <button class="tf-btn" data-answer="true">TRUE</button>
+                            <button class="tf-btn" data-answer="false">FALSE</button>
+                        </div>
+                        <div class="tf-feedback"></div>
+                    </div>
+                    
+                    <div class="tf-question" data-question="3">
+                        <p class="tf-statement">You can hear sounds in outer space.</p>
+                        <div class="tf-buttons">
+                            <button class="tf-btn" data-answer="true">TRUE</button>
+                            <button class="tf-btn" data-answer="false">FALSE</button>
+                        </div>
+                        <div class="tf-feedback"></div>
+                    </div>
+                </div>
+                
+                <div class="tf-score">
+                    Score: <span id="tfScore">0</span> / 3
                 </div>
             </div>
             
+            <!-- FUN FACTS -->
             <div class="content-card">
-                <h2>🔬 Cool Sound Facts!</h2>
-                <div class="learning-points">
-                    <div class="point-item">
-                        <span class="point-icon">✓</span>
-                        <p>Put your ear on a table and tap it - you'll hear it louder! Sound travels well through wood.</p>
+                <h2>🔬 Cool Sound Travel Facts!</h2>
+                <div class="hearing-steps">
+                    <div class="hear-step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h4>Whales Talk Far Away</h4>
+                            <p>Whales can communicate hundreds of miles underwater because sound travels so well in water!</p>
+                        </div>
                     </div>
-                    <div class="point-item">
-                        <span class="point-icon">✓</span>
-                        <p>Whales can "talk" to each other from hundreds of miles away underwater!</p>
+                    <div class="hear-step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h4>Knock on Wood</h4>
+                            <p>Put your ear on a table and tap it - you'll hear it super loud because sound travels fast through wood!</p>
+                        </div>
                     </div>
-                    <div class="point-item">
-                        <span class="point-icon">✓</span>
-                        <p>In outer space, no one can hear you scream - there's no air for sound to travel through!</p>
+                    <div class="hear-step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h4>Silent Space</h4>
+                            <p>In space movies, explosions make noise - but real space is totally silent!</p>
+                        </div>
                     </div>
-                    <div class="point-item">
-                        <span class="point-icon">✓</span>
-                        <p>When you knock on a door, sound travels through the door faster than through the air around it!</p>
+                    <div class="hear-step">
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <h4>Train Tracks</h4>
+                            <p>People used to put their ear on train tracks to hear trains coming from far away!</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
         
-        <!-- Quiz Section -->
+        <!-- QUIZ SECTION -->
         <section class="quiz-section">
             <div class="content-card quiz-card">
-                <h2>🧠 Check What You Learned!</h2>
-                <p class="quiz-intro">Answer these questions to earn your stars!</p>
+                <h2>🧠 Mission Quiz!</h2>
+                <p class="quiz-intro">Answer these questions to complete the mission!</p>
                 
                 <div id="quizContainer">
                     <div class="quiz-question" data-question="1">
@@ -171,7 +301,7 @@
                                 Air, water, or solid materials
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                Light and sunshine
+                                Light and electricity
                             </button>
                             <button class="quiz-option" data-answer="wrong">
                                 Nothing - it can travel through empty space
@@ -199,16 +329,16 @@
                     
                     <div class="quiz-question hidden" data-question="3">
                         <h3>Question 3 of 3</h3>
-                        <p class="question-text">Does sound travel faster through air or through metal?</p>
+                        <p class="question-text">Which material does sound travel through FASTEST?</p>
                         <div class="quiz-options">
                             <button class="quiz-option" data-answer="wrong">
-                                Faster through air
-                            </button>
-                            <button class="quiz-option" data-answer="correct">
-                                Faster through metal
+                                Air
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                Same speed in both
+                                Water
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                Metal (steel)
                             </button>
                         </div>
                         <div class="quiz-feedback"></div>
@@ -238,60 +368,180 @@
         createStarfield();
         displayCurrentXP();
         
-        // Material information
+        // ===== MATERIAL DATA =====
         const materials = {
-            air: {
-                emoji: '💨',
-                name: 'Air',
-                speed: '767 mph',
-                fact: 'Sound travels through air when molecules bump into each other. This is how we hear most sounds!'
-            },
-            water: {
-                emoji: '🌊',
-                name: 'Water',
-                speed: '3,300 mph',
-                fact: 'Sound travels 4 times faster in water than in air! That\'s why whales can talk over long distances underwater.'
-            },
-            wood: {
-                emoji: '🪵',
-                name: 'Wood',
-                speed: '10,000+ mph',
-                fact: 'Sound travels really fast through wood because the molecules are packed close together. Try tapping on a table!'
-            },
-            metal: {
-                emoji: '🔩',
-                name: 'Metal (Steel)',
-                speed: '13,000 mph',
-                fact: 'Metal is one of the best materials for carrying sound. That\'s why you can hear a train coming on the tracks from far away!'
-            }
+            air: { speed: 767, emoji: '💨', name: 'Air', fact: 'Most sounds we hear travel through air! Air molecules bump into each other to pass the vibration.', color: '#00ff88' },
+            water: { speed: 3300, emoji: '🌊', name: 'Water', fact: 'Sound travels 4 times faster in water! That\'s why whales can talk to each other from very far away.', color: '#00aaff' },
+            wood: { speed: 10000, emoji: '🪵', name: 'Wood', fact: 'Sound zooms through wood super fast! Try putting your ear on a desk and tapping it.', color: '#ffaa00' },
+            metal: { speed: 13000, emoji: '🔩', name: 'Metal (Steel)', fact: 'Metal carries sound the fastest! Railroad workers used to listen for trains on the metal tracks.', color: '#ff3366' },
+            space: { speed: 0, emoji: '🌌', name: 'Outer Space', fact: 'NO SOUND in space! There\'s no air, so vibrations can\'t travel. Space is totally silent!', color: '#666666' },
+            glass: { speed: 12000, emoji: '🪟', name: 'Glass', fact: 'Sound travels super fast through glass windows. That\'s why you can hear outside sounds through closed windows!', color: '#66ffff' }
         };
         
-        // Interactive material buttons
-        const soundButtons = document.querySelectorAll('.sound-btn');
-        const materialDisplay = document.getElementById('materialDisplay');
+        // ===== GAME 1: MATERIAL EXPLORER =====
+        const materialButtons = document.querySelectorAll('.sound-btn[data-material]');
+        const materialName = document.getElementById('materialName');
+        const speedValue = document.getElementById('speedValue');
+        const speedBarFill = document.getElementById('speedBarFill');
+        const materialFact = document.getElementById('materialFact');
+        const materialCanvas = document.getElementById('materialWaveCanvas');
+        const materialCtx = materialCanvas.getContext('2d');
         
-        soundButtons.forEach(btn => {
+        let materialTime = 0;
+        let currentMaterial = null;
+        let materialAnimationFrame;
+        
+        materialButtons.forEach(btn => {
             btn.addEventListener('click', function() {
-                const material = this.dataset.material;
-                const info = materials[material];
+                const mat = this.dataset.material;
+                currentMaterial = materials[mat];
                 
-                materialDisplay.innerHTML = `
-                    <div class="vibrating-item">
-                        <div class="vibrate-emoji">${info.emoji}</div>
-                        <h3 style="color: #00ffff; margin: 15px 0;">${info.name}</h3>
-                        <p style="font-size: 18px; color: #ffaa00; font-weight: 700;">Speed: ${info.speed}</p>
-                        <p style="margin-top: 15px; font-size: 15px; line-height: 1.6;">${info.fact}</p>
-                        <div class="vibration-lines">
-                            <span>〰️</span><span>〰️</span><span>〰️</span>
-                        </div>
-                    </div>
-                `;
+                materialName.textContent = currentMaterial.name;
+                speedValue.textContent = currentMaterial.speed === 0 ? 'NO SOUND!' : currentMaterial.speed.toLocaleString() + ' mph';
+                materialFact.textContent = currentMaterial.fact;
                 
-                materialDisplay.classList.add('active');
+                const maxSpeed = 13000;
+                const percentage = (currentMaterial.speed / maxSpeed) * 100;
+                speedBarFill.style.width = percentage + '%';
+                speedBarFill.style.background = currentMaterial.color;
+                
+                materialTime = 0;
+                cancelAnimationFrame(materialAnimationFrame);
+                animateMaterialWave();
             });
         });
         
-        // Quiz functionality
+        function animateMaterialWave() {
+            if (!currentMaterial) return;
+            
+            materialCtx.clearRect(0, 0, materialCanvas.width, materialCanvas.height);
+            
+            if (currentMaterial.speed === 0) {
+                // No wave for space
+                materialCtx.fillStyle = '#666666';
+                materialCtx.font = '24px "Orbitron"';
+                materialCtx.textAlign = 'center';
+                materialCtx.fillText('NO SOUND IN SPACE!', materialCanvas.width / 2, materialCanvas.height / 2);
+                return;
+            }
+            
+            // Draw wave based on speed
+            const frequency = currentMaterial.speed / 2000;
+            materialCtx.strokeStyle = currentMaterial.color;
+            materialCtx.lineWidth = 4;
+            materialCtx.beginPath();
+            
+            for (let x = 0; x < materialCanvas.width; x++) {
+                const y = materialCanvas.height / 2 + 40 * Math.sin((x * 0.02 * frequency) - materialTime);
+                if (x === 0) materialCtx.moveTo(x, y);
+                else materialCtx.lineTo(x, y);
+            }
+            materialCtx.stroke();
+            
+            materialTime += 0.1;
+            materialAnimationFrame = requestAnimationFrame(animateMaterialWave);
+        }
+        
+        // ===== GAME 2: SOUND RACE =====
+        const racer1Select = document.getElementById('racer1Select');
+        const racer2Select = document.getElementById('racer2Select');
+        const startRaceBtn = document.getElementById('startRaceBtn');
+        const racer1 = document.getElementById('racer1');
+        const racer2 = document.getElementById('racer2');
+        const racer1Label = document.getElementById('racer1Label');
+        const racer2Label = document.getElementById('racer2Label');
+        const raceResult = document.getElementById('raceResult');
+        
+        let isRacing = false;
+        
+        startRaceBtn.addEventListener('click', function() {
+            if (isRacing) return;
+            
+            const mat1 = racer1Select.value;
+            const mat2 = racer2Select.value;
+            
+            racer1Label.textContent = materials[mat1].emoji + ' ' + materials[mat1].name;
+            racer2Label.textContent = materials[mat2].emoji + ' ' + materials[mat2].name;
+            
+            startRace(materials[mat1], materials[mat2]);
+        });
+        
+        function startRace(mat1, mat2) {
+            isRacing = true;
+            raceResult.textContent = '🏁 Racing...';
+            raceResult.style.color = '#ffaa00';
+            
+            racer1.style.left = '0';
+            racer2.style.left = '0';
+            
+            const duration = 3000;
+            const maxSpeed = Math.max(mat1.speed, mat2.speed);
+            
+            const speed1 = (mat1.speed / maxSpeed) * 90;
+            const speed2 = (mat2.speed / maxSpeed) * 90;
+            
+            racer1.style.transition = `left ${duration}ms linear`;
+            racer2.style.transition = `left ${duration}ms linear`;
+            
+            setTimeout(() => {
+                racer1.style.left = speed1 + '%';
+                racer2.style.left = speed2 + '%';
+            }, 100);
+            
+            setTimeout(() => {
+                const winner = mat1.speed > mat2.speed ? mat1 : (mat2.speed > mat1.speed ? mat2 : null);
+                
+                if (winner) {
+                    raceResult.innerHTML = `
+                        <strong>${winner.emoji} ${winner.name} WINS!</strong><br>
+                        Speed: ${winner.speed.toLocaleString()} mph
+                    `;
+                    raceResult.style.color = winner.color;
+                } else {
+                    raceResult.textContent = 'It\'s a TIE!';
+                    raceResult.style.color = '#00ffff';
+                }
+                
+                isRacing = false;
+            }, duration + 500);
+        }
+        
+        // ===== GAME 3: TRUE/FALSE =====
+        const tfCorrectAnswers = {
+            1: 'true',
+            2: 'false',
+            3: 'false'
+        };
+        
+        let tfScore = 0;
+        const tfButtons = document.querySelectorAll('.tf-btn');
+        
+        tfButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const question = this.closest('.tf-question');
+                const qNum = question.dataset.question;
+                const answer = this.dataset.answer;
+                const feedback = question.querySelector('.tf-feedback');
+                const buttons = question.querySelectorAll('.tf-btn');
+                
+                if (buttons[0].classList.contains('answered')) return;
+                
+                buttons.forEach(b => b.classList.add('answered'));
+                
+                if (answer === tfCorrectAnswers[qNum]) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<span style="color: #00ff88;">✓ Correct!</span>';
+                    tfScore++;
+                } else {
+                    this.classList.add('wrong');
+                    feedback.innerHTML = '<span style="color: #ff3366;">✗ Incorrect!</span>';
+                }
+                
+                document.getElementById('tfScore').textContent = tfScore;
+            });
+        });
+        
+        // ===== QUIZ =====
         let currentQuestion = 1;
         let correctAnswers = 0;
         
@@ -307,11 +557,11 @@
                 
                 if (isCorrect) {
                     this.classList.add('correct');
-                    feedback.innerHTML = '<span class="correct-feedback">✓ Yes! That\'s right!</span>';
+                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
                     correctAnswers++;
                 } else {
                     this.classList.add('wrong');
-                    feedback.innerHTML = '<span class="wrong-feedback">Not quite. Try to remember!</span>';
+                    feedback.innerHTML = '<span class="wrong-feedback">Not quite!</span>';
                 }
                 
                 setTimeout(() => {
@@ -343,10 +593,10 @@
                 message = '🌟 Perfect! You understand how sound travels!';
             } else if (correctAnswers === 2) {
                 stars = 12;
-                message = '😊 Good job! You learned about sound travel!';
+                message = '😊 Great job! You learned a lot!';
             } else {
                 stars = 10;
-                message = '👍 Nice try! Review the material and try again!';
+                message = '👍 Good try! Play the games again!';
             }
             
             xpEarned.textContent = `+${stars} ⭐`;
