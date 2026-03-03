@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission 04: Loud & Quiet Sounds</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="lesson-page">
+    <div class="starfield" id="starfield"></div>
+    <div class="radar-grid"></div>
+    
+    <nav class="nav-bar">
+        <a href="dashboard.html" class="nav-back">← DASHBOARD</a>
+        <div class="nav-logo">MISSION 04 // LOUD & QUIET SOUNDS</div>
+        <div class="nav-xp" id="currentXP">0 ⭐</div>
+    </nav>
+    
+    <div class="lesson-container">
+        <section class="learning-section">
+            <div class="mission-header">
+                <h1>Loud & Quiet Sounds</h1>
+                <p class="mission-objective">Discover volume and amplitude!</p>
+            </div>
+            
+            <!-- INTRO -->
+            <div class="content-card">
+                <h2>🔊 What is Volume?</h2>
+                <p class="simple-text">
+                    <strong>Volume</strong> is how LOUD or QUIET a sound is. 
+                    A whisper is QUIET. A fire truck siren is LOUD!
+                </p>
+                
+                <div class="big-idea-box">
+                    <div class="big-idea-icon">💡</div>
+                    <div class="big-idea-text">
+                        <strong>Big Idea:</strong> BIG vibrations (big waves) make LOUD sounds. 
+                        Small vibrations (small waves) make QUIET sounds!
+                    </div>
+                </div>
+                
+                <div class="example-grid">
+                    <div class="example-card">
+                        <div class="example-emoji">📢</div>
+                        <h3>Loud Sounds</h3>
+                        <p>Sirens, thunder, shouting!</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-emoji">🤫</div>
+                        <h3>Quiet Sounds</h3>
+                        <p>Whispers, leaves rustling!</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-emoji">👂</div>
+                        <h3>Your Ears</h3>
+                        <p>Very loud sounds can hurt!</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-emoji">📏</div>
+                        <h3>Distance</h3>
+                        <p>Sounds get quieter far away!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- DECIBELS -->
+            <div class="content-card">
+                <h2>📊 Measuring Loudness: Decibels (dB)</h2>
+                <p class="simple-text">
+                    We measure how loud sounds are in <strong>decibels (dB)</strong>. 
+                    The bigger the number, the LOUDER the sound!
+                </p>
+                
+                <div class="decibel-scale">
+                    <div class="db-item" style="--db-height: 15%;">
+                        <div class="db-bar"></div>
+                        <div class="db-icon">🤫</div>
+                        <div class="db-name">Whisper</div>
+                        <div class="db-value">30 dB</div>
+                        <div class="db-label">Very Quiet</div>
+                    </div>
+                    <div class="db-item" style="--db-height: 30%;">
+                        <div class="db-bar"></div>
+                        <div class="db-icon">🗣️</div>
+                        <div class="db-name">Talking</div>
+                        <div class="db-value">60 dB</div>
+                        <div class="db-label">Normal</div>
+                    </div>
+                    <div class="db-item" style="--db-height: 50%;">
+                        <div class="db-bar"></div>
+                        <div class="db-icon">🎵</div>
+                        <div class="db-name">Music</div>
+                        <div class="db-value">85 dB</div>
+                        <div class="db-label">Loud</div>
+                    </div>
+                    <div class="db-item" style="--db-height: 70%;">
+                        <div class="db-bar"></div>
+                        <div class="db-icon">🚨</div>
+                        <div class="db-name">Siren</div>
+                        <div class="db-value">110 dB</div>
+                        <div class="db-label">Very Loud!</div>
+                    </div>
+                    <div class="db-item" style="--db-height: 100%;">
+                        <div class="db-bar"></div>
+                        <div class="db-icon">✈️</div>
+                        <div class="db-name">Jet Engine</div>
+                        <div class="db-value">140 dB</div>
+                        <div class="db-label">⚠️ PAINFUL!</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- GAME 1: VOLUME CONTROLLER -->
+            <div class="content-card interactive-card">
+                <h2>🎮 GAME 1: Volume Controller!</h2>
+                <p class="simple-text">
+                    Move the slider to change the volume! Watch the wave get bigger or smaller!
+                </p>
+                
+                <div class="volume-game">
+                    <canvas id="volumeWaveCanvas" width="700" height="200"></canvas>
+                    
+                    <div class="volume-controls">
+                        <div class="volume-slider-container">
+                            <div class="volume-icons">
+                                <span class="vol-icon">🔇</span>
+                                <input 
+                                    type="range" 
+                                    id="volumeSlider" 
+                                    min="0" 
+                                    max="10" 
+                                    value="5" 
+                                    class="slider"
+                                >
+                                <span class="vol-icon">🔊</span>
+                            </div>
+                            <div class="volume-display">
+                                <div class="vol-level" id="volLevel">MEDIUM</div>
+                                <div class="vol-db" id="volDb">60 dB</div>
+                            </div>
+                        </div>
+                        
+                        <div class="volume-info-grid">
+                            <div class="vol-info-card">
+                                <div class="vol-card-label">Example:</div>
+                                <div class="vol-card-value" id="volExample">Normal Talking</div>
+                            </div>
+                            <div class="vol-info-card">
+                                <div class="vol-card-label">Wave Size:</div>
+                                <div class="vol-card-value" id="volWaveSize">Medium</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- GAME 2: VOLUME SORTER -->
+            <div class="content-card interactive-card">
+                <h2>🎮 GAME 2: Sort by Volume!</h2>
+                <p class="simple-text">
+                    Put these sounds in order from QUIETEST to LOUDEST!
+                </p>
+                
+                <div class="volume-sorter">
+                    <div class="sortable-sounds" id="sortableSounds">
+                        <div class="sort-sound" data-volume="4">
+                            <span class="sort-emoji">🚨</span>
+                            <span class="sort-name">Fire Truck</span>
+                        </div>
+                        <div class="sort-sound" data-volume="1">
+                            <span class="sort-emoji">🍃</span>
+                            <span class="sort-name">Leaves Rustling</span>
+                        </div>
+                        <div class="sort-sound" data-volume="3">
+                            <span class="sort-emoji">🚗</span>
+                            <span class="sort-name">Car Driving</span>
+                        </div>
+                        <div class="sort-sound" data-volume="2">
+                            <span class="sort-emoji">🗣️</span>
+                            <span class="sort-name">Talking</span>
+                        </div>
+                        <div class="sort-sound" data-volume="5">
+                            <span class="sort-emoji">⚡</span>
+                            <span class="sort-name">Thunder</span>
+                        </div>
+                    </div>
+                    
+                    <button class="check-order-btn" id="checkOrderBtn">CHECK MY ORDER!</button>
+                    <div class="order-result" id="orderResult"></div>
+                </div>
+            </div>
+            
+            <!-- GAME 3: VOLUME QUIZ GAME -->
+            <div class="content-card interactive-card">
+                <h2>🎮 GAME 3: Guess the Volume!</h2>
+                <p class="simple-text">
+                    Look at each sound and guess: QUIET, MEDIUM, or LOUD?
+                </p>
+                
+                <div class="volume-quiz-game">
+                    <div class="vol-quiz-card">
+                        <div class="vol-quiz-icon">🦗</div>
+                        <p class="vol-quiz-question">Cricket chirping at night</p>
+                        <div class="vol-quiz-buttons">
+                            <button class="vol-quiz-btn" data-answer="correct">QUIET</button>
+                            <button class="vol-quiz-btn" data-answer="wrong">MEDIUM</button>
+                            <button class="vol-quiz-btn" data-answer="wrong">LOUD</button>
+                        </div>
+                        <div class="vol-quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="vol-quiz-card">
+                        <div class="vol-quiz-icon">🎸</div>
+                        <p class="vol-quiz-question">Rock concert</p>
+                        <div class="vol-quiz-buttons">
+                            <button class="vol-quiz-btn" data-answer="wrong">QUIET</button>
+                            <button class="vol-quiz-btn" data-answer="wrong">MEDIUM</button>
+                            <button class="vol-quiz-btn" data-answer="correct">LOUD</button>
+                        </div>
+                        <div class="vol-quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="vol-quiz-card">
+                        <div class="vol-quiz-icon">☎️</div>
+                        <p class="vol-quiz-question">Phone ringing</p>
+                        <div class="vol-quiz-buttons">
+                            <button class="vol-quiz-btn" data-answer="wrong">QUIET</button>
+                            <button class="vol-quiz-btn" data-answer="correct">MEDIUM</button>
+                            <button class="vol-quiz-btn" data-answer="wrong">LOUD</button>
+                        </div>
+                        <div class="vol-quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="vol-quiz-card">
+                        <div class="vol-quiz-icon">💥</div>
+                        <p class="vol-quiz-question">Fireworks exploding</p>
+                        <div class="vol-quiz-buttons">
+                            <button class="vol-quiz-btn" data-answer="wrong">QUIET</button>
+                            <button class="vol-quiz-btn" data-answer="wrong">MEDIUM</button>
+                            <button class="vol-quiz-btn" data-answer="correct">LOUD</button>
+                        </div>
+                        <div class="vol-quiz-feedback"></div>
+                    </div>
+                </div>
+                
+                <div class="vol-quiz-score">
+                    Score: <span id="volQuizScore">0</span> / 4
+                </div>
+            </div>
+            
+            <!-- FUN FACTS -->
+            <div class="content-card">
+                <h2>🔬 Cool Volume Facts!</h2>
+                <div class="hearing-steps">
+                    <div class="hear-step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h4>Protect Your Ears</h4>
+                            <p>Sounds over 85 dB can damage your hearing if you listen for too long!</p>
+                        </div>
+                    </div>
+                    <div class="hear-step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h4>Blue Whale</h4>
+                            <p>Blue whales make the loudest sound of any animal - 188 dB! That's louder than a jet engine!</p>
+                        </div>
+                    </div>
+                    <div class="hear-step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h4>Distance Matters</h4>
+                            <p>Every time you double the distance from a sound, it gets about 6 dB quieter!</p>
+                        </div>
+                    </div>
+                    <div class="hear-step">
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <h4>Library Rule</h4>
+                            <p>Libraries try to keep noise under 40 dB - that's quieter than normal talking!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- QUIZ -->
+        <section class="quiz-section">
+            <div class="content-card quiz-card">
+                <h2>🧠 Mission Quiz!</h2>
+                <p class="quiz-intro">Answer these questions to complete the mission!</p>
+                
+                <div id="quizContainer">
+                    <div class="quiz-question" data-question="1">
+                        <h3>Question 1 of 3</h3>
+                        <p class="question-text">What makes a sound LOUD?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="correct">
+                                Big vibrations (big waves)
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Fast vibrations
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Slow vibrations
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="quiz-question hidden" data-question="2">
+                        <h3>Question 2 of 3</h3>
+                        <p class="question-text">What do we use to measure how loud a sound is?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Meters
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                Decibels (dB)
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Hertz (Hz)
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="quiz-question hidden" data-question="3">
+                        <h3>Question 3 of 3</h3>
+                        <p class="question-text">Which is the QUIETEST sound?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Fire truck siren
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                Whisper
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Thunder
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="quiz-results hidden" id="quizResults">
+                        <h3>🎉 Mission Complete!</h3>
+                        <div class="results-content">
+                            <div class="results-score">
+                                <span class="score-label">You got:</span>
+                                <span class="score-value" id="finalScore">0/3</span>
+                            </div>
+                            <p class="results-message" id="resultsMessage"></p>
+                            <div class="results-xp">
+                                <span class="xp-earned" id="xpEarned">+15 ⭐</span>
+                            </div>
+                        </div>
+                        <a href="dashboard.html" class="return-button">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script src="app.js"></script>
+    <script>
+        createStarfield();
+        displayCurrentXP();
+        
+        // ===== GAME 1: VOLUME CONTROLLER =====
+        const volumeCanvas = document.getElementById('volumeWaveCanvas');
+        const volumeCtx = volumeCanvas.getContext('2d');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volLevel = document.getElementById('volLevel');
+        const volDb = document.getElementById('volDb');
+        const volExample = document.getElementById('volExample');
+        const volWaveSize = document.getElementById('volWaveSize');
+        
+        let volumeTime = 0;
+        
+        const volumeData = {
+            0: { level: 'SILENT', db: '0 dB', example: 'No Sound', waveSize: 'None', amplitude: 0 },
+            1: { level: 'VERY QUIET', db: '20 dB', example: 'Breathing', waveSize: 'Tiny', amplitude: 10 },
+            2: { level: 'QUIET', db: '30 dB', example: 'Whisper', waveSize: 'Small', amplitude: 20 },
+            3: { level: 'SOFT', db: '50 dB', example: 'Quiet Room', waveSize: 'Small-Med', amplitude: 35 },
+            4: { level: 'NORMAL', db: '60 dB', example: 'Talking', waveSize: 'Medium', amplitude: 50 },
+            5: { level: 'MEDIUM', db: '70 dB', example: 'Vacuum', waveSize: 'Medium', amplitude: 60 },
+            6: { level: 'LOUD', db: '85 dB', example: 'Blender', waveSize: 'Big', amplitude: 70 },
+            7: { level: 'VERY LOUD', db: '100 dB', example: 'Lawn Mower', waveSize: 'Very Big', amplitude: 80 },
+            8: { level: 'REALLY LOUD', db: '110 dB', example: 'Rock Concert', waveSize: 'Huge', amplitude: 90 },
+            9: { level: 'PAINFUL', db: '120 dB', example: 'Siren', waveSize: 'Massive', amplitude: 95 },
+            10: { level: '⚠️ DANGER', db: '140 dB', example: 'Jet Engine', waveSize: 'EXTREME', amplitude: 100 }
+        };
+        
+        function animateVolumeWave() {
+            const value = parseInt(volumeSlider.value);
+            const data = volumeData[value];
+            
+            volLevel.textContent = data.level;
+            volDb.textContent = data.db;
+            volExample.textContent = data.example;
+            volWaveSize.textContent = data.waveSize;
+            
+            volumeCtx.clearRect(0, 0, volumeCanvas.width, volumeCanvas.height);
+            
+            // Draw center line
+            volumeCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            volumeCtx.lineWidth = 1;
+            volumeCtx.beginPath();
+            volumeCtx.moveTo(0, volumeCanvas.height / 2);
+            volumeCtx.lineTo(volumeCanvas.width, volumeCanvas.height / 2);
+            volumeCtx.stroke();
+            
+            if (data.amplitude > 0) {
+                // Color based on volume
+                let color;
+                if (value <= 3) color = '#00ff88';
+                else if (value <= 6) color = '#ffaa00';
+                else if (value <= 8) color = '#ff6600';
+                else color = '#ff0066';
+                
+                volumeCtx.strokeStyle = color;
+                volumeCtx.lineWidth = 4;
+                volumeCtx.beginPath();
+                
+                for (let x = 0; x < volumeCanvas.width; x++) {
+                    const y = volumeCanvas.height / 2 + data.amplitude * Math.sin((x * 0.02) - volumeTime);
+                    if (x === 0) volumeCtx.moveTo(x, y);
+                    else volumeCtx.lineTo(x, y);
+                }
+                volumeCtx.stroke();
+            }
+            
+            volumeTime += 0.05;
+            requestAnimationFrame(animateVolumeWave);
+        }
+        
+        animateVolumeWave();
+        
+        // ===== GAME 2: VOLUME SORTER =====
+        const sortableSounds = document.getElementById('sortableSounds');
+        const checkOrderBtn = document.getElementById('checkOrderBtn');
+        const orderResult = document.getElementById('orderResult');
+        
+        // Make sounds draggable
+        let draggedElement = null;
+        
+        sortableSounds.addEventListener('dragstart', (e) => {
+            if (e.target.classList.contains('sort-sound')) {
+                draggedElement = e.target;
+                e.target.classList.add('dragging');
+            }
+        });
+        
+        sortableSounds.addEventListener('dragend', (e) => {
+            if (e.target.classList.contains('sort-sound')) {
+                e.target.classList.remove('dragging');
+            }
+        });
+        
+        sortableSounds.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            const afterElement = getDragAfterElement(sortableSounds, e.clientY);
+            if (afterElement == null) {
+                sortableSounds.appendChild(draggedElement);
+            } else {
+                sortableSounds.insertBefore(draggedElement, afterElement);
+            }
+        });
+        
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.sort-sound:not(.dragging)')];
+            
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+        
+        checkOrderBtn.addEventListener('click', () => {
+            const sounds = sortableSounds.querySelectorAll('.sort-sound');
+            const order = Array.from(sounds).map(s => parseInt(s.dataset.volume));
+            
+            let correct = true;
+            for (let i = 0; i < order.length - 1; i++) {
+                if (order[i] > order[i + 1]) {
+                    correct = false;
+                    break;
+                }
+            }
+            
+            if (correct) {
+                orderResult.innerHTML = '<span style="color: #00ff88; font-size: 20px;">✓ Perfect! You got them in the right order!</span>';
+                sounds.forEach(s => s.classList.add('correct-order'));
+            } else {
+                orderResult.innerHTML = '<span style="color: #ff3366; font-size: 20px;">✗ Not quite! Try again!</span>';
+            }
+        });
+        
+        // ===== GAME 3: VOLUME QUIZ =====
+        let volQuizScore = 0;
+        const volQuizButtons = document.querySelectorAll('.vol-quiz-btn');
+        
+        volQuizButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const card = this.closest('.vol-quiz-card');
+                const buttons = card.querySelectorAll('.vol-quiz-btn');
+                const feedback = card.querySelector('.vol-quiz-feedback');
+                
+                if (buttons[0].classList.contains('answered')) return;
+                
+                buttons.forEach(b => b.classList.add('answered'));
+                
+                if (this.dataset.answer === 'correct') {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<span style="color: #00ff88;">✓ Correct!</span>';
+                    volQuizScore++;
+                } else {
+                    this.classList.add('wrong');
+                    feedback.innerHTML = '<span style="color: #ff3366;">✗ Try again!</span>';
+                }
+                
+                document.getElementById('volQuizScore').textContent = volQuizScore;
+            });
+        });
+        
+        // ===== QUIZ =====
+        let currentQuestion = 1;
+        let correctAnswers = 0;
+        
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                if (this.classList.contains('selected')) return;
+                
+                const isCorrect = this.dataset.answer === 'correct';
+                const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
+                const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
+                
+                allOptions.forEach(opt => opt.classList.add('selected'));
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
+                    correctAnswers++;
+                } else {
+                    this.classList.add('wrong');
+                    feedback.innerHTML = '<span class="wrong-feedback">Not quite!</span>';
+                }
+                
+                setTimeout(() => {
+                    if (currentQuestion < 3) {
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
+                        currentQuestion++;
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+                    } else {
+                        document.querySelector(`[data-question="3"]`).classList.add('hidden');
+                        showResults();
+                    }
+                }, 1500);
+            });
+        });
+        
+        function showResults() {
+            const resultsDiv = document.getElementById('quizResults');
+            const finalScore = document.getElementById('finalScore');
+            const resultsMessage = document.getElementById('resultsMessage');
+            const xpEarned = document.getElementById('xpEarned');
+            
+            finalScore.textContent = `${correctAnswers}/3`;
+            
+            let stars = 0;
+            let message = '';
+            
+            if (correctAnswers === 3) {
+                stars = 15;
+                message = '🌟 Perfect! You know all about volume!';
+            } else if (correctAnswers === 2) {
+                stars = 12;
+                message = '😊 Great job learning about loud and quiet!';
+            } else {
+                stars = 10;
+                message = '👍 Good try! Play the games again!';
+            }
+            
+            xpEarned.textContent = `+${stars} ⭐`;
+            resultsMessage.textContent = message;
+            
+            saveProgress('lesson4', stars, correctAnswers >= 2, correctAnswers);
+            
+            resultsDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
