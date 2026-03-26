@@ -18,270 +18,83 @@
     </nav>
     
     <div class="lesson-container">
-        <section class="learning-section">
-            <div class="mission-header">
-                <h1>Sonic Booms</h1>
-                <p class="mission-objective">Discover what makes that LOUD boom!</p>
-            </div>
-            
-            <!-- INTRO -->
-            <div class="content-card">
-                <h2>💥 What is a Sonic Boom?</h2>
-                <p class="simple-text">
-                    A <strong>sonic boom</strong> is the LOUD sound you hear when something 
-                    flies FASTER than the speed of sound!
-                </p>
-                
-                <div class="big-idea-box">
-                    <div class="big-idea-icon">💡</div>
-                    <div class="big-idea-text">
-                        <strong>Big Idea:</strong> When you go faster than sound, you create 
-                        a SHOCKWAVE! That shockwave is the sonic boom you hear on the ground!
-                    </div>
-                </div>
-                
-                <div class="example-grid">
-                    <div class="example-card">
-                        <div class="example-emoji">〰️</div>
-                        <h3>Normal Sound</h3>
-                        <p>Waves spread out in circles</p>
-                    </div>
-                    <div class="example-card">
-                        <div class="example-emoji">📐</div>
-                        <h3>Shockwave Cone</h3>
-                        <p>Waves pile up into a cone!</p>
-                    </div>
-                    <div class="example-card">
-                        <div class="example-emoji">💥</div>
-                        <h3>The BOOM!</h3>
-                        <p>The cone hits the ground!</p>
-                    </div>
-                    <div class="example-card">
-                        <div class="example-emoji">🏠</div>
-                        <h3>On Ground</h3>
-                        <p>Sounds like thunder!</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- HOW IT WORKS -->
-            <div class="content-card">
-                <h2>🔬 How Sonic Booms Work</h2>
-                <p class="simple-text">
-                    When something flies slower than sound, sound waves move ahead of it. 
-                    But when it goes FASTER than sound, it catches up to its own sound waves!
-                </p>
-                
-                <div class="boom-steps">
-                    <div class="boom-step">
-                        <div class="step-icon">1️⃣</div>
-                        <h4>Plane Makes Sound</h4>
-                        <p>The plane creates sound waves as it flies</p>
-                    </div>
-                    <div class="boom-step">
-                        <div class="step-icon">2️⃣</div>
-                        <h4>Goes Faster Than Sound</h4>
-                        <p>The plane catches up to its own sound waves!</p>
-                    </div>
-                    <div class="boom-step">
-                        <div class="step-icon">3️⃣</div>
-                        <h4>Waves Pile Up</h4>
-                        <p>Sound waves stack up into a cone shape</p>
-                    </div>
-                    <div class="boom-step">
-                        <div class="step-icon">4️⃣</div>
-                        <h4>BOOM!</h4>
-                        <p>The shockwave cone sweeps across the ground - BOOM!</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- GAME 1: BOOM CREATOR -->
-            <div class="content-card interactive-card">
-                <h2>🎮 GAME 1: Sonic Boom Creator!</h2>
-                <p class="simple-text">
-                    Click the plane at different speeds to create sonic booms!
-                </p>
-                
-                <div class="boom-creator">
-                    <canvas id="boomCanvas" width="800" height="400"></canvas>
-                    
-                    <div class="boom-controls">
-                        <div class="boom-speed-buttons">
-                            <button class="boom-speed-btn" data-speed="0.5">
-                                <span class="speed-mach">Mach 0.5</span>
-                                <span class="speed-desc">Subsonic</span>
-                            </button>
-                            <button class="boom-speed-btn" data-speed="0.9">
-                                <span class="speed-mach">Mach 0.9</span>
-                                <span class="speed-desc">Almost there!</span>
-                            </button>
-                            <button class="boom-speed-btn" data-speed="1.5">
-                                <span class="speed-mach">Mach 1.5</span>
-                                <span class="speed-desc">BOOM!</span>
-                            </button>
-                            <button class="boom-speed-btn" data-speed="2.5">
-                                <span class="speed-mach">Mach 2.5</span>
-                                <span class="speed-desc">BIG BOOM!</span>
-                            </button>
-                        </div>
-                        
-                        <div class="boom-info" id="boomInfo">
-                            Click a speed to see what happens!
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- GAME 2: BOOM FACTS MATCHER -->
-            <div class="content-card interactive-card">
-                <h2>🎮 GAME 2: Sonic Boom Facts!</h2>
-                <p class="simple-text">
-                    Match each fact to TRUE or FALSE!
-                </p>
-                
-                <div class="boom-facts-game">
-                    <div class="fact-card">
-                        <p class="fact-statement">You hear TWO booms - one from the nose and one from the tail.</p>
-                        <div class="fact-buttons">
-                            <button class="fact-btn" data-correct="true">TRUE</button>
-                            <button class="fact-btn" data-correct="false">FALSE</button>
-                        </div>
-                        <div class="fact-feedback"></div>
-                    </div>
-                    
-                    <div class="fact-card">
-                        <p class="fact-statement">Sonic booms can break windows.</p>
-                        <div class="fact-buttons">
-                            <button class="fact-btn" data-correct="true">TRUE</button>
-                            <button class="fact-btn" data-correct="false">FALSE</button>
-                        </div>
-                        <div class="fact-feedback"></div>
-                    </div>
-                    
-                    <div class="fact-card">
-                        <p class="fact-statement">You only hear a sonic boom when the plane breaks the sound barrier.</p>
-                        <div class="fact-buttons">
-                            <button class="fact-btn" data-correct="false">TRUE</button>
-                            <button class="fact-btn" data-correct="true">FALSE</button>
-                        </div>
-                        <div class="fact-feedback"></div>
-                    </div>
-                    
-                    <div class="fact-card">
-                        <p class="fact-statement">NASA is working on quiet supersonic planes.</p>
-                        <div class="fact-buttons">
-                            <button class="fact-btn" data-correct="true">TRUE</button>
-                            <button class="fact-btn" data-correct="false">FALSE</button>
-                        </div>
-                        <div class="fact-feedback"></div>
-                    </div>
-                </div>
-                
-                <div class="fact-score">
-                    Score: <span id="factScore">0</span> / 4
-                </div>
-            </div>
-            
-            <!-- GAME 3: BOOM SIMULATOR -->
-            <div class="content-card interactive-card">
-                <h2>🎮 GAME 3: Boom Volume Simulator!</h2>
-                <p class="simple-text">
-                    See how LOUD sonic booms are compared to other sounds!
-                </p>
-                
-                <div class="boom-volume-game">
-                    <div class="volume-comparison">
-                        <div class="compare-item" data-db="60">
-                            <div class="compare-icon">🗣️</div>
-                            <div class="compare-name">Normal Talk</div>
-                            <div class="compare-bar" style="width: 30%;"></div>
-                            <div class="compare-db">60 dB</div>
-                        </div>
-                        <div class="compare-item" data-db="100">
-                            <div class="compare-icon">🎸</div>
-                            <div class="compare-name">Rock Concert</div>
-                            <div class="compare-bar" style="width: 50%;"></div>
-                            <div class="compare-db">100 dB</div>
-                        </div>
-                        <div class="compare-item highlight" data-db="150">
-                            <div class="compare-icon">💥</div>
-                            <div class="compare-name">SONIC BOOM</div>
-                            <div class="compare-bar" style="width: 75%;"></div>
-                            <div class="compare-db">150 dB</div>
-                        </div>
-                        <div class="compare-item" data-db="180">
-                            <div class="compare-icon">🚀</div>
-                            <div class="compare-name">Rocket Launch</div>
-                            <div class="compare-bar" style="width: 90%;"></div>
-                            <div class="compare-db">180 dB</div>
-                        </div>
-                    </div>
-                    
-                    <button class="play-boom-btn" id="playBoomBtn">
-                        <span class="boom-emoji">💥</span>
-                        PLAY SONIC BOOM!
-                    </button>
-                    
-                    <div class="boom-animation" id="boomAnimation"></div>
-                </div>
-            </div>
-            
-            <!-- FUN FACTS -->
-            <div class="content-card">
-                <h2>🎯 Amazing Sonic Boom Facts!</h2>
-                <div class="hearing-steps">
-                    <div class="hear-step">
-                        <div class="step-num">💥</div>
-                        <div class="step-content">
-                            <h4>Double Boom</h4>
-                            <p>You actually hear TWO booms - one from the nose and one from the tail of the plane!</p>
-                        </div>
-                    </div>
-                    <div class="hear-step">
-                        <div class="step-num">📏</div>
-                        <div class="step-content">
-                            <h4>The Faster, The Louder</h4>
-                            <p>The faster the plane goes, the LOUDER the sonic boom! Mach 3 makes a bigger boom than Mach 1.5.</p>
-                        </div>
-                    </div>
-                    <div class="hear-step">
-                        <div class="step-num">🏠</div>
-                        <div class="step-content">
-                            <h4>Shake Buildings</h4>
-                            <p>Sonic booms are so powerful they can rattle windows and shake buildings!</p>
-                        </div>
-                    </div>
-                    <div class="hear-step">
-                        <div class="step-num">✈️</div>
-                        <div class="step-content">
-                            <h4>NASA's X-59</h4>
-                            <p>NASA is building a plane that makes a quiet "thump" instead of a loud boom!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- MINIMAL INTRO -->
+        <div class="mission-header">
+            <h1>💥 Create Sonic Booms!</h1>
+            <p class="mission-objective">Fly faster than sound and watch the shockwaves!</p>
+        </div>
         
-        <!-- QUIZ -->
+        <!-- MAIN GAME SECTION -->
+        <div class="content-card game-main">
+            <div class="game-instructions">
+                <h2>🎮 How to Play:</h2>
+                <div class="instruction-steps">
+                    <span class="step-badge">1</span> <strong>Click and drag</strong> to set plane direction and speed
+                    <span class="step-badge">2</span> <strong>Release</strong> to launch the plane
+                    <span class="step-badge">3</span> Watch what happens when you fly <strong>faster than sound!</strong>
+                </div>
+            </div>
+            
+            <!-- INTERACTIVE CANVAS GAME -->
+            <div id="canvasesdiv" class="game-canvas-container">
+                <canvas id="layer1" width="768" height="576"></canvas>
+            </div>
+            
+            <!-- SPEED INDICATOR -->
+            <div class="speed-indicator">
+                <div class="speed-label">Flight Speed:</div>
+                <div class="speed-bars">
+                    <div class="speed-bar subsonic">
+                        <span class="bar-label">Subsonic</span>
+                        <div class="bar-fill" id="subsonicBar"></div>
+                    </div>
+                    <div class="speed-bar transonic">
+                        <span class="bar-label">⚡ Mach 1</span>
+                        <div class="bar-fill" id="transonicBar"></div>
+                    </div>
+                    <div class="speed-bar supersonic">
+                        <span class="bar-label">Supersonic!</span>
+                        <div class="bar-fill" id="supersonicBar"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- QUICK FACTS -->
+            <div class="game-facts">
+                <div class="fact-box">
+                    <div class="fact-icon">🔵</div>
+                    <div class="fact-text"><strong>Blue rings</strong> = sound waves spreading out</div>
+                </div>
+                <div class="fact-box">
+                    <div class="fact-icon">🟢</div>
+                    <div class="fact-text"><strong>Green arrow</strong> = flying slower than sound</div>
+                </div>
+                <div class="fact-box">
+                    <div class="fact-icon">🔴</div>
+                    <div class="fact-text"><strong>Red arrow</strong> = supersonic - BOOM!</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- QUICK QUIZ -->
         <section class="quiz-section">
             <div class="content-card quiz-card">
-                <h2>🧠 Mission Quiz!</h2>
-                <p class="quiz-intro">Answer these questions to complete the mission!</p>
+                <h2>🧠 Quick Check!</h2>
+                <p class="quiz-intro">3 quick questions to complete this mission!</p>
                 
                 <div id="quizContainer">
                     <div class="quiz-question" data-question="1">
                         <h3>Question 1 of 3</h3>
                         <p class="question-text">What causes a sonic boom?</p>
                         <div class="quiz-options">
+                            <button class="quiz-option" data-answer="correct">
+                                Flying faster than sound
+                            </button>
                             <button class="quiz-option" data-answer="wrong">
                                 The plane's engine
                             </button>
-                            <button class="quiz-option" data-answer="correct">
-                                A shockwave when flying faster than sound
-                            </button>
                             <button class="quiz-option" data-answer="wrong">
-                                The plane breaking apart
+                                Breaking the plane apart
                             </button>
                         </div>
                         <div class="quiz-feedback"></div>
@@ -289,16 +102,16 @@
                     
                     <div class="quiz-question hidden" data-question="2">
                         <h3>Question 2 of 3</h3>
-                        <p class="question-text">What shape do sound waves make when something goes supersonic?</p>
+                        <p class="question-text">What are the blue rings in the game?</p>
                         <div class="quiz-options">
                             <button class="quiz-option" data-answer="wrong">
-                                A circle
+                                Smoke from the plane
                             </button>
                             <button class="quiz-option" data-answer="correct">
-                                A cone
+                                Sound waves spreading out
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                A square
+                                The plane's path
                             </button>
                         </div>
                         <div class="quiz-feedback"></div>
@@ -306,16 +119,16 @@
                     
                     <div class="quiz-question hidden" data-question="3">
                         <h3>Question 3 of 3</h3>
-                        <p class="question-text">How loud is a sonic boom?</p>
+                        <p class="question-text">When does the arrow turn RED?</p>
                         <div class="quiz-options">
                             <button class="quiz-option" data-answer="wrong">
-                                About as loud as talking
+                                When flying very slow
                             </button>
                             <button class="quiz-option" data-answer="correct">
-                                About 150 dB - very loud!
+                                When flying faster than sound
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                Silent - you can't hear it
+                                When turning
                             </button>
                         </div>
                         <div class="quiz-feedback"></div>
@@ -345,163 +158,252 @@
         createStarfield();
         displayCurrentXP();
         
-        // ===== GAME 1: BOOM CREATOR =====
-        const boomCanvas = document.getElementById('boomCanvas');
-        const boomCtx = boomCanvas.getContext('2d');
-        const boomSpeedButtons = document.querySelectorAll('.boom-speed-btn');
-        const boomInfo = document.getElementById('boomInfo');
+        // ===== LOAD IMAGES =====
+        var bgImage = new Image();
+        bgImage.src = 'data:image/svg+xml;base64,' + btoa(`
+            <svg width="768" height="576" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#1a4d7a;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#2c6fa3;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect width="768" height="576" fill="url(#skyGrad)"/>
+                <text x="384" y="300" font-family="Orbitron" font-size="24" fill="rgba(255,255,255,0.3)" text-anchor="middle">CLICK AND DRAG TO FLY</text>
+            </svg>
+        `);
         
-        let currentSpeed = 0.5;
-        let planeX = 100;
-        let animationTime = 0;
+        var pImage = new Image();
+        pImage.src = 'data:image/svg+xml;base64,' + btoa(`
+            <svg width="58" height="40" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 2,20 L 45,20 L 56,15 L 56,25 L 45,20 M 20,20 L 20,5 L 30,20 L 20,35 L 20,20" fill="#ff3366" stroke="#fff" stroke-width="2"/>
+                <circle cx="15" cy="20" r="4" fill="#00ffff"/>
+            </svg>
+        `);
         
-        boomSpeedButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
-                currentSpeed = parseFloat(this.dataset.speed);
-                planeX = 100;
-                animationTime = 0;
-                
-                boomSpeedButtons.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                
-                if (currentSpeed < 1.0) {
-                    boomInfo.innerHTML = `
-                        <strong style="color: #00ff88;">SUBSONIC</strong><br>
-                        Flying slower than sound. Sound waves move ahead of the plane.
-                    `;
-                } else {
-                    boomInfo.innerHTML = `
-                        <strong style="color: #ff3366;">SUPERSONIC - SONIC BOOM!</strong><br>
-                        Flying faster than sound! Watch the shockwave cone form!
-                    `;
-                }
-            });
-        });
+        // ===== SONIC BOOM SIMULATOR CODE =====
+        var layer1 = document.getElementById("layer1");
+        var ctx1 = layer1.getContext("2d");
+        var WIDTH = 768, HEIGHT = 576;
+        var w1=3, w2=6, w3=20;
+        var x0 = -1, y0 = -1, x = -1, y = -1, theta = 0;
+        var vx, vy, v, vs = 200;
+        var tt, ttmax = 15;
+        var myRun, drawPlane;
+        var xRing = new Array(52), yRing = new Array(52), nRings = 0, sFact = 100.;
+        var inter = setInterval(drawAll, 40);
+        var iControl = 0, numInter = 0;
+        var canvasesdiv = document.getElementById('canvasesdiv');
         
-        function animateBoomCreator() {
-            boomCtx.clearRect(0, 0, boomCanvas.width, boomCanvas.height);
-            
-            // Draw plane
-            boomCtx.font = '40px Arial';
-            boomCtx.fillText('✈️', planeX, boomCanvas.height / 2);
-            
-            if (currentSpeed < 1.0) {
-                // Subsonic - normal sound waves
-                for (let i = 0; i < 5; i++) {
-                    boomCtx.strokeStyle = `rgba(0, 255, 255, ${0.6 - i * 0.1})`;
-                    boomCtx.lineWidth = 2;
-                    boomCtx.beginPath();
-                    boomCtx.arc(planeX + 20, boomCanvas.height / 2, 30 + i * 40 + animationTime % 40, 0, Math.PI * 2);
-                    boomCtx.stroke();
-                }
-            } else {
-                // Supersonic - shockwave cone
-                const coneAngle = Math.asin(1 / currentSpeed);
-                const coneLength = 300;
-                
-                // Draw shockwave cone
-                boomCtx.strokeStyle = 'rgba(255, 51, 102, 0.8)';
-                boomCtx.lineWidth = 4;
-                boomCtx.beginPath();
-                boomCtx.moveTo(planeX + 20, boomCanvas.height / 2);
-                boomCtx.lineTo(
-                    planeX + 20 + coneLength * Math.cos(coneAngle),
-                    boomCanvas.height / 2 - coneLength * Math.sin(coneAngle)
-                );
-                boomCtx.moveTo(planeX + 20, boomCanvas.height / 2);
-                boomCtx.lineTo(
-                    planeX + 20 + coneLength * Math.cos(coneAngle),
-                    boomCanvas.height / 2 + coneLength * Math.sin(coneAngle)
-                );
-                boomCtx.stroke();
-                
-                // Draw pressure waves inside cone
-                for (let i = 0; i < 3; i++) {
-                    boomCtx.strokeStyle = `rgba(255, 170, 0, ${0.6 - i * 0.2})`;
-                    boomCtx.lineWidth = 3;
-                    const offset = (animationTime * 2 + i * 50) % 150;
-                    boomCtx.beginPath();
-                    boomCtx.moveTo(planeX + 20 + offset, boomCanvas.height / 2 - offset * Math.tan(coneAngle));
-                    boomCtx.lineTo(planeX + 20 + offset, boomCanvas.height / 2 + offset * Math.tan(coneAngle));
-                    boomCtx.stroke();
-                }
-                
-                // Draw boom text
-                if (animationTime % 60 < 30) {
-                    boomCtx.fillStyle = '#ff3366';
-                    boomCtx.font = 'bold 30px "Orbitron"';
-                    boomCtx.fillText('BOOM!', planeX + 200, boomCanvas.height / 2 + 80);
-                }
-            }
-            
-            animationTime++;
-            requestAnimationFrame(animateBoomCreator);
+        layer1.onmousedown = myDown;
+        layer1.onmouseup = myUp;
+        layer1.addEventListener("touchstart", myTouchStart, false);
+        layer1.addEventListener("touchmove", myTouchMove, false);
+        layer1.addEventListener("touchend", myTouchEnd, false);
+        
+        init();
+        
+        function init() {
+            myRun = false;
+            drawPlane = false;
+            drawAll();
         }
         
-        animateBoomCreator();
-        
-        // ===== GAME 2: FACTS MATCHER =====
-        let factScore = 0;
-        const factButtons = document.querySelectorAll('.fact-btn');
-        
-        factButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const card = this.closest('.fact-card');
-                const buttons = card.querySelectorAll('.fact-btn');
-                const feedback = card.querySelector('.fact-feedback');
-                
-                if (buttons[0].classList.contains('answered')) return;
-                
-                buttons.forEach(b => b.classList.add('answered'));
-                
-                if (this.dataset.correct === 'true') {
-                    this.classList.add('correct');
-                    feedback.innerHTML = '<span style="color: #00ff88;">✓ Correct!</span>';
-                    factScore++;
-                } else {
-                    this.classList.add('wrong');
-                    feedback.innerHTML = '<span style="color: #ff3366;">✗ Not quite!</span>';
-                }
-                
-                document.getElementById('factScore').textContent = factScore;
-            });
-        });
-        
-        // ===== GAME 3: BOOM VOLUME SIMULATOR =====
-        const playBoomBtn = document.getElementById('playBoomBtn');
-        const boomAnimation = document.getElementById('boomAnimation');
-        
-        playBoomBtn.addEventListener('click', function() {
-            // Create animated boom effect
-            boomAnimation.innerHTML = '';
+        function drawAll() {
+            var allLoaded = bgImage.complete && pImage.complete;
+            iControl++;
             
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const wave = document.createElement('div');
-                    wave.className = 'boom-wave';
-                    wave.style.animationDelay = i * 0.1 + 's';
-                    boomAnimation.appendChild(wave);
-                }, i * 100);
+            if (allLoaded && numInter == 0 && myRun == false) {
+                numInter = iControl;
+                inter = window.clearInterval(inter);
+            }
+            if (myRun) {
+                inter = window.clearInterval(inter);
+                inter = setInterval(drawAll, 40);
             }
             
-            // Add text
-            setTimeout(() => {
-                boomAnimation.innerHTML += `
-                    <div style="font-size: 60px; animation: boomPop 0.5s ease-out;">
-                        💥 BOOM!
-                    </div>
-                `;
-            }, 300);
+            ctx1.clearRect(0, 0, WIDTH, HEIGHT);
+            ctx1.drawImage(bgImage, 0, 0, WIDTH, HEIGHT);
             
-            // Clear after animation
-            setTimeout(() => {
-                boomAnimation.innerHTML = '';
-            }, 3000);
-        });
+            if (drawPlane && !myRun) {
+                vx = x - x0;
+                vy = y - y0;
+                v = Math.sqrt(vx*vx + vy*vy);
+                theta = Math.atan2(vy, vx);
+                xRing[1] = Math.round(x0);
+                yRing[1] = Math.round(y0);
+                nRings = 1;
+                
+                // Update speed indicator
+                updateSpeedIndicator(v / vs);
+            }
+            
+            if (drawPlane) {
+                ctx1.save();
+                ctx1.translate(x0, y0);
+                ctx1.rotate(theta);
+                ctx1.drawImage(pImage, -29, -20, 58, 40);
+                ctx1.restore();
+                
+                writeText(500, 30, 'v/v', 'white', 'italic 24px Orbitron', ctx1);
+                writeText(527, 35, 'sound', 'white', '18px Orbitron', ctx1);
+                writeText(580, 30, '= ' + Math.round(v/vs*100)/100, 'white', '24px Orbitron', ctx1);
+                
+                if (!myRun) {
+                    ctx1.strokeStyle = 'white';
+                    if (v > vs) {
+                        ctx1.fillStyle = 'rgba(255, 51, 102, 0.7)';
+                    } else {
+                        ctx1.fillStyle = 'rgba(0, 255, 136, 0.7)';
+                    }
+                    drawArrow(x0, y0, x, y, ctx1);
+                }
+            }
+            
+            if (x0 < 50 || x0 > WIDTH-50 || y0 < 50 || y0 > HEIGHT-50) {
+                if (drawPlane && nRings > 10) {
+                    inter = window.clearInterval(inter);
+                    myRun = false;
+                }
+            }
+            
+            if (myRun == true) {
+                x0 = x0 + vx/sFact;
+                y0 = y0 + vy/sFact;
+                tt++;
+                if (tt == ttmax) {
+                    nRings++;
+                    if (nRings >= 30) {
+                        inter = window.clearInterval(inter);
+                        myRun = false;
+                        x = x0;
+                        y = y0;
+                    }
+                    tt = 0;
+                    xRing[nRings] = Math.round(x0);
+                    yRing[nRings] = Math.round(y0);
+                }
+            }
+            
+            if (tt + nRings > 1) {
+                ctx1.beginPath();
+                ctx1.lineWidth = 6;
+                ctx1.strokeStyle = 'rgba(0, 170, 255, 0.6)';
+                for (var i = 1; i <= nRings; i++) {
+                    rad = 3 + Math.round((tt + ttmax*(nRings-i)) * vs/sFact);
+                    ctx1.moveTo(xRing[i] + rad, yRing[i]);
+                    ctx1.arc(xRing[i], yRing[i], rad, 0, 2*Math.PI, false);
+                }
+                ctx1.stroke();
+            }
+        }
+        
+        function myMove(e) {
+            x = e.pageX - canvasesdiv.offsetLeft;
+            y = e.pageY - canvasesdiv.offsetTop;
+            drawAll();
+        }
+        
+        function myDown(e) {
+            x0 = e.pageX - canvasesdiv.offsetLeft;
+            y0 = e.pageY - canvasesdiv.offsetTop;
+            x = x0;
+            y = y0;
+            theta = 0;
+            nRings = 0;
+            tt = 0;
+            myRun = false;
+            drawPlane = true;
+            layer1.onmousemove = myMove;
+            drawAll();
+        }
+        
+        function myUp() {
+            myRun = true;
+            layer1.onmousemove = null;
+            drawAll();
+        }
+        
+        function myTouchMove(event) {
+            event.preventDefault();
+            x = event.targetTouches[0].pageX - canvasesdiv.offsetLeft;
+            y = event.targetTouches[0].pageY - canvasesdiv.offsetTop;
+            drawAll();
+        }
+        
+        function myTouchStart(event) {
+            event.preventDefault();
+            x0 = event.targetTouches[0].pageX - canvasesdiv.offsetLeft;
+            y0 = event.targetTouches[0].pageY - canvasesdiv.offsetTop;
+            x = x0;
+            y = y0;
+            theta = 0;
+            nRings = 0;
+            tt = 0;
+            myRun = false;
+            drawPlane = true;
+            drawAll();
+        }
+        
+        function myTouchEnd(event) {
+            event.preventDefault();
+            myRun = true;
+            drawAll();
+        }
+        
+        function writeText(xT, yT, theText, theColor, theFont, theContext) {
+            theContext.fillStyle = theColor;
+            theContext.strokeStyle = theColor;
+            theContext.font = theFont;
+            theContext.fillText(theText, xT, yT);
+        }
+        
+        function drawArrow(tailX, tailY, headX, headY, theContext) {
+            var theta = Math.atan((tailY-headY)/(tailX-headX));
+            if ((tailX-headX) >= 0) theta += Math.PI;
+            var s = Math.sin(theta);
+            var c = Math.cos(theta);
+            var sw1 = s*w1, sw2 = s*w2, sw3 = s*w3;
+            var cw1 = c*w1, cw2 = c*w2, cw3 = c*w3;
+            
+            theContext.beginPath();
+            theContext.moveTo(tailX-sw1, tailY+cw1);
+            theContext.lineTo(headX-cw3-sw1, headY-sw3+cw1);
+            theContext.lineTo(headX-cw3-sw2, headY-sw3+cw2);
+            theContext.lineTo(headX, headY);
+            theContext.lineTo(headX-cw3+sw2, headY-sw3-cw2);
+            theContext.lineTo(headX-cw3+sw1, headY-sw3-cw1);
+            theContext.lineTo(tailX+sw1, tailY-cw1);
+            theContext.lineTo(tailX-sw1, tailY+cw1);
+            theContext.closePath();
+            theContext.lineWidth = 3;
+            theContext.stroke();
+            theContext.fill();
+        }
+        
+        function updateSpeedIndicator(ratio) {
+            const subBar = document.getElementById('subsonicBar');
+            const tranBar = document.getElementById('transonicBar');
+            const superBar = document.getElementById('supersonicBar');
+            
+            if (ratio < 0.8) {
+                subBar.style.width = (ratio / 0.8 * 100) + '%';
+                tranBar.style.width = '0%';
+                superBar.style.width = '0%';
+            } else if (ratio < 1.2) {
+                subBar.style.width = '100%';
+                tranBar.style.width = ((ratio - 0.8) / 0.4 * 100) + '%';
+                superBar.style.width = '0%';
+            } else {
+                subBar.style.width = '100%';
+                tranBar.style.width = '100%';
+                superBar.style.width = Math.min((ratio - 1.2) * 50, 100) + '%';
+            }
+        }
         
         // ===== QUIZ =====
-        let currentQuestion = 1;
-        let correctAnswers = 0;
+        let quizCurrentQuestion = 1;
+        let quizCorrectAnswers = 0;
         
         document.querySelectorAll('.quiz-option').forEach(option => {
             option.addEventListener('click', function() {
@@ -516,51 +418,51 @@
                 if (isCorrect) {
                     this.classList.add('correct');
                     feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
-                    correctAnswers++;
+                    quizCorrectAnswers++;
                 } else {
                     this.classList.add('wrong');
                     feedback.innerHTML = '<span class="wrong-feedback">Not quite!</span>';
                 }
                 
                 setTimeout(() => {
-                    if (currentQuestion < 3) {
-                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
-                        currentQuestion++;
-                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+                    if (quizCurrentQuestion < 3) {
+                        document.querySelector(`[data-question="${quizCurrentQuestion}"]`).classList.add('hidden');
+                        quizCurrentQuestion++;
+                        document.querySelector(`[data-question="${quizCurrentQuestion}"]`).classList.remove('hidden');
                     } else {
                         document.querySelector(`[data-question="3"]`).classList.add('hidden');
-                        showResults();
+                        showQuizResults();
                     }
                 }, 1500);
             });
         });
         
-        function showResults() {
+        function showQuizResults() {
             const resultsDiv = document.getElementById('quizResults');
             const finalScore = document.getElementById('finalScore');
             const resultsMessage = document.getElementById('resultsMessage');
             const xpEarned = document.getElementById('xpEarned');
             
-            finalScore.textContent = `${correctAnswers}/3`;
+            finalScore.textContent = `${quizCorrectAnswers}/3`;
             
             let stars = 0;
             let message = '';
             
-            if (correctAnswers === 3) {
+            if (quizCorrectAnswers === 3) {
                 stars = 20;
-                message = '🌟 Perfect! You are a sonic boom expert!';
-            } else if (correctAnswers === 2) {
+                message = '🌟 Perfect! You understand sonic booms!';
+            } else if (quizCorrectAnswers === 2) {
                 stars = 16;
-                message = '😊 Great job learning about sonic booms!';
+                message = '😊 Great job!';
             } else {
                 stars = 12;
-                message = '👍 Good try! Play the games again!';
+                message = '👍 Good try! Play the game again!';
             }
             
             xpEarned.textContent = `+${stars} ⭐`;
             resultsMessage.textContent = message;
             
-            saveProgress('lesson7', stars, correctAnswers >= 2, correctAnswers);
+            saveProgress('lesson7', stars, quizCorrectAnswers >= 2, quizCorrectAnswers);
             
             resultsDiv.classList.remove('hidden');
         }
