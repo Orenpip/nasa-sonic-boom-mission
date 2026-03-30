@@ -28,54 +28,30 @@
             <div class="game-instructions">
                 <h2>🎮 How to Play:</h2>
                 <div class="instruction-steps">
-                    <span class="step-badge">1</span> Click <strong>"ADD THRUST"</strong> to speed up
-                    <span class="step-badge">2</span> Watch the air pressure build up
-                    <span class="step-badge">3</span> Break through <strong>Mach 1</strong> - the sound barrier!
+                    <span class="step-badge">1</span> <strong>Watch particles</strong> start clustered on the right
+                    <span class="step-badge">2</span> <strong>Move mouse left</strong> to push air with plane wings
+                    <span class="step-badge">3</span> <strong>Move fast</strong> to create sonic boom compression!
                 </div>
             </div>
             
-            <!-- INTERACTIVE SPEED GAME -->
-            <div class="barrier-game-container">
-                <canvas id="barrierCanvas" width="800" height="400"></canvas>
-                
-                <div class="game-controls">
-                    <button class="thrust-btn" id="thrustBtn">
-                        <span class="thrust-icon">🚀</span>
-                        ADD THRUST!
-                    </button>
-                    <button class="reset-btn" id="resetBtn">↺ Reset</button>
-                </div>
-                
-                <div class="mach-display">
-                    <div class="mach-meter">
-                        <div class="mach-label">CURRENT SPEED:</div>
-                        <div class="mach-number" id="machNumber">Mach 0.0</div>
-                        <div class="mach-mph" id="machMph">0 mph</div>
-                    </div>
-                    <div class="mach-gauge">
-                        <div class="gauge-fill" id="machGauge"></div>
-                        <div class="gauge-marker mach1">Mach 1</div>
-                    </div>
-                </div>
-                
-                <div class="status-display" id="statusDisplay">
-                    Click "ADD THRUST" to start!
-                </div>
+            <!-- INTERACTIVE CANVAS GAME -->
+            <div id="canvasesdiv" class="game-canvas-container">
+                <canvas id="layer1" width="800" height="400"></canvas>
             </div>
             
             <!-- QUICK FACTS -->
             <div class="game-facts">
                 <div class="fact-box">
-                    <div class="fact-icon">🟢</div>
-                    <div class="fact-text"><strong>Subsonic:</strong> Slower than sound - air flows smoothly</div>
+                    <div class="fact-icon">�</div>
+                    <div class="fact-text"><strong>Blue particles</strong> = slow-moving air molecules</div>
                 </div>
                 <div class="fact-box">
-                    <div class="fact-icon">🟡</div>
-                    <div class="fact-text"><strong>Transonic:</strong> At Mach 1 - air piles up!</div>
+                    <div class="fact-icon">🟢</div>
+                    <div class="fact-text"><strong>Green particles</strong> = medium speed (normal pressure)</div>
                 </div>
                 <div class="fact-box">
                     <div class="fact-icon">🔴</div>
-                    <div class="fact-text"><strong>Supersonic:</strong> Faster than sound - you broke through!</div>
+                    <div class="fact-text"><strong>Red particles</strong> = fast-moving (high pressure/shockwave)</div>
                 </div>
             </div>
         </div>
@@ -89,33 +65,51 @@
                 <div id="quizContainer">
                     <div class="quiz-question" data-question="1">
                         <h3>Question 1 of 3</h3>
-                        <p class="question-text">What is Mach 1?</p>
+                        <p class="question-text">What happens when you move the mouse quickly?</p>
                         <div class="quiz-options">
-                            <button class="quiz-option" data-answer="wrong">100 mph</button>
-                            <button class="quiz-option" data-answer="correct">The speed of sound</button>
-                            <button class="quiz-option" data-answer="wrong">The speed of light</button>
+                            <button class="quiz-option" data-answer="correct">
+                                Creates shockwaves (sonic boom)
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Particles stop moving
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Nothing special
+                            </button>
                         </div>
                         <div class="quiz-feedback"></div>
                     </div>
                     
                     <div class="quiz-question hidden" data-question="2">
                         <h3>Question 2 of 3</h3>
-                        <p class="question-text">What happens at the sound barrier?</p>
+                        <p class="question-text">What do the blue particles represent?</p>
                         <div class="quiz-options">
-                            <button class="quiz-option" data-answer="wrong">Nothing special</button>
-                            <button class="quiz-option" data-answer="correct">Air piles up</button>
-                            <button class="quiz-option" data-answer="wrong">Air disappears</button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Fast-moving air
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                Slow-moving air molecules
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Sound waves
+                            </button>
                         </div>
                         <div class="quiz-feedback"></div>
                     </div>
                     
                     <div class="quiz-question hidden" data-question="3">
                         <h3>Question 3 of 3</h3>
-                        <p class="question-text">What is supersonic?</p>
+                        <p class="question-text">When do particles turn red?</p>
                         <div class="quiz-options">
-                            <button class="quiz-option" data-answer="wrong">Slower than sound</button>
-                            <button class="quiz-option" data-answer="correct">Faster than sound</button>
-                            <button class="quiz-option" data-answer="wrong">Same as sound</button>
+                            <button class="quiz-option" data-answer="wrong">
+                                When moving slowly
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                When moving very fast (high pressure)
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                When stopped
+                            </button>
                         </div>
                         <div class="quiz-feedback"></div>
                     </div>
@@ -144,131 +138,151 @@
         createStarfield();
         displayCurrentXP();
         
-        // ===== BARRIER BREAKER GAME =====
-        const canvas = document.getElementById('barrierCanvas');
+        // ===== PARTICLE PRESSURE SIMULATION =====
+        const canvas = document.getElementById('layer1');
         const ctx = canvas.getContext('2d');
-        const thrustBtn = document.getElementById('thrustBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const machNumber = document.getElementById('machNumber');
-        const machMph = document.getElementById('machMph');
-        const machGauge = document.getElementById('machGauge');
-        const statusDisplay = document.getElementById('statusDisplay');
+        const WIDTH = 800, HEIGHT = 400;
+        const PARTICLE_COUNT = 400;
+        const PARTICLE_RADIUS = 5;
         
-        let jetX = 100;
-        let currentMach = 0;
-        let animationFrame;
-        
-        function drawGame() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 20; // increased for more extreme dispersion
+                this.vy = (Math.random() - 0.5) * 2;
+            }
             
-            // Background
-            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradient.addColorStop(0, '#1a4d7a');
-            gradient.addColorStop(1, '#2c6fa3');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw jet
-            ctx.save();
-            ctx.translate(jetX, canvas.height / 2);
-            
-            // Jet body
-            ctx.fillStyle = currentMach >= 1 ? '#ff3366' : '#00ffff';
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
-            ctx.lineTo(60, -15);
-            ctx.lineTo(60, 15);
-            ctx.closePath();
-            ctx.fill();
-            
-            // Wings
-            ctx.fillRect(20, -25, 30, 10);
-            ctx.fillRect(20, 15, 30, 10);
-            
-            // Cockpit
-            ctx.fillStyle = '#ffffff';
-            ctx.beginPath();
-            ctx.arc(45, 0, 8, 0, Math.PI * 2);
-            ctx.fill();
-            
-            ctx.restore();
-            
-            // Draw air pressure waves
-            if (currentMach < 0.8) {
-                // Subsonic - smooth waves
-                for (let i = 0; i < 5; i++) {
-                    ctx.strokeStyle = `rgba(0, 255, 255, ${0.3 - i * 0.05})`;
-                    ctx.lineWidth = 3;
-                    ctx.beginPath();
-                    ctx.arc(jetX + 60, canvas.height / 2, 30 + i * 40, 0, Math.PI * 2);
-                    ctx.stroke();
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                // Bounce off walls
+                if (this.x < PARTICLE_RADIUS || this.x > WIDTH - PARTICLE_RADIUS) {
+                    this.vx *= -1;
                 }
-            } else if (currentMach < 1.2) {
-                // Transonic - waves piling up
-                for (let i = 0; i < 10; i++) {
-                    ctx.strokeStyle = `rgba(255, 170, 0, ${0.8 - i * 0.08})`;
-                    ctx.lineWidth = 4;
-                    ctx.beginPath();
-                    ctx.moveTo(jetX + 60 + i * 15, canvas.height / 2 - 80);
-                    ctx.lineTo(jetX + 60 + i * 15, canvas.height / 2 + 80);
-                    ctx.stroke();
+                if (this.y < PARTICLE_RADIUS || this.y > HEIGHT - PARTICLE_RADIUS) {
+                    this.vy *= -1;
                 }
-            } else {
-                // Supersonic - shockwave cone
-                ctx.strokeStyle = 'rgba(255, 51, 102, 0.8)';
-                ctx.lineWidth = 5;
+            }
+            
+            draw() {
+                const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+                const r = Math.min(255, 100 + speed * 20);
+                const g = 150;
+                const b = 255;
+                ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
                 ctx.beginPath();
-                ctx.moveTo(jetX + 60, canvas.height / 2);
-                ctx.lineTo(jetX + 300, canvas.height / 2 - 100);
-                ctx.moveTo(jetX + 60, canvas.height / 2);
-                ctx.lineTo(jetX + 300, canvas.height / 2 + 100);
-                ctx.stroke();
-            }
-            
-            // Speed text on canvas
-            ctx.fillStyle = 'white';
-            ctx.font = 'bold 24px Orbitron';
-            ctx.fillText(`Mach ${currentMach.toFixed(1)}`, canvas.width - 150, 40);
-        }
-        
-        function updateDisplay() {
-            const mph = Math.round(currentMach * 767);
-            machNumber.textContent = `Mach ${currentMach.toFixed(1)}`;
-            machMph.textContent = `${mph} mph`;
-            
-            const gaugePercent = Math.min((currentMach / 2) * 100, 100);
-            machGauge.style.width = gaugePercent + '%';
-            
-            if (currentMach < 0.8) {
-                machGauge.style.background = 'linear-gradient(90deg, #00ff88, #00ffff)';
-                statusDisplay.innerHTML = '<strong style="color: #00ff88;">SUBSONIC</strong> - Air flows smoothly';
-            } else if (currentMach < 1.2) {
-                machGauge.style.background = 'linear-gradient(90deg, #ffaa00, #ff8800)';
-                statusDisplay.innerHTML = '<strong style="color: #ffaa00;">AT THE BARRIER!</strong> - Air piling up!';
-            } else {
-                machGauge.style.background = 'linear-gradient(90deg, #ff3366, #ff0066)';
-                statusDisplay.innerHTML = '<strong style="color: #ff3366;">💥 SUPERSONIC!</strong> - You broke through!';
+                ctx.arc(this.x, this.y, PARTICLE_RADIUS, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
         
-        thrustBtn.addEventListener('click', () => {
-            currentMach += 0.3;
-            if (currentMach > 3) currentMach = 3;
-            updateDisplay();
-            drawGame();
+        // Initialize particles on the right side
+        const particles = [];
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            const x = Math.random() * (WIDTH/2 - 100) + WIDTH/2 + 50; // right side
+            const y = Math.random() * (HEIGHT - 100) + 50;
+            particles.push(new Particle(x, y));
+        }
+        
+        let mouseX = WIDTH * 3/4; // start on right
+        let mouseY = HEIGHT / 2;
+        let prevMouseX = mouseX;
+        
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
         });
         
-        resetBtn.addEventListener('click', () => {
-            currentMach = 0;
-            jetX = 100;
-            updateDisplay();
-            drawGame();
-            statusDisplay.textContent = 'Click "ADD THRUST" to start!';
-        });
+        function animate() {
+            // Background
+            ctx.fillStyle = '#0a0a1a';
+            ctx.fillRect(0, 0, WIDTH, HEIGHT);
+            
+            // Determine direction and flip wings (reversed)
+            const direction = mouseX > prevMouseX ? -1 : mouseX < prevMouseX ? 1 : -1;
+            
+            // Define the two slanted bars (forming > or < shape based on direction)
+            const bar1 = {x1: mouseX, y1: HEIGHT/2, x2: mouseX + direction * 100, y2: 0};
+            const bar2 = {x1: mouseX, y1: HEIGHT/2, x2: mouseX + direction * 100, y2: HEIGHT};
+            
+            // Function to calculate push force from a line
+            function getPushForLine(px, py, line, force) {
+                const dx = line.x2 - line.x1;
+                const dy = line.y2 - line.y1;
+                const length = Math.sqrt(dx * dx + dy * dy);
+                if (length === 0) return {vx: 0, vy: 0};
+                
+                const dist = Math.abs(dy * px - dx * py + line.x2 * line.y1 - line.y2 * line.x1) / length;
+                if (dist < 20) {
+                    const nx = dy / length; // perpendicular x
+                    const ny = -dx / length; // perpendicular y
+                    return {vx: nx * force, vy: ny * force};
+                }
+                return {vx: 0, vy: 0};
+            }
+            
+            // Update and draw particles
+            particles.forEach(p => {
+                // Bar interaction - push from slanted bars
+                const push1 = getPushForLine(p.x, p.y, bar1, 3);
+                const push2 = getPushForLine(p.x, p.y, bar2, 3);
+                p.vx += push1.vx + push2.vx;
+                p.vy += push1.vy + push2.vy;
+                
+                p.update();
+                
+                // Limit velocities
+                p.vx = Math.max(-15, Math.min(15, p.vx));
+                p.vy = Math.max(-15, Math.min(15, p.vy));
+                
+                // Friction
+                p.vx *= 0.9;
+                p.vy *= 0.9;
+                
+                p.draw();
+            });
+            
+            // Respawn particles if too few (on right side)
+            if (particles.length < PARTICLE_COUNT * 0.5) {
+                for (let i = particles.length; i < PARTICLE_COUNT; i++) {
+                    const x = Math.random() * (WIDTH/2 - 100) + WIDTH/2 + 50;
+                    const y = Math.random() * (HEIGHT - 100) + 50;
+                    particles.push(new Particle(x, y));
+                }
+            }
+            
+            // Draw the slanted bars
+            ctx.strokeStyle = '#00ffff';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(bar1.x1, bar1.y1);
+            ctx.lineTo(bar1.x2, bar1.y2);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(bar2.x1, bar2.y1);
+            ctx.lineTo(bar2.x2, bar2.y2);
+            ctx.stroke();
+            
+            // Draw border
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, WIDTH, HEIGHT);
+            
+            // Instruction text
+            ctx.fillStyle = '#cccccc';
+            ctx.font = '18px Share Tech Mono';
+            ctx.fillText("Air starts on right | Move mouse to fly & compress air!", 20, 30);
+            
+            requestAnimationFrame(animate);
+            
+            // Update previous mouse position
+            prevMouseX = mouseX;
+        }
         
-        // Initial draw
-        drawGame();
-        updateDisplay();
+        animate();
         
         // ===== QUIZ - FIXED VERSION =====
         let quizCurrentQuestion = 1;
