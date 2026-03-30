@@ -181,7 +181,103 @@
             </svg>
         `);
         
+        // ===== PARTICLE PRESSURE SIMULATION =====
+        const canvas = document.getElementById('layer1');
+        const ctx = canvas.getContext('2d');
+        const WIDTH = 800, HEIGHT = 400;
+        const PARTICLE_COUNT = 200;
+        const PARTICLE_RADIUS = 5;
         
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 4;
+                this.vy = (Math.random() - 0.5) * 4;
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                // Bounce off walls
+                if (this.x < PARTICLE_RADIUS || this.x > WIDTH - PARTICLE_RADIUS) {
+                    this.vx *= -1;
+                }
+                if (this.y < PARTICLE_RADIUS || this.y > HEIGHT - PARTICLE_RADIUS) {
+                    this.vy *= -1;
+                }
+            }
+            
+            draw() {
+                const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+                const r = Math.min(255, 100 + speed * 20);
+                const g = 150;
+                const b = 255;
+                ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, PARTICLE_RADIUS, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        // Initialize particles
+        const particles = [];
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            const x = Math.random() * (WIDTH - 100) + 50;
+            const y = Math.random() * (HEIGHT - 100) + 50;
+            particles.push(new Particle(x, y));
+        }
+        
+        let mouseX = WIDTH / 2;
+        let mouseY = HEIGHT / 2;
+        
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+        });
+        
+        function animate() {
+            // Background
+            ctx.fillStyle = '#0a0a1a';
+            ctx.fillRect(0, 0, WIDTH, HEIGHT);
+            
+            // Update and draw particles
+            particles.forEach(p => {
+                // Mouse interaction
+                const dx = p.x - mouseX;
+                const dy = p.y - mouseY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < 60) {
+                    const force = (60 - dist) * 0.2;
+                    p.vx += (dx / dist) * force;
+                    p.vy += (dy / dist) * force;
+                }
+                
+                // Friction
+                p.vx *= 0.98;
+                p.vy *= 0.98;
+                
+                p.update();
+                p.draw();
+            });
+            
+            // Draw border
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, WIDTH, HEIGHT);
+            
+            // Instruction text
+            ctx.fillStyle = '#cccccc';
+            ctx.font = '18px Share Tech Mono';
+            ctx.fillText("Move Mouse Fast = Sonic Boom | Hover = High Pressure | Still = Ambient", 20, 30);
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
         
         // ===== QUIZ =====
         let quizCurrentQuestion = 1;
