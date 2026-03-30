@@ -139,150 +139,165 @@
         displayCurrentXP();
         
         // ===== PARTICLE PRESSURE SIMULATION =====
-        const canvas = document.getElementById('layer1');
-        const ctx = canvas.getContext('2d');
-        const WIDTH = 800, HEIGHT = 400;
-        const PARTICLE_COUNT = 400;
-        const PARTICLE_RADIUS = 5;
+        // ===== IMPROVED AERODYNAMICS SIMULATION =====
+const canvas = document.getElementById('layer1');
+const ctx = canvas.getContext('2d');
+const WIDTH = 800, HEIGHT = 400;
+const PARTICLE_COUNT = 600; // Increased for better density visualization
+const PARTICLE_RADIUS = 2.5; // Smaller particles look more like "air"
+
+class Particle {
+    constructor(x, y) {
+        this.reset(x, y);
+    }
+
+    reset(x, y) {
+        this.x = x || Math.random() * WIDTH;
+        this.y = y || Math.random() * HEIGHT;
+        // Ambient air drift (simulates jet moving forward)
+        this.vx = -1 - Math.random() * 2; 
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.accelX = 0;
+        this.accelY = 0;
+    }
+
+    update(mX, mY, mouseVX) {
+        // Apply acceleration (forces)
+        this.vx += this.accelX;
+        this.vy += this.accelY;
         
-        class Particle {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.vx = (Math.random() - 0.5) * 20; // increased for more extreme dispersion
-                this.vy = (Math.random() - 0.5) * 2;
-            }
-            
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                
-                // Bounce off walls
-                if (this.x < PARTICLE_RADIUS || this.x > WIDTH - PARTICLE_RADIUS) {
-                    this.vx *= -1;
-                }
-                if (this.y < PARTICLE_RADIUS || this.y > HEIGHT - PARTICLE_RADIUS) {
-                    this.vy *= -1;
-                }
-            }
-            
-            draw() {
-                const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-                const r = Math.min(255, 100 + speed * 20);
-                const g = 150;
-                const b = 255;
-                ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, PARTICLE_RADIUS, 0, Math.PI * 2);
-                ctx.fill();
-            }
+        // Friction / Air Resistance (Damping)
+        this.vx *= 0.96;
+        this.vy *= 0.96;
+
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Reset acceleration
+        this.accelX = 0;
+        this.accelY = 0;
+
+        // Wrap around logic for continuous flow
+        if (this.x < 0) {
+            this.x = WIDTH;
+            this.y = Math.random() * HEIGHT;
+            this.vx = -2;
         }
+        if (this.y < 0 || this.y > HEIGHT) this.vy *= -1;
+    }
+
+    draw() {
+        const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
         
-        // Initialize particles on the right side
-        const particles = [];
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
-            const x = Math.random() * (WIDTH/2 - 100) + WIDTH/2 + 50; // right side
-            const y = Math.random() * (HEIGHT - 100) + 50;
-            particles.push(new Particle(x, y));
+        // Color mapping: Blue (slow) -> Green (mid) -> Red (fast/compressed)
+        let r, g, b;
+        if (speed < 3) {
+            r = 50; g = 100; b = 255; // Blue
+        } else if (speed < 8) {
+            r = 50; g = 255; b = 100; // Green
+        } else {
+            r = 255; g = 50; b = 50;  // Red (Shockwave)
         }
+
+        ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, PARTICLE_RADIUS, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+const particles = Array.from({ length: PARTICLE_COUNT }, () => new Particle());
+
+let mouseX = WIDTH / 2;
+let mouseY = HEIGHT / 2;
+let prevMouseX = mouseX;
+
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouseX = e.clientX - rect.left;
+    mouseY = e.clientY - rect.top;
+});
+
+function applyAerodynamics(p, mX, mY, mVX) {
+    // We treat the "wings" as two line segments
+    // Angle of wings (changes slightly based on speed)
+    const wingSpan = 80;
+    const wingTipX = mX + 80; 
+    
+    const wings = [
+        { x1: mX, y1: mY, x2: wingTipX, y2: mY - wingSpan }, // Top wing
+        { x1: mX, y1: mY, x2: wingTipX, y2: mY + wingSpan }  // Bottom wing
+    ];
+
+    wings.forEach(wing => {
+        // Calculate distance from particle to wing line segment
+        const dx = wing.x2 - wing.x1;
+        const dy = wing.y2 - wing.y1;
+        const l2 = dx*dx + dy*dy;
+        let t = ((p.x - wing.x1) * dx + (p.y - wing.y1) * dy) / l2;
+        t = Math.max(0, Math.min(1, t));
         
-        let mouseX = WIDTH * 3/4; // start on right
-        let mouseY = HEIGHT / 2;
-        let prevMouseX = mouseX;
+        const closestX = wing.x1 + t * dx;
+        const closestY = wing.y1 + t * dy;
         
-        canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            mouseX = e.clientX - rect.left;
-            mouseY = e.clientY - rect.top;
-        });
-        
-        function animate() {
-            // Background
-            ctx.fillStyle = '#0a0a1a';
-            ctx.fillRect(0, 0, WIDTH, HEIGHT);
+        const distDX = p.x - closestX;
+        const distDY = p.y - closestY;
+        const distance = Math.sqrt(distDX * distDX + distDY * distDY);
+
+        // Realistic compression: if particle is near the wing
+        if (distance < 30) {
+            const force = (30 - distance) / 30;
             
-            // Determine direction and flip wings (reversed)
-            const direction = mouseX > prevMouseX ? -1 : mouseX < prevMouseX ? 1 : -1;
+            // Push particles away from the wing surface (Normal force)
+            // If mouse is moving fast (mVX < 0), increase the push
+            const pushIntensity = Math.abs(mVX) * 0.5 + 2;
             
-            // Define the two slanted bars (forming > or < shape based on direction)
-            const bar1 = {x1: mouseX, y1: HEIGHT/2, x2: mouseX + direction * 100, y2: 0};
-            const bar2 = {x1: mouseX, y1: HEIGHT/2, x2: mouseX + direction * 100, y2: HEIGHT};
+            p.accelX += (distDX / distance) * force * pushIntensity;
+            p.accelY += (distDY / distance) * force * pushIntensity;
             
-            // Function to calculate push force from a line
-            function getPushForLine(px, py, line, force) {
-                const dx = line.x2 - line.x1;
-                const dy = line.y2 - line.y1;
-                const length = Math.sqrt(dx * dx + dy * dy);
-                if (length === 0) return {vx: 0, vy: 0};
-                
-                const dist = Math.abs(dy * px - dx * py + line.x2 * line.y1 - line.y2 * line.x1) / length;
-                if (dist < 20) {
-                    const nx = dy / length; // perpendicular x
-                    const ny = -dx / length; // perpendicular y
-                    return {vx: nx * force, vy: ny * force};
-                }
-                return {vx: 0, vy: 0};
-            }
-            
-            // Update and draw particles
-            particles.forEach(p => {
-                // Bar interaction - push from slanted bars
-                const push1 = getPushForLine(p.x, p.y, bar1, 3);
-                const push2 = getPushForLine(p.x, p.y, bar2, 3);
-                p.vx += push1.vx + push2.vx;
-                p.vy += push1.vy + push2.vy;
-                
-                p.update();
-                
-                // Limit velocities
-                p.vx = Math.max(-15, Math.min(15, p.vx));
-                p.vy = Math.max(-15, Math.min(15, p.vy));
-                
-                // Friction
-                p.vx *= 0.9;
-                p.vy *= 0.9;
-                
-                p.draw();
-            });
-            
-            // Respawn particles if too few (on right side)
-            if (particles.length < PARTICLE_COUNT * 0.5) {
-                for (let i = particles.length; i < PARTICLE_COUNT; i++) {
-                    const x = Math.random() * (WIDTH/2 - 100) + WIDTH/2 + 50;
-                    const y = Math.random() * (HEIGHT - 100) + 50;
-                    particles.push(new Particle(x, y));
-                }
-            }
-            
-            // Draw the slanted bars
-            ctx.strokeStyle = '#00ffff';
-            ctx.lineWidth = 4;
-            ctx.beginPath();
-            ctx.moveTo(bar1.x1, bar1.y1);
-            ctx.lineTo(bar1.x2, bar1.y2);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(bar2.x1, bar2.y1);
-            ctx.lineTo(bar2.x2, bar2.y2);
-            ctx.stroke();
-            
-            // Draw border
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 2;
-            ctx.strokeRect(0, 0, WIDTH, HEIGHT);
-            
-            // Instruction text
-            ctx.fillStyle = '#cccccc';
-            ctx.font = '18px Share Tech Mono';
-            ctx.fillText("Air starts on right | Move mouse to fly & compress air!", 20, 30);
-            
-            requestAnimationFrame(animate);
-            
-            // Update previous mouse position
-            prevMouseX = mouseX;
+            // "Clumping" - Reduce velocity slightly when hitting the leading edge
+            p.vx *= 0.8; 
         }
-        
-        animate();
+    });
+}
+
+function animate() {
+    ctx.fillStyle = '#0a0a1a';
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+    const mouseVX = mouseX - prevMouseX;
+
+    particles.forEach(p => {
+        applyAerodynamics(p, mouseX, mouseY, mouseVX);
+        p.update(mouseX, mouseY, mouseVX);
+        p.draw();
+    });
+
+    // Draw the "Jet" wings
+    ctx.setLineDash([]);
+    ctx.strokeStyle = '#00ffff';
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(mouseX + 80, mouseY - 80);
+    ctx.lineTo(mouseX, mouseY);
+    ctx.lineTo(mouseX + 80, mouseY + 80);
+    ctx.stroke();
+
+    // Visual effect: Sonic Boom vapor cone when moving fast
+    if (mouseVX < -15) {
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.lineWidth = 15;
+        ctx.beginPath();
+        ctx.arc(mouseX, mouseY, 40, Math.PI * 0.5, Math.PI * 1.5);
+        ctx.stroke();
+    }
+
+    prevMouseX = mouseX;
+    requestAnimationFrame(animate);
+}
+
+animate();
         
         // ===== QUIZ - FIXED VERSION =====
         let quizCurrentQuestion = 1;
