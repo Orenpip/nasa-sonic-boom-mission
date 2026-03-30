@@ -6,11 +6,13 @@
     <title>Mission 07: Sonic Booms</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        /* Ensuring a clean background since particles are removed */
+        body { background: #0a192f; color: white; margin: 0; font-family: 'Orbitron', sans-serif; }
+        .game-canvas-container { border: 2px solid #00f2ff; background: #112240; cursor: crosshair; }
+    </style>
 </head>
 <body class="lesson-page">
-    <div class="starfield" id="starfield"></div>
-    <div class="radar-grid"></div>
-    
     <nav class="nav-bar">
         <a href="dashboard.html" class="nav-back">← DASHBOARD</a>
         <div class="nav-logo">MISSION 07 // SONIC BOOMS</div>
@@ -18,170 +20,32 @@
     </nav>
     
     <div class="lesson-container">
-        <!-- MINIMAL INTRO -->
         <div class="mission-header">
-            <h1>💥 Create Sonic Booms!</h1>
-            <p class="mission-objective">Fly faster than sound and watch the shockwaves!</p>
+            <h1>💥 Sonic Boom Simulator</h1>
+            <p class="mission-objective">Drag to launch the plane. Observe the waves at Mach 1+.</p>
         </div>
         
-        <!-- MAIN GAME SECTION -->
         <div class="content-card game-main">
-            <div class="game-instructions">
-                <h2>🎮 How to Play:</h2>
-                <div class="instruction-steps">
-                    <span class="step-badge">1</span> <strong>Click and drag</strong> to set plane direction and speed
-                    <span class="step-badge">2</span> <strong>Release</strong> to launch the plane
-                    <span class="step-badge">3</span> Watch what happens when you fly <strong>faster than sound!</strong>
-                </div>
-            </div>
-            
-            <!-- INTERACTIVE CANVAS GAME -->
             <div id="canvasesdiv" class="game-canvas-container">
                 <canvas id="layer1" width="768" height="576"></canvas>
             </div>
             
-            <!-- SPEED INDICATOR -->
             <div class="speed-indicator">
                 <div class="speed-label">Flight Speed:</div>
                 <div class="speed-bars">
-                    <div class="speed-bar subsonic">
-                        <span class="bar-label">Subsonic</span>
-                        <div class="bar-fill" id="subsonicBar"></div>
-                    </div>
-                    <div class="speed-bar transonic">
-                        <span class="bar-label">⚡ Mach 1</span>
-                        <div class="bar-fill" id="transonicBar"></div>
-                    </div>
-                    <div class="speed-bar supersonic">
-                        <span class="bar-label">Supersonic!</span>
-                        <div class="bar-fill" id="supersonicBar"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- QUICK FACTS -->
-            <div class="game-facts">
-                <div class="fact-box">
-                    <div class="fact-icon">🔵</div>
-                    <div class="fact-text"><strong>Blue rings</strong> = sound waves spreading out</div>
-                </div>
-                <div class="fact-box">
-                    <div class="fact-icon">🟢</div>
-                    <div class="fact-text"><strong>Green arrow</strong> = flying slower than sound</div>
-                </div>
-                <div class="fact-box">
-                    <div class="fact-icon">🔴</div>
-                    <div class="fact-text"><strong>Red arrow</strong> = supersonic - BOOM!</div>
+                    <div class="speed-bar subsonic"><div class="bar-fill" id="subsonicBar"></div></div>
+                    <div class="speed-bar transonic"><div class="bar-fill" id="transonicBar"></div></div>
+                    <div class="speed-bar supersonic"><div class="bar-fill" id="supersonicBar"></div></div>
                 </div>
             </div>
         </div>
-        
-        <!-- QUICK QUIZ -->
+
         <section class="quiz-section">
-            <div class="content-card quiz-card">
-                <h2>🧠 Quick Check!</h2>
-                <p class="quiz-intro">3 quick questions to complete this mission!</p>
-                
-                <div id="quizContainer">
-                    <div class="quiz-question" data-question="1">
-                        <h3>Question 1 of 3</h3>
-                        <p class="question-text">What causes a sonic boom?</p>
-                        <div class="quiz-options">
-                            <button class="quiz-option" data-answer="correct">
-                                Flying faster than sound
-                            </button>
-                            <button class="quiz-option" data-answer="wrong">
-                                The plane's engine
-                            </button>
-                            <button class="quiz-option" data-answer="wrong">
-                                Breaking the plane apart
-                            </button>
-                        </div>
-                        <div class="quiz-feedback"></div>
-                    </div>
-                    
-                    <div class="quiz-question hidden" data-question="2">
-                        <h3>Question 2 of 3</h3>
-                        <p class="question-text">What are the blue rings in the game?</p>
-                        <div class="quiz-options">
-                            <button class="quiz-option" data-answer="wrong">
-                                Smoke from the plane
-                            </button>
-                            <button class="quiz-option" data-answer="correct">
-                                Sound waves spreading out
-                            </button>
-                            <button class="quiz-option" data-answer="wrong">
-                                The plane's path
-                            </button>
-                        </div>
-                        <div class="quiz-feedback"></div>
-                    </div>
-                    
-                    <div class="quiz-question hidden" data-question="3">
-                        <h3>Question 3 of 3</h3>
-                        <p class="question-text">When does the arrow turn RED?</p>
-                        <div class="quiz-options">
-                            <button class="quiz-option" data-answer="wrong">
-                                When flying very slow
-                            </button>
-                            <button class="quiz-option" data-answer="correct">
-                                When flying faster than sound
-                            </button>
-                            <button class="quiz-option" data-answer="wrong">
-                                When turning
-                            </button>
-                        </div>
-                        <div class="quiz-feedback"></div>
-                    </div>
-                    
-                    <div class="quiz-results hidden" id="quizResults">
-                        <h3>🎉 Mission Complete!</h3>
-                        <div class="results-content">
-                            <div class="results-score">
-                                <span class="score-label">You got:</span>
-                                <span class="score-value" id="finalScore">0/3</span>
-                            </div>
-                            <p class="results-message" id="resultsMessage"></p>
-                            <div class="results-xp">
-                                <span class="xp-earned" id="xpEarned">+20 ⭐</span>
-                            </div>
-                        </div>
-                        <a href="dashboard.html" class="return-button">Back to Dashboard</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
     </div>
-    
-    <script src="app.js"></script>
+
     <script>
-        createStarfield();
-        displayCurrentXP();
-        
-        // ===== LOAD IMAGES =====
-        var bgImage = new Image();
-        bgImage.src = 'data:image/svg+xml;base64,' + btoa(`
-            <svg width="768" height="576" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style="stop-color:#1a4d7a;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#2c6fa3;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-                <rect width="768" height="576" fill="url(#skyGrad)"/>
-                <text x="384" y="300" font-family="Orbitron" font-size="24" fill="rgba(255,255,255,0.3)" text-anchor="middle">CLICK AND DRAG TO FLY</text>
-            </svg>
-        `);
-        
-        var pImage = new Image();
-        pImage.src = 'data:image/svg+xml;base64,' + btoa(`
-            <svg width="58" height="40" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 2,20 L 45,20 L 56,15 L 56,25 L 45,20 M 20,20 L 20,5 L 30,20 L 20,35 L 20,20" fill="#ff3366" stroke="#fff" stroke-width="2"/>
-                <circle cx="15" cy="20" r="4" fill="#00ffff"/>
-            </svg>
-        `);
-        
-        // ===== SONIC BOOM SIMULATOR CODE =====
+        // ===== SIMULATION CORE =====
         var layer1 = document.getElementById("layer1");
         var ctx1 = layer1.getContext("2d");
         var WIDTH = 768, HEIGHT = 576;
@@ -189,282 +53,90 @@
         var x0 = -1, y0 = -1, x = -1, y = -1, theta = 0;
         var vx, vy, v, vs = 200;
         var tt, ttmax = 15;
-        var myRun, drawPlane;
-        var xRing = new Array(52), yRing = new Array(52), nRings = 0, sFact = 100.;
-        var inter = setInterval(drawAll, 40);
-        var iControl = 0, numInter = 0;
+        var myRun = false, drawPlane = false;
+        var xRing = new Array(52), yRing = new Array(52), nRings = 0, sFact = 100;
         var canvasesdiv = document.getElementById('canvasesdiv');
+
+        // Images
+        var bgImage = new Image();
+        bgImage.src = 'data:image/svg+xml;base64,' + btoa(`<svg width="768" height="576" xmlns="http://www.w3.org/2000/svg"><rect width="768" height="576" fill="#1a4d7a"/><text x="384" y="300" font-family="Orbitron" font-size="20" fill="rgba(255,255,255,0.2)" text-anchor="middle">CLICK AND DRAG TO LAUNCH</text></svg>`);
         
-        layer1.onmousedown = myDown;
-        layer1.onmouseup = myUp;
-        layer1.addEventListener("touchstart", myTouchStart, false);
-        layer1.addEventListener("touchmove", myTouchMove, false);
-        layer1.addEventListener("touchend", myTouchEnd, false);
-        
-        init();
-        
-        function init() {
-            myRun = false;
-            drawPlane = false;
-            drawAll();
-        }
-        
+        var pImage = new Image();
+        pImage.src = 'data:image/svg+xml;base64,' + btoa(`<svg width="58" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M 2,20 L 45,20 L 56,15 L 56,25 L 45,20 M 20,20 L 20,5 L 30,20 L 20,35 L 20,20" fill="#ff3366" stroke="#fff" stroke-width="2"/></svg>`);
+
+        setInterval(drawAll, 40);
+
         function drawAll() {
-            var allLoaded = bgImage.complete && pImage.complete;
-            iControl++;
-            
-            if (allLoaded && numInter == 0 && myRun == false) {
-                numInter = iControl;
-                inter = window.clearInterval(inter);
-            }
-            if (myRun) {
-                inter = window.clearInterval(inter);
-                inter = setInterval(drawAll, 40);
-            }
-            
             ctx1.clearRect(0, 0, WIDTH, HEIGHT);
-            ctx1.drawImage(bgImage, 0, 0, WIDTH, HEIGHT);
+            ctx1.drawImage(bgImage, 0, 0);
             
             if (drawPlane && !myRun) {
-                vx = x - x0;
-                vy = y - y0;
+                vx = x - x0; vy = y - y0;
                 v = Math.sqrt(vx*vx + vy*vy);
                 theta = Math.atan2(vy, vx);
-                xRing[1] = Math.round(x0);
-                yRing[1] = Math.round(y0);
-                nRings = 1;
-                
-                // Update speed indicator
                 updateSpeedIndicator(v / vs);
             }
-            
+
             if (drawPlane) {
                 ctx1.save();
                 ctx1.translate(x0, y0);
                 ctx1.rotate(theta);
-                ctx1.drawImage(pImage, -29, -20, 58, 40);
+                ctx1.drawImage(pImage, -29, -20);
                 ctx1.restore();
-                
-                writeText(500, 30, 'v/v', 'white', 'italic 24px Orbitron', ctx1);
-                writeText(527, 35, 'sound', 'white', '18px Orbitron', ctx1);
-                writeText(580, 30, '= ' + Math.round(v/vs*100)/100, 'white', '24px Orbitron', ctx1);
-                
+
                 if (!myRun) {
                     ctx1.strokeStyle = 'white';
-                    if (v > vs) {
-                        ctx1.fillStyle = 'rgba(255, 51, 102, 0.7)';
-                    } else {
-                        ctx1.fillStyle = 'rgba(0, 255, 136, 0.7)';
-                    }
+                    ctx1.fillStyle = (v > vs) ? 'rgba(255, 51, 102, 0.7)' : 'rgba(0, 255, 136, 0.7)';
                     drawArrow(x0, y0, x, y, ctx1);
                 }
             }
-            
-            if (x0 < 50 || x0 > WIDTH-50 || y0 < 50 || y0 > HEIGHT-50) {
-                if (drawPlane && nRings > 10) {
-                    inter = window.clearInterval(inter);
-                    myRun = false;
-                }
-            }
-            
-            if (myRun == true) {
-                x0 = x0 + vx/sFact;
-                y0 = y0 + vy/sFact;
+
+            if (myRun) {
+                x0 += vx/sFact; y0 += vy/sFact;
                 tt++;
-                if (tt == ttmax) {
+                if (tt >= ttmax) {
                     nRings++;
-                    if (nRings >= 30) {
-                        inter = window.clearInterval(inter);
-                        myRun = false;
-                        x = x0;
-                        y = y0;
-                    }
+                    if (nRings >= 30 || x0 < -50 || x0 > WIDTH+50) { myRun = false; }
                     tt = 0;
-                    xRing[nRings] = Math.round(x0);
-                    yRing[nRings] = Math.round(y0);
+                    xRing[nRings] = x0; yRing[nRings] = y0;
                 }
             }
-            
-            if (tt + nRings > 1) {
+
+            if (nRings > 0 || tt > 0) {
                 ctx1.beginPath();
-                ctx1.lineWidth = 6;
+                ctx1.lineWidth = 3;
                 ctx1.strokeStyle = 'rgba(0, 170, 255, 0.6)';
                 for (var i = 1; i <= nRings; i++) {
-                    rad = 3 + Math.round((tt + ttmax*(nRings-i)) * vs/sFact);
+                    let rad = 3 + ((tt + ttmax*(nRings-i)) * vs/sFact);
                     ctx1.moveTo(xRing[i] + rad, yRing[i]);
-                    ctx1.arc(xRing[i], yRing[i], rad, 0, 2*Math.PI, false);
+                    ctx1.arc(xRing[i], yRing[i], rad, 0, 2*Math.PI);
                 }
                 ctx1.stroke();
             }
         }
-        
-        function myMove(e) {
-            x = e.pageX - canvasesdiv.offsetLeft;
-            y = e.pageY - canvasesdiv.offsetTop;
-            drawAll();
+
+        // Input Listeners
+        layer1.onmousedown = (e) => {
+            x0 = e.pageX - canvasesdiv.offsetLeft; y0 = e.pageY - canvasesdiv.offsetTop;
+            x = x0; y = y0; nRings = 0; tt = 0; myRun = false; drawPlane = true;
+            layer1.onmousemove = (me) => {
+                x = me.pageX - canvasesdiv.offsetLeft; y = me.pageY - canvasesdiv.offsetTop;
+            };
+        };
+        window.onmouseup = () => { myRun = true; layer1.onmousemove = null; };
+
+        function drawArrow(tailX, tailY, headX, headY, ctx) {
+            let angle = Math.atan2(headY - tailY, headX - tailX);
+            ctx.beginPath();
+            ctx.moveTo(tailX, tailY);
+            ctx.lineTo(headX, headY);
+            ctx.stroke();
         }
-        
-        function myDown(e) {
-            x0 = e.pageX - canvasesdiv.offsetLeft;
-            y0 = e.pageY - canvasesdiv.offsetTop;
-            x = x0;
-            y = y0;
-            theta = 0;
-            nRings = 0;
-            tt = 0;
-            myRun = false;
-            drawPlane = true;
-            layer1.onmousemove = myMove;
-            drawAll();
-        }
-        
-        function myUp() {
-            myRun = true;
-            layer1.onmousemove = null;
-            drawAll();
-        }
-        
-        function myTouchMove(event) {
-            event.preventDefault();
-            x = event.targetTouches[0].pageX - canvasesdiv.offsetLeft;
-            y = event.targetTouches[0].pageY - canvasesdiv.offsetTop;
-            drawAll();
-        }
-        
-        function myTouchStart(event) {
-            event.preventDefault();
-            x0 = event.targetTouches[0].pageX - canvasesdiv.offsetLeft;
-            y0 = event.targetTouches[0].pageY - canvasesdiv.offsetTop;
-            x = x0;
-            y = y0;
-            theta = 0;
-            nRings = 0;
-            tt = 0;
-            myRun = false;
-            drawPlane = true;
-            drawAll();
-        }
-        
-        function myTouchEnd(event) {
-            event.preventDefault();
-            myRun = true;
-            drawAll();
-        }
-        
-        function writeText(xT, yT, theText, theColor, theFont, theContext) {
-            theContext.fillStyle = theColor;
-            theContext.strokeStyle = theColor;
-            theContext.font = theFont;
-            theContext.fillText(theText, xT, yT);
-        }
-        
-        function drawArrow(tailX, tailY, headX, headY, theContext) {
-            var theta = Math.atan((tailY-headY)/(tailX-headX));
-            if ((tailX-headX) >= 0) theta += Math.PI;
-            var s = Math.sin(theta);
-            var c = Math.cos(theta);
-            var sw1 = s*w1, sw2 = s*w2, sw3 = s*w3;
-            var cw1 = c*w1, cw2 = c*w2, cw3 = c*w3;
-            
-            theContext.beginPath();
-            theContext.moveTo(tailX-sw1, tailY+cw1);
-            theContext.lineTo(headX-cw3-sw1, headY-sw3+cw1);
-            theContext.lineTo(headX-cw3-sw2, headY-sw3+cw2);
-            theContext.lineTo(headX, headY);
-            theContext.lineTo(headX-cw3+sw2, headY-sw3-cw2);
-            theContext.lineTo(headX-cw3+sw1, headY-sw3-cw1);
-            theContext.lineTo(tailX+sw1, tailY-cw1);
-            theContext.lineTo(tailX-sw1, tailY+cw1);
-            theContext.closePath();
-            theContext.lineWidth = 3;
-            theContext.stroke();
-            theContext.fill();
-        }
-        
+
         function updateSpeedIndicator(ratio) {
-            const subBar = document.getElementById('subsonicBar');
-            const tranBar = document.getElementById('transonicBar');
-            const superBar = document.getElementById('supersonicBar');
-            
-            if (ratio < 0.8) {
-                subBar.style.width = (ratio / 0.8 * 100) + '%';
-                tranBar.style.width = '0%';
-                superBar.style.width = '0%';
-            } else if (ratio < 1.2) {
-                subBar.style.width = '100%';
-                tranBar.style.width = ((ratio - 0.8) / 0.4 * 100) + '%';
-                superBar.style.width = '0%';
-            } else {
-                subBar.style.width = '100%';
-                tranBar.style.width = '100%';
-                superBar.style.width = Math.min((ratio - 1.2) * 50, 100) + '%';
-            }
-        }
-        
-        // ===== QUIZ =====
-        let quizCurrentQuestion = 1;
-        let quizCorrectAnswers = 0;
-        
-        document.querySelectorAll('.quiz-option').forEach(option => {
-            option.addEventListener('click', function() {
-                if (this.classList.contains('selected')) return;
-                
-                const isCorrect = this.dataset.answer === 'correct';
-                const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
-                const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
-                
-                allOptions.forEach(opt => opt.classList.add('selected'));
-                
-                if (isCorrect) {
-                    this.classList.add('correct');
-                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
-                    quizCorrectAnswers++;
-                } else {
-                    this.classList.add('wrong');
-                    feedback.innerHTML = '<span class="wrong-feedback">Not quite!</span>';
-                }
-                
-                setTimeout(() => {
-                    if (quizCurrentQuestion < 3) {
-                        document.querySelector(`[data-question="${quizCurrentQuestion}"]`).classList.add('hidden');
-                        quizCurrentQuestion++;
-                        document.querySelector(`[data-question="${quizCurrentQuestion}"]`).classList.remove('hidden');
-                    } else {
-                        document.querySelector(`[data-question="3"]`).classList.add('hidden');
-                        showQuizResults();
-                    }
-                }, 1500);
-            });
-        });
-        
-        function showQuizResults() {
-            const resultsDiv = document.getElementById('quizResults');
-            const finalScore = document.getElementById('finalScore');
-            const resultsMessage = document.getElementById('resultsMessage');
-            const xpEarned = document.getElementById('xpEarned');
-            
-            finalScore.textContent = `${quizCorrectAnswers}/3`;
-            
-            let stars = 0;
-            let message = '';
-            
-            if (quizCorrectAnswers === 3) {
-                stars = 20;
-                message = '🌟 Perfect! You understand sonic booms!';
-            } else if (quizCorrectAnswers === 2) {
-                stars = 16;
-                message = '😊 Great job!';
-            } else {
-                stars = 12;
-                message = '👍 Good try! Play the game again!';
-            }
-            
-            xpEarned.textContent = `+${stars} ⭐`;
-            resultsMessage.textContent = message;
-            
-            saveProgress('lesson7', stars, quizCorrectAnswers >= 2, quizCorrectAnswers);
-            
-            resultsDiv.classList.remove('hidden');
+            document.getElementById('subsonicBar').style.width = Math.min(ratio, 0.8)/0.8 * 100 + '%';
+            document.getElementById('transonicBar').style.width = Math.max(0, Math.min(ratio-0.8, 0.4))/0.4 * 100 + '%';
+            document.getElementById('supersonicBar').style.width = Math.max(0, ratio-1.2) * 50 + '%';
         }
     </script>
 </body>
