@@ -7,27 +7,47 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        body { background: #0a192f; color: white; margin: 0; font-family: 'Orbitron', sans-serif; }
+        body { background: #0a192f; color: white; margin: 0; font-family: 'Orbitron', sans-serif; overflow-x: hidden; }
+        .nav-bar { display: flex; justify-content: space-between; padding: 20px; background: rgba(10, 25, 47, 0.9); border-bottom: 1px solid #00f2ff; }
+        .nav-back { color: #00f2ff; text-decoration: none; font-weight: bold; }
+        .lesson-container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .mission-header { text-align: center; margin-bottom: 30px; }
+        
+        .game-main { background: #112240; padding: 20px; border-radius: 12px; border: 1px solid #233554; margin-bottom: 40px; }
         .game-canvas-container { 
-            border: 2px solid #00f2ff; 
-            background: #112240; 
-            cursor: crosshair; 
+            position: relative;
             width: 768px; 
             height: 576px; 
-            margin: 0 auto;
-            position: relative;
+            margin: 0 auto; 
+            background: #060d1a;
+            border: 2px solid #00f2ff;
+            cursor: crosshair;
+            overflow: hidden;
         }
-        canvas { display: block; }
-        .speed-indicator { margin-top: 15px; text-align: center; }
-        .speed-bars { display: flex; justify-content: center; gap: 5px; height: 20px; width: 300px; margin: 5px auto; background: #060d1a; }
-        .speed-bar { flex: 1; position: relative; background: #1a314d; overflow: hidden; }
-        .bar-fill { height: 100%; width: 0%; transition: width 0.1s; }
-        #subsonicBar { background: #00ff88; }
-        #transonicBar { background: #ffcc00; }
-        #supersonicBar { background: #ff3366; }
+        canvas { display: block; width: 100%; height: 100%; }
+
+        .speed-indicator { margin-top: 20px; text-align: center; }
+        .speed-bars { display: flex; justify-content: center; gap: 10px; height: 15px; width: 400px; margin: 10px auto; background: #0a192f; border-radius: 10px; padding: 5px; }
+        .speed-bar { flex: 1; background: #1a314d; border-radius: 5px; overflow: hidden; position: relative; }
+        .bar-fill { height: 100%; width: 0%; transition: width 0.1s ease; }
+        #subsonicBar { background: #00ff88; box-shadow: 0 0 10px #00ff88; }
+        #transonicBar { background: #ffcc00; box-shadow: 0 0 10px #ffcc00; }
+        #supersonicBar { background: #ff3366; box-shadow: 0 0 10px #ff3366; }
+
+        .quiz-card { background: #112240; padding: 30px; border-radius: 12px; border: 1px solid #00f2ff; }
+        .hidden { display: none; }
+        .quiz-option { 
+            display: block; width: 100%; padding: 15px; margin: 10px 0; 
+            background: #1a314d; border: 1px solid #00f2ff; color: white; 
+            cursor: pointer; font-family: 'Orbitron'; text-align: left;
+        }
+        .quiz-option:hover { background: #233554; }
+        .correct { background: #00ff88 !important; color: #0a192f; }
+        .wrong { background: #ff3366 !important; }
+        .return-button { display: inline-block; margin-top: 20px; padding: 10px 20px; background: #00f2ff; color: #0a192f; text-decoration: none; font-weight: bold; }
     </style>
 </head>
-<body class="lesson-page">
+<body>
     <nav class="nav-bar">
         <a href="dashboard.html" class="nav-back">← DASHBOARD</a>
         <div class="nav-logo">MISSION 07 // SONIC BOOMS</div>
@@ -36,17 +56,17 @@
     
     <div class="lesson-container">
         <div class="mission-header">
-            <h1>💥 Sonic Boom Simulator</h1>
-            <p class="mission-objective">Click and drag to launch. Watch the sound waves compress!</p>
+            <h1>💥 Create Sonic Booms!</h1>
+            <p>Fly faster than sound and watch the shockwaves form.</p>
         </div>
         
-        <div class="content-card game-main">
+        <div class="game-main">
             <div id="canvasesdiv" class="game-canvas-container">
                 <canvas id="layer1" width="768" height="576"></canvas>
             </div>
             
             <div class="speed-indicator">
-                <div class="speed-label">Mach Velocity</div>
+                <div id="speedLabel">Velocity Status: Idle</div>
                 <div class="speed-bars">
                     <div class="speed-bar"><div class="bar-fill" id="subsonicBar"></div></div>
                     <div class="speed-bar"><div class="bar-fill" id="transonicBar"></div></div>
@@ -54,6 +74,35 @@
                 </div>
             </div>
         </div>
+
+        <section class="quiz-section">
+            <div class="quiz-card">
+                <h2>🧠 Quick Check!</h2>
+                <div id="quizContainer">
+                    <div class="quiz-question" id="q1">
+                        <p>What causes a sonic boom?</p>
+                        <button class="quiz-option" onclick="checkAnswer(this, true, 'q1', 'q2')">Flying faster than sound</button>
+                        <button class="quiz-option" onclick="checkAnswer(this, false, 'q1', 'q2')">The plane's engine noise</button>
+                        <button class="quiz-option" onclick="checkAnswer(this, false, 'q1', 'q2')">Gravity pulling the plane</button>
+                    </div>
+                    <div class="quiz-question hidden" id="q2">
+                        <p>What are the rings representing in the simulation?</p>
+                        <button class="quiz-option" onclick="checkAnswer(this, false, 'q2', 'q3')">Smoke from the exhaust</button>
+                        <button class="quiz-option" onclick="checkAnswer(this, true, 'q2', 'q3')">Sound waves spreading out</button>
+                    </div>
+                    <div class="quiz-question hidden" id="q3">
+                        <p>When does a shockwave (Mach cone) form?</p>
+                        <button class="quiz-option" onclick="finishQuiz(this, true)">When speed > speed of sound</button>
+                        <button class="quiz-option" onclick="finishQuiz(this, false)">When speed < speed of sound</button>
+                    </div>
+                    <div class="quiz-results hidden" id="results">
+                        <h3>🎉 Mission Complete!</h3>
+                        <p id="scoreText"></p>
+                        <a href="dashboard.html" class="return-button">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script>
@@ -63,7 +112,7 @@
         
         let x0 = 0, y0 = 0, x = 0, y = 0;
         let vx = 0, vy = 0, v = 0, vs = 200;
-        let theta = 0, tt = 0, ttmax = 10;
+        let theta = 0, tt = 0, ttmax = 8;
         let myRun = false, drawPlane = false;
         let xRing = [], yRing = [], nRings = 0, sFact = 80;
 
@@ -72,9 +121,12 @@
 
         function getMousePos(evt) {
             const rect = canvas.getBoundingClientRect();
+            // Accounts for CSS scaling and scroll offset
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
             return {
-                x: evt.clientX - rect.left,
-                y: evt.clientY - rect.top
+                x: (evt.clientX - rect.left) * scaleX,
+                y: (evt.clientY - rect.top) * scaleY
             };
         }
 
@@ -98,60 +150,50 @@
         function update() {
             ctx.clearRect(0, 0, WIDTH, HEIGHT);
             
-            // Draw Help Text
             if (!drawPlane) {
-                ctx.fillStyle = "rgba(255,255,255,0.2)";
-                ctx.font = "20px Orbitron";
+                ctx.fillStyle = "rgba(0, 242, 255, 0.3)";
+                ctx.font = "bold 22px Orbitron";
                 ctx.textAlign = "center";
-                ctx.fillText("CLICK AND DRAG TO LAUNCH", WIDTH/2, HEIGHT/2);
-            }
-
-            if (drawPlane) {
+                ctx.fillText("CLICK AND DRAG TO LAUNCH PLANE", WIDTH/2, HEIGHT/2);
+            } else {
                 if (!myRun) {
                     vx = x - x0; vy = y - y0;
                     v = Math.sqrt(vx*vx + vy*vy);
                     theta = Math.atan2(vy, vx);
                     
-                    // Draw trajectory line
                     ctx.beginPath();
                     ctx.strokeStyle = (v > vs) ? "#ff3366" : "#00ff88";
+                    ctx.lineWidth = 3;
+                    ctx.setLineDash([5, 5]);
                     ctx.moveTo(x0, y0);
                     ctx.lineTo(x, y);
                     ctx.stroke();
+                    ctx.setLineDash([]);
 
                     updateUI(v / vs);
                 } else {
-                    // Movement logic
-                    x0 += vx / sFact;
-                    y0 += vy / sFact;
+                    x0 += vx / sFact; y0 += vy / sFact;
                     tt++;
-                    
                     if (tt >= ttmax) {
                         nRings++;
-                        xRing[nRings] = x0;
-                        yRing[nRings] = y0;
+                        xRing[nRings] = x0; yRing[nRings] = y0;
                         tt = 0;
                     }
-                    
-                    // Stop if out of bounds
-                    if (x0 < -100 || x0 > WIDTH + 100 || y0 < -100 || y0 > HEIGHT + 100) {
-                        drawPlane = false;
-                        myRun = false;
+                    if (x0 < -100 || x0 > WIDTH+100 || y0 < -100 || y0 > HEIGHT+100) {
+                        drawPlane = false; myRun = false;
                     }
                 }
 
-                // Draw Rings
-                ctx.beginPath();
+                // Draw sound wave rings
                 ctx.lineWidth = 2;
                 ctx.strokeStyle = "rgba(0, 242, 255, 0.5)";
                 for (let i = 1; i <= nRings; i++) {
                     let rad = (tt + ttmax * (nRings - i)) * (vs / sFact);
-                    ctx.moveTo(xRing[i] + rad, yRing[i]);
+                    ctx.beginPath();
                     ctx.arc(xRing[i], yRing[i], rad, 0, Math.PI * 2);
+                    ctx.stroke();
                 }
-                ctx.stroke();
 
-                // Draw Plane
                 ctx.save();
                 ctx.translate(x0, y0);
                 ctx.rotate(theta);
@@ -162,9 +204,35 @@
         }
 
         function updateUI(ratio) {
+            const label = document.getElementById('speedLabel');
+            if (ratio > 1.2) label.innerText = "Velocity Status: SUPERSONIC (BOOM!)";
+            else if (ratio > 0.8) label.innerText = "Velocity Status: TRANSONIC";
+            else label.innerText = "Velocity Status: SUBSONIC";
+
             document.getElementById('subsonicBar').style.width = Math.min(ratio / 0.8, 1) * 100 + '%';
             document.getElementById('transonicBar').style.width = Math.max(0, Math.min((ratio - 0.8) / 0.4, 1)) * 100 + '%';
             document.getElementById('supersonicBar').style.width = Math.max(0, Math.min((ratio - 1.2) / 0.8, 1)) * 100 + '%';
+        }
+
+        // Quiz Logic
+        let score = 0;
+        function checkAnswer(btn, isCorrect, currentId, nextId) {
+            if (isCorrect) { btn.classList.add('correct'); score++; }
+            else { btn.classList.add('wrong'); }
+            setTimeout(() => {
+                document.getElementById(currentId).classList.add('hidden');
+                document.getElementById(nextId).classList.remove('hidden');
+            }, 600);
+        }
+
+        function finishQuiz(btn, isCorrect) {
+            if (isCorrect) { btn.classList.add('correct'); score++; }
+            else { btn.classList.add('wrong'); }
+            setTimeout(() => {
+                document.getElementById('q3').classList.add('hidden');
+                document.getElementById('results').classList.remove('hidden');
+                document.getElementById('scoreText').innerText = `You scored ${score}/3!`;
+            }, 600);
         }
 
         update();
