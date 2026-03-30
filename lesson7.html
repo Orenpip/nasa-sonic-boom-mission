@@ -7,9 +7,24 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        /* Ensuring a clean background since particles are removed */
         body { background: #0a192f; color: white; margin: 0; font-family: 'Orbitron', sans-serif; }
-        .game-canvas-container { border: 2px solid #00f2ff; background: #112240; cursor: crosshair; }
+        .game-canvas-container { 
+            border: 2px solid #00f2ff; 
+            background: #112240; 
+            cursor: crosshair; 
+            width: 768px; 
+            height: 576px; 
+            margin: 0 auto;
+            position: relative;
+        }
+        canvas { display: block; }
+        .speed-indicator { margin-top: 15px; text-align: center; }
+        .speed-bars { display: flex; justify-content: center; gap: 5px; height: 20px; width: 300px; margin: 5px auto; background: #060d1a; }
+        .speed-bar { flex: 1; position: relative; background: #1a314d; overflow: hidden; }
+        .bar-fill { height: 100%; width: 0%; transition: width 0.1s; }
+        #subsonicBar { background: #00ff88; }
+        #transonicBar { background: #ffcc00; }
+        #supersonicBar { background: #ff3366; }
     </style>
 </head>
 <body class="lesson-page">
@@ -22,7 +37,7 @@
     <div class="lesson-container">
         <div class="mission-header">
             <h1>💥 Sonic Boom Simulator</h1>
-            <p class="mission-objective">Drag to launch the plane. Observe the waves at Mach 1+.</p>
+            <p class="mission-objective">Click and drag to launch. Watch the sound waves compress!</p>
         </div>
         
         <div class="content-card game-main">
@@ -31,113 +46,128 @@
             </div>
             
             <div class="speed-indicator">
-                <div class="speed-label">Flight Speed:</div>
+                <div class="speed-label">Mach Velocity</div>
                 <div class="speed-bars">
-                    <div class="speed-bar subsonic"><div class="bar-fill" id="subsonicBar"></div></div>
-                    <div class="speed-bar transonic"><div class="bar-fill" id="transonicBar"></div></div>
-                    <div class="speed-bar supersonic"><div class="bar-fill" id="supersonicBar"></div></div>
+                    <div class="speed-bar"><div class="bar-fill" id="subsonicBar"></div></div>
+                    <div class="speed-bar"><div class="bar-fill" id="transonicBar"></div></div>
+                    <div class="speed-bar"><div class="bar-fill" id="supersonicBar"></div></div>
                 </div>
             </div>
         </div>
-
-        <section class="quiz-section">
-            </section>
     </div>
 
     <script>
-        // ===== SIMULATION CORE =====
-        var layer1 = document.getElementById("layer1");
-        var ctx1 = layer1.getContext("2d");
-        var WIDTH = 768, HEIGHT = 576;
-        var w1=3, w2=6, w3=20;
-        var x0 = -1, y0 = -1, x = -1, y = -1, theta = 0;
-        var vx, vy, v, vs = 200;
-        var tt, ttmax = 15;
-        var myRun = false, drawPlane = false;
-        var xRing = new Array(52), yRing = new Array(52), nRings = 0, sFact = 100;
-        var canvasesdiv = document.getElementById('canvasesdiv');
-
-        // Images
-        var bgImage = new Image();
-        bgImage.src = 'data:image/svg+xml;base64,' + btoa(`<svg width="768" height="576" xmlns="http://www.w3.org/2000/svg"><rect width="768" height="576" fill="#1a4d7a"/><text x="384" y="300" font-family="Orbitron" font-size="20" fill="rgba(255,255,255,0.2)" text-anchor="middle">CLICK AND DRAG TO LAUNCH</text></svg>`);
+        const canvas = document.getElementById("layer1");
+        const ctx = canvas.getContext("2d");
+        const WIDTH = 768, HEIGHT = 576;
         
-        var pImage = new Image();
+        let x0 = 0, y0 = 0, x = 0, y = 0;
+        let vx = 0, vy = 0, v = 0, vs = 200;
+        let theta = 0, tt = 0, ttmax = 10;
+        let myRun = false, drawPlane = false;
+        let xRing = [], yRing = [], nRings = 0, sFact = 80;
+
+        const pImage = new Image();
         pImage.src = 'data:image/svg+xml;base64,' + btoa(`<svg width="58" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M 2,20 L 45,20 L 56,15 L 56,25 L 45,20 M 20,20 L 20,5 L 30,20 L 20,35 L 20,20" fill="#ff3366" stroke="#fff" stroke-width="2"/></svg>`);
 
-        setInterval(drawAll, 40);
+        function getMousePos(evt) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            };
+        }
 
-        function drawAll() {
-            ctx1.clearRect(0, 0, WIDTH, HEIGHT);
-            ctx1.drawImage(bgImage, 0, 0);
-            
+        canvas.onmousedown = (e) => {
+            const pos = getMousePos(e);
+            x0 = pos.x; y0 = pos.y;
+            x = x0; y = y0;
+            nRings = 0; xRing = []; yRing = []; tt = 0;
+            myRun = false; drawPlane = true;
+        };
+
+        window.onmousemove = (e) => {
             if (drawPlane && !myRun) {
-                vx = x - x0; vy = y - y0;
-                v = Math.sqrt(vx*vx + vy*vy);
-                theta = Math.atan2(vy, vx);
-                updateSpeedIndicator(v / vs);
+                const pos = getMousePos(e);
+                x = pos.x; y = pos.y;
+            }
+        };
+
+        window.onmouseup = () => { if (drawPlane) myRun = true; };
+
+        function update() {
+            ctx.clearRect(0, 0, WIDTH, HEIGHT);
+            
+            // Draw Help Text
+            if (!drawPlane) {
+                ctx.fillStyle = "rgba(255,255,255,0.2)";
+                ctx.font = "20px Orbitron";
+                ctx.textAlign = "center";
+                ctx.fillText("CLICK AND DRAG TO LAUNCH", WIDTH/2, HEIGHT/2);
             }
 
             if (drawPlane) {
-                ctx1.save();
-                ctx1.translate(x0, y0);
-                ctx1.rotate(theta);
-                ctx1.drawImage(pImage, -29, -20);
-                ctx1.restore();
-
                 if (!myRun) {
-                    ctx1.strokeStyle = 'white';
-                    ctx1.fillStyle = (v > vs) ? 'rgba(255, 51, 102, 0.7)' : 'rgba(0, 255, 136, 0.7)';
-                    drawArrow(x0, y0, x, y, ctx1);
-                }
-            }
+                    vx = x - x0; vy = y - y0;
+                    v = Math.sqrt(vx*vx + vy*vy);
+                    theta = Math.atan2(vy, vx);
+                    
+                    // Draw trajectory line
+                    ctx.beginPath();
+                    ctx.strokeStyle = (v > vs) ? "#ff3366" : "#00ff88";
+                    ctx.moveTo(x0, y0);
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
 
-            if (myRun) {
-                x0 += vx/sFact; y0 += vy/sFact;
-                tt++;
-                if (tt >= ttmax) {
-                    nRings++;
-                    if (nRings >= 30 || x0 < -50 || x0 > WIDTH+50) { myRun = false; }
-                    tt = 0;
-                    xRing[nRings] = x0; yRing[nRings] = y0;
+                    updateUI(v / vs);
+                } else {
+                    // Movement logic
+                    x0 += vx / sFact;
+                    y0 += vy / sFact;
+                    tt++;
+                    
+                    if (tt >= ttmax) {
+                        nRings++;
+                        xRing[nRings] = x0;
+                        yRing[nRings] = y0;
+                        tt = 0;
+                    }
+                    
+                    // Stop if out of bounds
+                    if (x0 < -100 || x0 > WIDTH + 100 || y0 < -100 || y0 > HEIGHT + 100) {
+                        drawPlane = false;
+                        myRun = false;
+                    }
                 }
-            }
 
-            if (nRings > 0 || tt > 0) {
-                ctx1.beginPath();
-                ctx1.lineWidth = 3;
-                ctx1.strokeStyle = 'rgba(0, 170, 255, 0.6)';
-                for (var i = 1; i <= nRings; i++) {
-                    let rad = 3 + ((tt + ttmax*(nRings-i)) * vs/sFact);
-                    ctx1.moveTo(xRing[i] + rad, yRing[i]);
-                    ctx1.arc(xRing[i], yRing[i], rad, 0, 2*Math.PI);
+                // Draw Rings
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "rgba(0, 242, 255, 0.5)";
+                for (let i = 1; i <= nRings; i++) {
+                    let rad = (tt + ttmax * (nRings - i)) * (vs / sFact);
+                    ctx.moveTo(xRing[i] + rad, yRing[i]);
+                    ctx.arc(xRing[i], yRing[i], rad, 0, Math.PI * 2);
                 }
-                ctx1.stroke();
+                ctx.stroke();
+
+                // Draw Plane
+                ctx.save();
+                ctx.translate(x0, y0);
+                ctx.rotate(theta);
+                ctx.drawImage(pImage, -29, -20);
+                ctx.restore();
             }
+            requestAnimationFrame(update);
         }
 
-        // Input Listeners
-        layer1.onmousedown = (e) => {
-            x0 = e.pageX - canvasesdiv.offsetLeft; y0 = e.pageY - canvasesdiv.offsetTop;
-            x = x0; y = y0; nRings = 0; tt = 0; myRun = false; drawPlane = true;
-            layer1.onmousemove = (me) => {
-                x = me.pageX - canvasesdiv.offsetLeft; y = me.pageY - canvasesdiv.offsetTop;
-            };
-        };
-        window.onmouseup = () => { myRun = true; layer1.onmousemove = null; };
-
-        function drawArrow(tailX, tailY, headX, headY, ctx) {
-            let angle = Math.atan2(headY - tailY, headX - tailX);
-            ctx.beginPath();
-            ctx.moveTo(tailX, tailY);
-            ctx.lineTo(headX, headY);
-            ctx.stroke();
+        function updateUI(ratio) {
+            document.getElementById('subsonicBar').style.width = Math.min(ratio / 0.8, 1) * 100 + '%';
+            document.getElementById('transonicBar').style.width = Math.max(0, Math.min((ratio - 0.8) / 0.4, 1)) * 100 + '%';
+            document.getElementById('supersonicBar').style.width = Math.max(0, Math.min((ratio - 1.2) / 0.8, 1)) * 100 + '%';
         }
 
-        function updateSpeedIndicator(ratio) {
-            document.getElementById('subsonicBar').style.width = Math.min(ratio, 0.8)/0.8 * 100 + '%';
-            document.getElementById('transonicBar').style.width = Math.max(0, Math.min(ratio-0.8, 0.4))/0.4 * 100 + '%';
-            document.getElementById('supersonicBar').style.width = Math.max(0, ratio-1.2) * 50 + '%';
-        }
+        update();
     </script>
 </body>
 </html>
