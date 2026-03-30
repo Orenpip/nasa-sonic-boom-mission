@@ -143,161 +143,150 @@
 const canvas = document.getElementById('layer1');
 const ctx = canvas.getContext('2d');
 const WIDTH = 800, HEIGHT = 400;
-const PARTICLE_COUNT = 600; // Increased for better density visualization
-const PARTICLE_RADIUS = 2.5; // Smaller particles look more like "air"
+const PARTICLE_COUNT = 800; 
+
+// Physical Constants
+const AIR_VISCOSITY = 0.95; // Resistance to flow
+const PRESSURE_STRENGTH = 1.2; 
 
 class Particle {
-    constructor(x, y) {
-        this.reset(x, y);
+    constructor() {
+        this.reset();
     }
 
-    reset(x, y) {
-        this.x = x || Math.random() * WIDTH;
-        this.y = y || Math.random() * HEIGHT;
-        // Ambient air drift (simulates jet moving forward)
-        this.vx = -1 - Math.random() * 2; 
+    reset() {
+        this.x = Math.random() * WIDTH;
+        this.y = Math.random() * HEIGHT;
+        this.vx = (Math.random() - 0.5) * 0.5;
         this.vy = (Math.random() - 0.5) * 0.5;
-        this.accelX = 0;
-        this.accelY = 0;
     }
 
-    update(mX, mY, mouseVX) {
-        // Apply acceleration (forces)
-        this.vx += this.accelX;
-        this.vy += this.accelY;
-        
-        // Friction / Air Resistance (Damping)
-        this.vx *= 0.96;
-        this.vy *= 0.96;
+    update() {
+        // Apply ambient friction (Viscosity)
+        this.vx *= AIR_VISCOSITY;
+        this.vy *= AIR_VISCOSITY;
 
         this.x += this.vx;
         this.y += this.vy;
 
-        // Reset acceleration
-        this.accelX = 0;
-        this.accelY = 0;
-
-        // Wrap around logic for continuous flow
-        if (this.x < 0) {
-            this.x = WIDTH;
-            this.y = Math.random() * HEIGHT;
-            this.vx = -2;
-        }
-        if (this.y < 0 || this.y > HEIGHT) this.vy *= -1;
+        // Boundary wrapping
+        if (this.x < 0) this.x = WIDTH;
+        if (this.x > WIDTH) this.x = 0;
+        if (this.y < 0) this.y = HEIGHT;
+        if (this.y > HEIGHT) this.y = 0;
     }
 
     draw() {
         const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+        // Pressure-based coloring (Blue = Low, Red = High)
+        const r = Math.min(255, 50 + speed * 30);
+        const g = Math.min(255, 100 + speed * 10);
+        const b = Math.max(100, 255 - speed * 40);
         
-        // Color mapping: Blue (slow) -> Green (mid) -> Red (fast/compressed)
-        let r, g, b;
-        if (speed < 3) {
-            r = 50; g = 100; b = 255; // Blue
-        } else if (speed < 8) {
-            r = 50; g = 255; b = 100; // Green
-        } else {
-            r = 255; g = 50; b = 50;  // Red (Shockwave)
-        }
-
         ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, PARTICLE_RADIUS, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
         ctx.fill();
     }
 }
 
 const particles = Array.from({ length: PARTICLE_COUNT }, () => new Particle());
 
-let mouseX = WIDTH / 2;
-let mouseY = HEIGHT / 2;
-let prevMouseX = mouseX;
+let mX = WIDTH/2, mY = HEIGHT/2;
+let vX = 0, vY = 0;
+let angle = 0;
 
 canvas.addEventListener('mousemove', (e) => {
     const rect = canvas.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
+    const newX = e.clientX - rect.left;
+    const newY = e.clientY - rect.top;
+    
+    // Calculate Velocity Vector for the Plane
+    vX = newX - mX;
+    vY = newY - mY;
+    
+    // Update position
+    mX = newX;
+    mY = newY;
+
+    // Calculate Rotation (Point wings opposite to travel direction)
+    if (Math.abs(vX) > 0.1 || Math.abs(vY) > 0.1) {
+        angle = Math.atan2(vY, vX);
+    }
 });
 
-function applyAerodynamics(p, mX, mY, mVX) {
-    // We treat the "wings" as two line segments
-    // Angle of wings (changes slightly based on speed)
-    const wingSpan = 80;
-    const wingTipX = mX + 80; 
-    
-    const wings = [
-        { x1: mX, y1: mY, x2: wingTipX, y2: mY - wingSpan }, // Top wing
-        { x1: mX, y1: mY, x2: wingTipX, y2: mY + wingSpan }  // Bottom wing
-    ];
-
-    wings.forEach(wing => {
-        // Calculate distance from particle to wing line segment
-        const dx = wing.x2 - wing.x1;
-        const dy = wing.y2 - wing.y1;
-        const l2 = dx*dx + dy*dy;
-        let t = ((p.x - wing.x1) * dx + (p.y - wing.y1) * dy) / l2;
-        t = Math.max(0, Math.min(1, t));
-        
-        const closestX = wing.x1 + t * dx;
-        const closestY = wing.y1 + t * dy;
-        
-        const distDX = p.x - closestX;
-        const distDY = p.y - closestY;
-        const distance = Math.sqrt(distDX * distDX + distDY * distDY);
-
-        // Realistic compression: if particle is near the wing
-        if (distance < 30) {
-            const force = (30 - distance) / 30;
-            
-            // Push particles away from the wing surface (Normal force)
-            // If mouse is moving fast (mVX < 0), increase the push
-            const pushIntensity = Math.abs(mVX) * 0.5 + 2;
-            
-            p.accelX += (distDX / distance) * force * pushIntensity;
-            p.accelY += (distDY / distance) * force * pushIntensity;
-            
-            // "Clumping" - Reduce velocity slightly when hitting the leading edge
-            p.vx *= 0.8; 
-        }
-    });
-}
-
-function animate() {
+function simulateFluidDynamics() {
     ctx.fillStyle = '#0a0a1a';
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
-    const mouseVX = mouseX - prevMouseX;
+    const speed = Math.sqrt(vX * vX + vY * vY);
 
     particles.forEach(p => {
-        applyAerodynamics(p, mouseX, mouseY, mouseVX);
-        p.update(mouseX, mouseY, mouseVX);
+        const dx = p.x - mX;
+        const dy = p.y - mY;
+        const distSq = dx * dx + dy * dy;
+        const dist = Math.sqrt(distSq);
+
+        if (dist < 100) {
+            // 1. DISPLACEMENT (The "Push" in front)
+            // Dot product to see if particle is in front of the wing
+            const dot = (dx * vX + dy * vY) / (speed || 1);
+            
+            if (dot > 0 && dist < 40) {
+                // High Pressure Zone (Front)
+                const force = (40 - dist) / 40;
+                p.vx += (vX / speed) * force * PRESSURE_STRENGTH;
+                p.vy += (vY / speed) * force * PRESSURE_STRENGTH;
+            } 
+            
+            // 2. THE VACUUM (Filling empty space behind)
+            if (dot < 0) {
+                // Low Pressure Zone (Behind)
+                // Particles are sucked toward the center of the wake
+                const suction = (100 - dist) / 500;
+                p.vx += (mX - p.x) * suction;
+                p.vy += (mY - p.y) * suction;
+            }
+        }
+
+        p.update();
         p.draw();
     });
 
-    // Draw the "Jet" wings
-    ctx.setLineDash([]);
-    ctx.strokeStyle = '#00ffff';
-    ctx.lineWidth = 5;
-    ctx.lineCap = 'round';
-    ctx.beginPath();
-    ctx.moveTo(mouseX + 80, mouseY - 80);
-    ctx.lineTo(mouseX, mouseY);
-    ctx.lineTo(mouseX + 80, mouseY + 80);
-    ctx.stroke();
+    drawPlane(mX, mY, angle);
+    
+    // Decay velocity so it doesn't fly forever when mouse stops
+    vX *= 0.9;
+    vY *= 0.9;
 
-    // Visual effect: Sonic Boom vapor cone when moving fast
-    if (mouseVX < -15) {
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-        ctx.lineWidth = 15;
-        ctx.beginPath();
-        ctx.arc(mouseX, mouseY, 40, Math.PI * 0.5, Math.PI * 1.5);
-        ctx.stroke();
-    }
-
-    prevMouseX = mouseX;
-    requestAnimationFrame(animate);
+    requestAnimationFrame(simulateFluidDynamics);
 }
 
-animate();
+function drawPlane(x, y, rad) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rad);
+    
+    ctx.strokeStyle = '#00ffff';
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+
+    // Scientific "Sweep" Wing Design
+    ctx.beginPath();
+    // Body/Center
+    ctx.moveTo(-10, 0);
+    ctx.lineTo(20, 0);
+    // Wings (Slanted back based on travel)
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-30, -40);
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-30, 40);
+    ctx.stroke();
+    
+    ctx.restore();
+}
+
+simulateFluidDynamics();
         
         // ===== QUIZ - FIXED VERSION =====
         let quizCurrentQuestion = 1;
