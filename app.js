@@ -92,10 +92,7 @@ function initializeProgress() {
             missionScores: {
                 lesson1: { completed: false, xp: 0, score: 0 },
                 lesson2: { completed: false, xp: 0, score: 0 },
-                lesson3: { completed: false, xp: 0, score: 0 },
-                lesson4: { completed: false, xp: 0, score: 0 },
                 lesson5: { completed: false, xp: 0, score: 0 },
-                lesson6: { completed: false, xp: 0, score: 0 },
                 lesson7: { completed: false, xp: 0, score: 0 },
                 lesson8: { completed: false, xp: 0, score: 0 }
             },
@@ -242,7 +239,7 @@ function updateDashboard() {
         // Calculate average score from quiz missions - WITH NULL CHECKS
         let totalScore = 0;
         let quizCount = 0;
-        ['lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson5', 'lesson6', 'lesson7'].forEach(lesson => {
+        ['lesson1', 'lesson2', 'lesson5', 'lesson7'].forEach(lesson => {
             // THIS IS THE FIX - Check if mission exists AND has a score
             if (progress.missionScores[lesson] && 
                 progress.missionScores[lesson].score && 
@@ -263,10 +260,7 @@ function updateMissionStatuses() {
     const missions = {
         1: 'lesson1',
         2: 'lesson2',
-        3: 'lesson3',
-        4: 'lesson4',
         5: 'lesson5',
-        6: 'lesson6',
         7: 'lesson7',
         8: 'lesson8'
     };
