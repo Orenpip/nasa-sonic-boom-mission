@@ -252,7 +252,10 @@ function updateDashboard() {
         const accuracyPercent = quizCount > 0 ? Math.round((totalScore / (quizCount * 3)) * 100) : 0;
         accuracy.textContent = `${accuracyPercent}%`;
     }
+}
 
+function updateMissionStatuses() {
+    const progress = getProgress();
     const missions = {
         1: 'lesson1',
         2: 'lesson2',
@@ -269,7 +272,6 @@ function updateDashboard() {
         
         if (!statusBadge) return;
         
-        // Mission 1 is always available
         if (missionNum === '1') {
             if (progress.missionScores[missionId] && progress.missionScores[missionId].completed) {
                 statusBadge.textContent = '✓ DONE';
@@ -283,87 +285,10 @@ function updateDashboard() {
             return;
         }
         
-        // Check if previous mission is completed
-        const prevMissionNum = parseInt(missionNum) - 1;
-        const prevMissionId = missions[prevMissionNum];
-        const prevCompleted = progress.missionScores[prevMissionId] && progress.missionScores[prevMissionId].completed;
-        
-        if (prevCompleted) {
-            // Unlock this mission
-            if (progress.missionScores[missionId] && progress.missionScores[missionId].completed) {
-                statusBadge.textContent = '✓ DONE';
-                statusBadge.classList.remove('locked');
-                statusBadge.classList.add('completed');
-            } else {
-                statusBadge.textContent = 'READY!';
-                statusBadge.classList.remove('locked');
-            }
-            
-            if (missionCard) missionCard.classList.remove('locked-card');
-            
-            if (launchBtn) {
-                launchBtn.classList.remove('locked');
-                launchBtn.href = `lesson${missionNum}.html`;
-                const btnText = launchBtn.querySelector('span:first-child');
-                const btnArrow = launchBtn.querySelector('.launch-arrow');
-                if (btnText) btnText.textContent = 'START MISSION';
-                if (btnArrow) btnArrow.textContent = '→';
-            }
-        } else {
-            // Keep locked
-            statusBadge.textContent = '🔒 LOCKED';
-            statusBadge.classList.add('locked');
-            statusBadge.classList.remove('completed');
-            
-            if (missionCard) missionCard.classList.add('locked-card');
-            
-            if (launchBtn) {
-                launchBtn.classList.add('locked');
-                launchBtn.href = '#';
-                const btnText = launchBtn.querySelector('span:first-child');
-                const btnArrow = launchBtn.querySelector('.launch-arrow');
-                if (btnText) btnText.textContent = 'LOCKED';
-                if (btnArrow) btnArrow.textContent = '🔒';
-            }
-        }
-    });
-}
-
-function updateMissionStatuses() {
-    const progress = getProgress();
-    const missions = {
-        1: 'lesson1',
-        2: 'lesson2',
-        3: 'lesson3',
-        4: 'lesson4',
-        5: 'lesson5'
-    };
-
-    Object.keys(missions).forEach(missionNum => {
-        const missionId = missions[missionNum];
-        const statusBadge = document.querySelector(`#status${missionNum} .status-badge`);
-        const launchBtn = document.getElementById(`launch${missionNum}`);
-        const missionCard = document.querySelector(`[data-mission="${missionNum}"]`);
-
-        if (!statusBadge) return;
-
-        if (missionNum === '1') {
-            if (progress.missionScores[missionId] && progress.missionScores[missionId].completed) {
-                statusBadge.textContent = '✓ DONE';
-                statusBadge.classList.remove('locked');
-                statusBadge.classList.add('completed');
-            } else {
-                statusBadge.textContent = 'START HERE!';
-                statusBadge.classList.remove('locked');
-            }
-            if (missionCard) missionCard.classList.remove('locked-card');
-            return;
-        }
-
         const prevMissionNum = String(Number(missionNum) - 1);
         const prevMissionId = missions[prevMissionNum];
         const prevCompleted = progress.missionScores[prevMissionId] && progress.missionScores[prevMissionId].completed;
-
+        
         if (prevCompleted) {
             if (progress.missionScores[missionId] && progress.missionScores[missionId].completed) {
                 statusBadge.textContent = '✓ DONE';
@@ -373,9 +298,9 @@ function updateMissionStatuses() {
                 statusBadge.textContent = 'READY!';
                 statusBadge.classList.remove('locked');
             }
-
+            
             if (missionCard) missionCard.classList.remove('locked-card');
-
+            
             if (launchBtn) {
                 launchBtn.classList.remove('locked');
                 launchBtn.href = `lesson${missionNum}.html`;
@@ -388,9 +313,9 @@ function updateMissionStatuses() {
             statusBadge.textContent = '🔒 LOCKED';
             statusBadge.classList.add('locked');
             statusBadge.classList.remove('completed');
-
+            
             if (missionCard) missionCard.classList.add('locked-card');
-
+            
             if (launchBtn) {
                 launchBtn.classList.add('locked');
                 launchBtn.href = '#';
