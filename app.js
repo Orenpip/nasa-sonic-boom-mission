@@ -94,10 +94,12 @@ function initializeProgress() {
                 lesson2: { completed: false, xp: 0, score: 0 },
                 lesson3: { completed: false, xp: 0, score: 0 },
                 lesson4: { completed: false, xp: 0, score: 0 },
-                lesson5: { completed: false, xp: 0, score: 0 }
-                
+                lesson5: { completed: false, xp: 0, score: 0 },
+                lesson6: { completed: false, xp: 0, score: 0 },
+                lesson7: { completed: false, xp: 0, score: 0 },
+                lesson8: { completed: false, xp: 0, score: 0 }
             },
-            rank: 'Explorer',
+            rank: 'Sound Explorer',
             startTime: Date.now()
         };
         localStorage.setItem('nasaSonicBoomProgress', JSON.stringify(initialProgress));
@@ -237,15 +239,20 @@ function updateDashboard() {
     }
     
     if (accuracy) {
-        // Calculate average score from quiz missions - WITH NULL CHECKS
+        // Calculate average score from quiz missions
         let totalScore = 0;
         let quizCount = 0;
-        ['lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson5', 'lesson6', 'lesson7'].forEach(lesson => {
-        ['lesson1', 'lesson2', 'lesson5', 'lesson7'].forEach(lesson => {
-            // THIS IS THE FIX - Check if mission exists AND has a score
-            if (progress.missionScores[lesson] && 
-                progress.missionScores[lesson].score && 
-@@ -263,10 +260,7 @@ function updateMissionStatuses() {
+        const quizLessons = ['lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson5', 'lesson6', 'lesson7', 'lesson8'];
+        quizLessons.forEach(lesson => {
+            if (progress.missionScores[lesson] && typeof progress.missionScores[lesson].score === 'number') {
+                totalScore += progress.missionScores[lesson].score;
+                quizCount++;
+            }
+        });
+        const accuracyPercent = quizCount > 0 ? Math.round((totalScore / (quizCount * 3)) * 100) : 0;
+        accuracy.textContent = `${accuracyPercent}%`;
+    }
+
     const missions = {
         1: 'lesson1',
         2: 'lesson2',
