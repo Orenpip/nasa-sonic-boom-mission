@@ -373,24 +373,20 @@
             
             finalScore.textContent = `${correctAnswers}/3`;
             
-            let stars = 0;
             let message = '';
             
             if (correctAnswers === 3) {
-                stars = 20;
                 message = '🌟 Perfect! You understand speed and sound!';
             } else if (correctAnswers === 2) {
-                stars = 16;
                 message = '😊 Good job! You learned about sound speed!';
             } else {
-                stars = 12;
                 message = '👍 Nice try! Review the race results!';
             }
             
-            xpEarned.textContent = `+${stars} ⭐`;
-            resultsMessage.textContent = message;
+            xpEarned.textContent = message;
+            resultsMessage.textContent = 'Mission 5 Complete!';
             
-            saveProgress('lesson5', stars, correctAnswers >= 2, correctAnswers);
+            saveProgress('lesson5', correctAnswers >= 2, correctAnswers);
             
             resultsDiv.classList.remove('hidden');
         }

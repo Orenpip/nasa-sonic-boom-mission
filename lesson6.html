@@ -332,24 +332,20 @@ simulateFluidDynamics();
             
             finalScore.textContent = `${quizCorrectAnswers}/3`;
             
-            let stars = 0;
             let message = '';
             
             if (quizCorrectAnswers === 3) {
-                stars = 20;
                 message = '🌟 Perfect!';
             } else if (quizCorrectAnswers === 2) {
-                stars = 16;
                 message = '😊 Great job!';
             } else {
-                stars = 12;
                 message = '👍 Good try!';
             }
             
-            xpEarned.textContent = `+${stars} ⭐`;
-            resultsMessage.textContent = message;
+            xpEarned.textContent = message;
+            resultsMessage.textContent = 'Mission 6 Complete!';
             
-            saveProgress('lesson6', stars, quizCorrectAnswers >= 2, quizCorrectAnswers);
+            saveProgress('lesson6', quizCorrectAnswers >= 2, quizCorrectAnswers);
             
             resultsDiv.classList.remove('hidden');
         }

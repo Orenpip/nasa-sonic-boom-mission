@@ -584,24 +584,20 @@
             
             finalScore.textContent = `${correctAnswers}/3`;
             
-            let stars = 0;
             let message = '';
             
             if (correctAnswers === 3) {
-                stars = 15;
                 message = '🌟 Perfect! You are a sound expert!';
             } else if (correctAnswers === 2) {
-                stars = 12;
                 message = '😊 Great job! You learned a lot!';
             } else {
-                stars = 10;
                 message = '👍 Good try! Play the games again!';
             }
             
-            xpEarned.textContent = `+${stars} ⭐`;
-            resultsMessage.textContent = message;
+            xpEarned.textContent = message;
+            resultsMessage.textContent = 'Mission 1 Complete!';
             
-            saveProgress('lesson1', stars, correctAnswers >= 2, correctAnswers);
+            saveProgress('lesson1', correctAnswers >= 2, correctAnswers);
             
             resultsDiv.classList.remove('hidden');
         }

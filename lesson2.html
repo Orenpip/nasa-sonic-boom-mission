@@ -338,20 +338,17 @@
             let message = '';
             
             if (correctAnswers === 3) {
-                stars = 15;
                 message = '🌟 Perfect! You understand how sound travels!';
             } else if (correctAnswers === 2) {
-                stars = 12;
                 message = '😊 Good job! You learned about sound travel!';
             } else {
-                stars = 10;
                 message = '👍 Nice try! Review the material and try again!';
             }
             
-            xpEarned.textContent = `+${stars} ⭐`;
-            resultsMessage.textContent = message;
+            xpEarned.textContent = message;
+            resultsMessage.textContent = 'Mission 2 Complete!';
             
-            saveProgress('lesson2', stars, correctAnswers >= 2, correctAnswers);
+            saveProgress('lesson2', correctAnswers >= 2, correctAnswers);
             
             resultsDiv.classList.remove('hidden');
         }

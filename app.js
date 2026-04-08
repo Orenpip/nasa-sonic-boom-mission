@@ -87,19 +87,17 @@ function initWaveAnimation() {
 function initializeProgress() {
     if (!localStorage.getItem('nasaSonicBoomProgress')) {
         const initialProgress = {
-            totalXP: 0,
             completedMissions: [],
             missionScores: {
-                lesson1: { completed: false, xp: 0, score: 0 },
-                lesson2: { completed: false, xp: 0, score: 0 },
-                lesson3: { completed: false, xp: 0, score: 0 },
-                lesson4: { completed: false, xp: 0, score: 0 },
-                lesson5: { completed: false, xp: 0, score: 0 },
-                lesson6: { completed: false, xp: 0, score: 0 },
-                lesson7: { completed: false, xp: 0, score: 0 },
-                lesson8: { completed: false, xp: 0, score: 0 }
+                lesson1: { completed: false, score: 0 },
+                lesson2: { completed: false, score: 0 },
+                lesson3: { completed: false, score: 0 },
+                lesson4: { completed: false, score: 0 },
+                lesson5: { completed: false, score: 0 },
+                lesson6: { completed: false, score: 0 },
+                lesson7: { completed: false, score: 0 },
+                lesson8: { completed: false, score: 0 }
             },
-            rank: 'Sound Explorer',
             startTime: Date.now()
         };
         localStorage.setItem('nasaSonicBoomProgress', JSON.stringify(initialProgress));
@@ -113,18 +111,15 @@ function getProgress() {
 }
 
 // Save mission progress
-function saveProgress(missionId, xpEarned, completed, score = 0) {
+function saveProgress(missionId, completed, score = 0) {
     const progress = getProgress();
     
     // Update mission data
     if (!progress.missionScores[missionId]) {
-        progress.missionScores[missionId] = { completed: false, xp: 0, score: 0 };
+        progress.missionScores[missionId] = { completed: false, score: 0 };
     }
     
-    // Only add XP if this mission hasn't been completed before
     if (!progress.missionScores[missionId].completed && completed) {
-        progress.totalXP += xpEarned;
-        progress.missionScores[missionId].xp = xpEarned;
         progress.missionScores[missionId].completed = true;
         progress.missionScores[missionId].score = score;
         
@@ -132,25 +127,6 @@ function saveProgress(missionId, xpEarned, completed, score = 0) {
         if (!progress.completedMissions.includes(missionId)) {
             progress.completedMissions.push(missionId);
         }
-    } else if (progress.missionScores[missionId].completed && completed) {
-        // Already completed - don't add more XP
-        console.log('Mission already completed. No additional stars awarded.');
-    } else {
-        // Mission not completed, partial XP
-        progress.totalXP += xpEarned;
-        if (!progress.missionScores[missionId].xp) {
-            progress.missionScores[missionId].xp = 0;
-        }
-        progress.missionScores[missionId].xp += xpEarned;
-    }
-    
-    // Update rank based on total XP
-    if (progress.totalXP >= 120) {
-        progress.rank = 'Sound Master';
-    } else if (progress.totalXP >= 60) {
-        progress.rank = 'Sound Scientist';
-    } else {
-        progress.rank = 'Sound Explorer';
     }
     
     localStorage.setItem('nasaSonicBoomProgress', JSON.stringify(progress));
@@ -193,31 +169,6 @@ function getRankInfo(xp) {
 
 function updateDashboard() {
     const progress = getProgress();
-    const rankInfo = getRankInfo(progress.totalXP);
-    
-    // Update rank display
-    const rankIcon = document.getElementById('rankIcon');
-    const rankTitle = document.getElementById('rankTitle');
-    
-    if (rankIcon) rankIcon.textContent = rankInfo.icon;
-    if (rankTitle) rankTitle.textContent = rankInfo.title;
-    
-    // Update XP display
-    const xpValue = document.getElementById('xpValue');
-    const xpFill = document.getElementById('xpFill');
-    const xpNext = document.getElementById('xpNext');
-    
-    if (xpValue) xpValue.textContent = progress.totalXP + ' ⭐';
-    if (xpFill) {
-        xpFill.style.width = rankInfo.progress + '%';
-    }
-    if (xpNext) {
-        if (rankInfo.nextRank) {
-            xpNext.textContent = `${rankInfo.xpToNext} ⭐ to ${rankInfo.nextRank}!`;
-        } else {
-            xpNext.textContent = 'You are a Sound Master! 🎉';
-        }
-    }
     
     // Update stats
     const missionsCompleted = document.getElementById('missionsCompleted');
@@ -252,6 +203,29 @@ function updateDashboard() {
         const accuracyPercent = quizCount > 0 ? Math.round((totalScore / (quizCount * 3)) * 100) : 0;
         accuracy.textContent = `${accuracyPercent}%`;
     }
+    
+    // Update BOOM display
+    updateBoomDisplay(progress);
+}
+
+function updateBoomDisplay(progress) {
+    const boomLetters = ['B', 'O', 'O', 'M'];
+    const lessonMapping = ['lesson1', 'lesson2', 'lesson3', 'lesson4'];
+    
+    boomLetters.forEach((letter, index) => {
+        const letterElement = document.getElementById(`boomLetter${index + 1}`);
+        const lessonId = lessonMapping[index];
+        
+        if (letterElement) {
+            if (progress.missionScores[lessonId] && progress.missionScores[lessonId].completed) {
+                letterElement.textContent = letter;
+                letterElement.classList.add('revealed');
+            } else {
+                letterElement.textContent = '?';
+                letterElement.classList.remove('revealed');
+            }
+        }
+    });
 }
 
 function updateMissionStatuses() {
@@ -261,8 +235,14 @@ function updateMissionStatuses() {
         2: 'lesson2',
         3: 'lesson3',
         4: 'lesson4',
-        5: 'lesson5'
+        5: 'lesson5',
+        8: 'lesson8'
     };
+    
+    // Check if BOOM is complete (lessons 1-4 completed)
+    const boomComplete = ['lesson1', 'lesson2', 'lesson3', 'lesson4'].every(lesson => 
+        progress.missionScores[lesson] && progress.missionScores[lesson].completed
+    );
     
     Object.keys(missions).forEach(missionNum => {
         const missionId = missions[missionNum];
@@ -282,6 +262,47 @@ function updateMissionStatuses() {
                 statusBadge.classList.remove('locked');
             }
             if (missionCard) missionCard.classList.remove('locked-card');
+            return;
+        }
+        
+        if (missionNum === '8') {
+            // Lesson 8 unlocks only when BOOM is complete
+            if (boomComplete) {
+                if (progress.missionScores[missionId] && progress.missionScores[missionId].completed) {
+                    statusBadge.textContent = '✓ DONE';
+                    statusBadge.classList.remove('locked');
+                    statusBadge.classList.add('completed');
+                } else {
+                    statusBadge.textContent = 'READY!';
+                    statusBadge.classList.remove('locked');
+                }
+                
+                if (missionCard) missionCard.classList.remove('locked-card');
+                
+                if (launchBtn) {
+                    launchBtn.classList.remove('locked');
+                    launchBtn.href = `lesson8.html`;
+                    const btnText = launchBtn.querySelector('span:first-child');
+                    const btnArrow = launchBtn.querySelector('.launch-arrow');
+                    if (btnText) btnText.textContent = 'START MISSION';
+                    if (btnArrow) btnArrow.textContent = '→';
+                }
+            } else {
+                statusBadge.textContent = '🔒 BOOM FIRST';
+                statusBadge.classList.add('locked');
+                statusBadge.classList.remove('completed');
+                
+                if (missionCard) missionCard.classList.add('locked-card');
+                
+                if (launchBtn) {
+                    launchBtn.classList.add('locked');
+                    launchBtn.href = '#';
+                    const btnText = launchBtn.querySelector('span:first-child');
+                    const btnArrow = launchBtn.querySelector('.launch-arrow');
+                    if (btnText) btnText.textContent = 'COMPLETE BOOM';
+                    if (btnArrow) btnArrow.textContent = '🔒';
+                }
+            }
             return;
         }
         
@@ -356,13 +377,13 @@ function startMissionClock() {
     setInterval(updateClock, 1000);
 }
 
-// Display current XP in lesson pages
+// Display current progress in lesson pages
 function displayCurrentXP() {
     const currentXPElement = document.getElementById('currentXP');
     if (!currentXPElement) return;
     
     const progress = getProgress();
-    currentXPElement.textContent = progress.totalXP + ' ⭐';
+    currentXPElement.textContent = progress.completedMissions.length + ' ✓';
 }
 
 // ===== RESET PROGRESS =====
