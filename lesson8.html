@@ -253,16 +253,88 @@
                         </ul>
                     </div>
                     
-                    <button class="complete-mission-btn" id="completeMissionBtn">
-                        Complete Final Mission (+30 ⭐)
-                    </button>
-                    
                     <div class="certificate-note">
                         <p>🎓 Ask your teacher for your NASA Sound Explorer certificate!</p>
                     </div>
                 </div>
                 
                 <a href="dashboard.html" class="return-button">Back to Dashboard</a>
+            </div>
+        </section>
+        
+        <!-- Final Quiz Section -->
+        <section class="quiz-section">
+            <div class="content-card quiz-card">
+                <h2>🧠 Final Check - Show What You Know!</h2>
+                <p class="quiz-intro">Answer these questions about the paper airplane challenge!</p>
+                
+                <div id="quizContainer">
+                    <div class="quiz-question" data-question="1">
+                        <h3>Question 1 of 3</h3>
+                        <p class="question-text">Which design feature helps an airplane fly faster?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="correct">
+                                A pointy nose and light weight
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Heavy wings
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Curved folds
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="quiz-question hidden" data-question="2">
+                        <h3>Question 2 of 3</h3>
+                        <p class="question-text">What is air resistance?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="correct">
+                                The force of air pushing against flying objects
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                The sound a plane makes
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                The weight of the airplane
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="quiz-question hidden" data-question="3">
+                        <h3>Question 3 of 3</h3>
+                        <p class="question-text">Why is it important to test multiple designs?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Because testing is fun
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                To find which design works best
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Because engineers only test once
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                    
+                    <div class="quiz-results hidden" id="quizResults">
+                        <h3>🎉 Mission Complete!</h3>
+                        <div class="results-content">
+                            <div class="results-score">
+                                <span class="score-label">You got:</span>
+                                <span class="score-value" id="finalScore">0/3</span>
+                            </div>
+                            <p class="results-message" id="resultsMessage"></p>
+                            <div class="results-xp">
+                                <span class="xp-earned" id="xpEarned">🏆 MISSION COMPLETE!</span>
+                            </div>
+                        </div>
+                        <a href="dashboard.html" class="return-button">Back to Dashboard</a>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -301,19 +373,67 @@ Tip: Go to Settings > Responses to collect photos in Google Drive!`);
             }
         });
         
-        // Complete mission button
-        document.getElementById('completeMissionBtn').addEventListener('click', function() {
-            this.disabled = true;
-            this.textContent = '✓ Mission Complete!';
-            this.style.background = '#00ff88';
-            this.style.borderColor = '#00ff88';
-            
-            saveProgress('lesson8', true, 3);
-            
-            setTimeout(() => {
-                alert('🎉 Congratulations! You completed the BOOM challenge!\n\nYou are now a NASA Sound Explorer!\n\nCheck your dashboard to see your progress!');
-            }, 500);
+        // Quiz functionality
+        let currentQuestion = 1;
+        let correctAnswers = 0;
+        
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                if (this.classList.contains('selected')) return;
+                
+                const isCorrect = this.dataset.answer === 'correct';
+                const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
+                const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
+                
+                allOptions.forEach(opt => opt.classList.add('selected'));
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
+                    correctAnswers++;
+                } else {
+                    this.classList.add('wrong');
+                    feedback.innerHTML = '<span class="wrong-feedback">Not quite right.</span>';
+                }
+                
+                setTimeout(() => {
+                    if (currentQuestion < 3) {
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
+                        currentQuestion++;
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+                    } else {
+                        document.querySelector(`[data-question="3"]`).classList.add('hidden');
+                        showResults();
+                    }
+                }, 1500);
+            });
         });
+        
+        function showResults() {
+            const resultsDiv = document.getElementById('quizResults');
+            const finalScore = document.getElementById('finalScore');
+            const resultsMessage = document.getElementById('resultsMessage');
+            const xpEarned = document.getElementById('xpEarned');
+            
+            finalScore.textContent = `${correctAnswers}/3`;
+            
+            let message = '';
+            
+            if (correctAnswers === 3) {
+                message = '🌟 Perfect! You mastered all 8 missions!';
+            } else if (correctAnswers === 2) {
+                message = '😊 Great job! You learned so much!';
+            } else {
+                message = '👍 You completed the challenge!';
+            }
+            
+            xpEarned.textContent = message;
+            resultsMessage.textContent = 'You are now a NASA Sound Explorer!';
+            
+            saveProgress('lesson8', true, correctAnswers);
+            
+            resultsDiv.classList.remove('hidden');
+        }
     </script>
 </body>
 </html>
