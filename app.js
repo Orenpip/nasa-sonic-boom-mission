@@ -209,14 +209,16 @@ function updateDashboard() {
 }
 
 function updateBoomDisplay(progress) {
+    const boomLetters = ['B', 'O', 'O', 'M'];
     const lessonMapping = ['lesson1', 'lesson2', 'lesson3', 'lesson4'];
     
-    lessonMapping.forEach((lessonId, index) => {
+    boomLetters.forEach((letter, index) => {
         const letterElement = document.getElementById(`boomLetter${index + 1}`);
+        const lessonId = lessonMapping[index];
         
         if (letterElement) {
             if (progress.missionScores[lessonId] && progress.missionScores[lessonId].completed) {
-                letterElement.textContent = '✓';
+                letterElement.textContent = letter;
                 letterElement.classList.add('revealed');
             } else {
                 letterElement.textContent = '?';
