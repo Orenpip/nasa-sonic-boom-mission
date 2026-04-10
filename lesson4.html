@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mission 07: Sonic Booms</title>
+    <title>Mission 04: Sonic Booms</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
@@ -61,7 +61,7 @@
 <body>
     <nav class="nav-bar">
         <a href="dashboard.html" class="nav-back">← DASHBOARD</a>
-        <div class="nav-logo">MISSION 07 // SONIC BOOMS</div>
+        <div class="nav-logo">MISSION 04 // SONIC BOOMS</div>
         <div class="nav-xp" id="currentXP">0 ⭐</div>
     </nav>
     
@@ -275,6 +275,8 @@
             document.getElementById('transonicBar').style.width = Math.max(0, Math.min((ratio - 0.8) / 0.4, 1)) * 100 + '%';
             document.getElementById('supersonicBar').style.width = Math.max(0, Math.min((ratio - 1.2) / 0.8, 1)) * 100 + '%';
         }
+
+        update();
 
         // Quiz functionality
         let currentQuestion = 1;
