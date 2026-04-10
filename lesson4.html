@@ -280,39 +280,51 @@
         let currentQuestion = 1;
         let correctAnswers = 0;
         
-        document.querySelectorAll('.quiz-option').forEach(option => {
-            option.addEventListener('click', function() {
-                if (this.classList.contains('selected')) return;
-                
-                const isCorrect = this.dataset.answer === 'correct';
-                const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
-                const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
-                
-                allOptions.forEach(opt => opt.classList.add('selected'));
-                
-                if (isCorrect) {
-                    this.classList.add('correct');
-                    feedback.innerHTML = '<span class="correct-feedback">✓ Yes! That\'s right!</span>';
-                    correctAnswers++;
-                } else {
-                    this.classList.add('wrong');
-                    feedback.innerHTML = '<span class="wrong-feedback">Not quite. Try to remember!</span>';
-                }
-                
-                setTimeout(() => {
-                    if (currentQuestion < 3) {
-                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
-                        currentQuestion++;
-                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+        function initQuiz() {
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    if (this.classList.contains('selected')) return;
+                    
+                    const isCorrect = this.dataset.answer === 'correct';
+                    const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
+                    const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
+                    
+                    allOptions.forEach(opt => opt.classList.add('selected'));
+                    
+                    if (isCorrect) {
+                        this.classList.add('correct');
+                        feedback.innerHTML = '<span class="correct-feedback">✓ Yes! That\'s right!</span>';
+                        correctAnswers++;
                     } else {
-                        document.querySelector(`[data-question="3"]`).classList.add('hidden');
-                        showResults();
+                        this.classList.add('wrong');
+                        feedback.innerHTML = '<span class="wrong-feedback">Not quite. Try to remember!</span>';
                     }
-                }, 1500);
+                    
+                    setTimeout(() => {
+                        if (currentQuestion < 3) {
+                            document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
+                            currentQuestion++;
+                            document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+                        } else {
+                            document.querySelector(`[data-question="3"]`).classList.add('hidden');
+                            showResults();
+                        }
+                    }, 1500);
+                });
             });
-        });
+            console.log('✓ Quiz initialized successfully');
+        }
+        
+        // Initialize quiz when document is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initQuiz);
+        } else {
+            initQuiz();
+        }
         
         function showResults() {
+            console.log('showResults() called, correctAnswers:', correctAnswers);
+            
             const resultsDiv = document.getElementById('quizResults');
             const finalScore = document.getElementById('finalScore');
             const resultsMessage = document.getElementById('resultsMessage');
@@ -334,7 +346,9 @@
             xpEarned.textContent = message;
             resultsMessage.textContent = 'Mission 4 Complete!';
             
+            console.log('About to call saveProgress with:', {lesson: 'lesson4', completed: correctAnswers >= 2, score: correctAnswers});
             saveProgress('lesson4', correctAnswers >= 2, correctAnswers);
+            console.log('✓ saveProgress called successfully');
             
             resultsDiv.classList.remove('hidden');
         }
