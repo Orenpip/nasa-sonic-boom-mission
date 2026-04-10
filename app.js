@@ -192,7 +192,7 @@ function updateDashboard() {
         // Calculate average score from quiz missions
         let totalScore = 0;
         let quizCount = 0;
-        const quizLessons = ['lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson6', 'lesson7', 'lesson8'];
+        const quizLessons = ['lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson6', 'lesson7'];
         quizLessons.forEach(lesson => {
             if (progress.missionScores[lesson] && typeof progress.missionScores[lesson].score === 'number') {
                 totalScore += progress.missionScores[lesson].score;
@@ -227,6 +227,35 @@ function updateBoomDisplay(progress) {
     });
 }
 
+function updateBoomButton(boomComplete) {
+    const boomButton = document.getElementById('boomButton');
+    const boomSubtitle = document.getElementById('boomSubtitle');
+    
+    if (!boomButton) return;
+    
+    if (boomComplete) {
+        boomButton.href = 'lesson8.html';
+        boomButton.style.cursor = 'pointer';
+        boomButton.style.opacity = '1';
+        boomButton.style.filter = 'drop-shadow(0 0 10px #00ff88)';
+        boomSubtitle.textContent = '✓ BOOM Complete! Click to start the Paper Airplane Challenge!';
+        boomSubtitle.style.color = '#00ff88';
+    } else {
+        boomButton.href = '#';
+        boomButton.style.cursor = 'not-allowed';
+        boomButton.style.opacity = '0.6';
+        boomButton.style.filter = 'none';
+        boomSubtitle.textContent = 'Complete Missions 1-4 to spell BOOM and unlock the final challenge!';
+        boomSubtitle.style.color = 'inherit';
+    }
+    
+    boomButton.addEventListener('click', function(e) {
+        if (!boomComplete) {
+            e.preventDefault();
+        }
+    });
+}
+
 function updateMissionStatuses() {
     const progress = getProgress();
     const missions = {
@@ -234,14 +263,16 @@ function updateMissionStatuses() {
         2: 'lesson2',
         3: 'lesson3',
         4: 'lesson4',
-        7: 'lesson7',
-        8: 'lesson8'
+        7: 'lesson7'
     };
     
     // Check if BOOM is complete (lessons 1, 2, 3, 7 completed)
     const boomComplete = ['lesson1', 'lesson2', 'lesson3', 'lesson7'].every(lesson => 
         progress.missionScores[lesson] && progress.missionScores[lesson].completed
     );
+    
+    // Update BOOM button
+    updateBoomButton(boomComplete);
     
     Object.keys(missions).forEach(missionNum => {
         const missionId = missions[missionNum];
@@ -261,47 +292,6 @@ function updateMissionStatuses() {
                 statusBadge.classList.remove('locked');
             }
             if (missionCard) missionCard.classList.remove('locked-card');
-            return;
-        }
-        
-        if (missionNum === '8') {
-            // Lesson 8 unlocks only when BOOM is complete
-            if (boomComplete) {
-                if (progress.missionScores[missionId] && progress.missionScores[missionId].completed) {
-                    statusBadge.textContent = '✓ DONE';
-                    statusBadge.classList.remove('locked');
-                    statusBadge.classList.add('completed');
-                } else {
-                    statusBadge.textContent = 'READY!';
-                    statusBadge.classList.remove('locked');
-                }
-                
-                if (missionCard) missionCard.classList.remove('locked-card');
-                
-                if (launchBtn) {
-                    launchBtn.classList.remove('locked');
-                    launchBtn.href = `lesson8.html`;
-                    const btnText = launchBtn.querySelector('span:first-child');
-                    const btnArrow = launchBtn.querySelector('.launch-arrow');
-                    if (btnText) btnText.textContent = 'START MISSION';
-                    if (btnArrow) btnArrow.textContent = '→';
-                }
-            } else {
-                statusBadge.textContent = '🔒 BOOM FIRST';
-                statusBadge.classList.add('locked');
-                statusBadge.classList.remove('completed');
-                
-                if (missionCard) missionCard.classList.add('locked-card');
-                
-                if (launchBtn) {
-                    launchBtn.classList.add('locked');
-                    launchBtn.href = '#';
-                    const btnText = launchBtn.querySelector('span:first-child');
-                    const btnArrow = launchBtn.querySelector('.launch-arrow');
-                    if (btnText) btnText.textContent = 'COMPLETE BOOM';
-                    if (btnArrow) btnArrow.textContent = '🔒';
-                }
-            }
             return;
         }
         

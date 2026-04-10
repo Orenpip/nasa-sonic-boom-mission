@@ -3445,6 +3445,15 @@ body {
     text-align: center;
     box-shadow: var(--card-shadow);
     animation: slideInUp 0.8s ease-out;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+.boom-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.6);
 }
 
 @keyframes slideInUp {
