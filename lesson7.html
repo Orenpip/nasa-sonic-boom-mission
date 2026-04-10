@@ -75,29 +75,70 @@
             </div>
         </div>
 
+        <!-- QUIZ SECTION -->
         <section class="quiz-section">
-            <div class="quiz-card">
-                <h2>🧠 Quick Check!</h2>
+            <div class="content-card quiz-card">
+                <h2>🧠 Mission Quiz!</h2>
+                <p class="quiz-intro">Answer these questions to complete the mission!</p>
+                
                 <div id="quizContainer">
-                    <div class="quiz-question" id="q1">
-                        <p>What causes a sonic boom?</p>
-                        <button class="quiz-option" onclick="checkAnswer(this, true, 'q1', 'q2')">Flying faster than sound</button>
-                        <button class="quiz-option" onclick="checkAnswer(this, false, 'q1', 'q2')">The plane's engine noise</button>
-                        <button class="quiz-option" onclick="checkAnswer(this, false, 'q1', 'q2')">Gravity pulling the plane</button>
+                    <div class="quiz-question" data-question="1">
+                        <h3>Question 1 of 3</h3>
+                        <p class="question-text">What causes a sonic boom?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="correct">
+                                Flying faster than sound
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                The plane's engine noise
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Gravity pulling the plane
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
                     </div>
-                    <div class="quiz-question hidden" id="q2">
-                        <p>What are the rings representing in the simulation?</p>
-                        <button class="quiz-option" onclick="checkAnswer(this, false, 'q2', 'q3')">Smoke from the exhaust</button>
-                        <button class="quiz-option" onclick="checkAnswer(this, true, 'q2', 'q3')">Sound waves spreading out</button>
+                    
+                    <div class="quiz-question hidden" data-question="2">
+                        <h3>Question 2 of 3</h3>
+                        <p class="question-text">What are the rings representing in the simulation?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Smoke from the exhaust
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                Sound waves spreading out
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
                     </div>
-                    <div class="quiz-question hidden" id="q3">
-                        <p>When does a shockwave (Mach cone) form?</p>
-                        <button class="quiz-option" onclick="finishQuiz(this, true)">When speed > speed of sound</button>
-                        <button class="quiz-option" onclick="finishQuiz(this, false)">When speed < speed of sound</button>
+                    
+                    <div class="quiz-question hidden" data-question="3">
+                        <h3>Question 3 of 3</h3>
+                        <p class="question-text">When does a shockwave (Mach cone) form?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="correct">
+                                When speed > speed of sound
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                When speed < speed of sound
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
                     </div>
-                    <div class="quiz-results hidden" id="results">
+                    
+                    <div class="quiz-results hidden" id="quizResults">
                         <h3>🎉 Mission Complete!</h3>
-                        <p id="scoreText"></p>
+                        <div class="results-content">
+                            <div class="results-score">
+                                <span class="score-label">You got:</span>
+                                <span class="score-value" id="finalScore">0/3</span>
+                            </div>
+                            <p class="results-message" id="resultsMessage"></p>
+                            <div class="results-xp">
+                                <span class="xp-earned" id="xpEarned">+20 ⭐</span>
+                            </div>
+                        </div>
                         <a href="dashboard.html" class="return-button">Back to Dashboard</a>
                     </div>
                 </div>
@@ -214,25 +255,66 @@
             document.getElementById('supersonicBar').style.width = Math.max(0, Math.min((ratio - 1.2) / 0.8, 1)) * 100 + '%';
         }
 
-        // Quiz Logic
-        let score = 0;
-        function checkAnswer(btn, isCorrect, currentId, nextId) {
-            if (isCorrect) { btn.classList.add('correct'); score++; }
-            else { btn.classList.add('wrong'); }
-            setTimeout(() => {
-                document.getElementById(currentId).classList.add('hidden');
-                document.getElementById(nextId).classList.remove('hidden');
-            }, 600);
-        }
-
-        function finishQuiz(btn, isCorrect) {
-            if (isCorrect) { btn.classList.add('correct'); score++; }
-            else { btn.classList.add('wrong'); }
-            setTimeout(() => {
-                document.getElementById('q3').classList.add('hidden');
-                document.getElementById('results').classList.remove('hidden');
-                document.getElementById('scoreText').innerText = `You scored ${score}/3!`;
-            }, 600);
+        // ===== QUIZ FUNCTIONALITY =====
+        let currentQuestion = 1;
+        let correctAnswers = 0;
+        
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                if (this.classList.contains('selected')) return;
+                
+                const isCorrect = this.dataset.answer === 'correct';
+                const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
+                const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
+                
+                allOptions.forEach(opt => opt.classList.add('selected'));
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
+                    correctAnswers++;
+                } else {
+                    this.classList.add('wrong');
+                    feedback.innerHTML = '<span class="wrong-feedback">Not quite!</span>';
+                }
+                
+                setTimeout(() => {
+                    if (currentQuestion < 3) {
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
+                        currentQuestion++;
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+                    } else {
+                        document.querySelector(`[data-question="3"]`).classList.add('hidden');
+                        showResults();
+                    }
+                }, 1500);
+            });
+        });
+        
+        function showResults() {
+            const resultsDiv = document.getElementById('quizResults');
+            const finalScore = document.getElementById('finalScore');
+            const resultsMessage = document.getElementById('resultsMessage');
+            const xpEarned = document.getElementById('xpEarned');
+            
+            finalScore.textContent = `${correctAnswers}/3`;
+            
+            let message = '';
+            
+            if (correctAnswers === 3) {
+                message = '🌟 Perfect! You mastered sonic booms!';
+            } else if (correctAnswers === 2) {
+                message = '😊 Great job! You understand sound speed!';
+            } else {
+                message = '👍 Good try! Review the simulation!';
+            }
+            
+            xpEarned.textContent = message;
+            resultsMessage.textContent = 'Mission 7 Complete!';
+            
+            saveProgress('lesson7', correctAnswers >= 2, correctAnswers);
+            
+            resultsDiv.classList.remove('hidden');
         }
 
         update();
