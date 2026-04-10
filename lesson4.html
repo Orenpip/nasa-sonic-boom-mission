@@ -36,14 +36,25 @@
 
         .quiz-card { background: #112240; padding: 30px; border-radius: 12px; border: 1px solid #00f2ff; }
         .hidden { display: none; }
+        .quiz-options {
+            margin: 20px 0;
+        }
         .quiz-option { 
             display: block; width: 100%; padding: 15px; margin: 10px 0; 
             background: #1a314d; border: 1px solid #00f2ff; color: white; 
             cursor: pointer; font-family: 'Orbitron'; text-align: left;
         }
         .quiz-option:hover { background: #233554; }
-        .correct { background: #00ff88 !important; color: #0a192f; }
-        .wrong { background: #ff3366 !important; }
+        .quiz-option.correct { background: #00ff88 !important; color: #0a192f; }
+        .quiz-option.wrong { background: #ff3366 !important; }
+        .quiz-option.selected { opacity: 0.6; }
+        .quiz-feedback { margin-top: 10px; font-weight: bold; }
+        .correct-feedback { color: #00ff88; }
+        .wrong-feedback { color: #ff3366; }
+        .quiz-results { text-align: center; margin-top: 30px; }
+        .results-content { margin: 20px 0; }
+        .results-score { font-size: 24px; margin: 10px 0; }
+        .results-xp { color: #00ff88; font-weight: bold; margin: 10px 0; }
         .return-button { display: inline-block; margin-top: 20px; padding: 10px 20px; background: #00f2ff; color: #0a192f; text-decoration: none; font-weight: bold; }
     </style>
 </head>
@@ -74,30 +85,76 @@
                 </div>
             </div>
         </div>
-
+<!-- Quiz Section -->
         <section class="quiz-section">
-            <div class="quiz-card">
-                <h2>🧠 Quick Check!</h2>
+            <div class="content-card quiz-card">
+                <h2>🧠 Check What You Learned!</h2>
+                <p class="quiz-intro">Answer these questions to earn your stars!</p>
+                
                 <div id="quizContainer">
-                    <div class="quiz-question" id="q1">
-                        <p>What causes a sonic boom?</p>
-                        <button class="quiz-option" onclick="checkAnswer(this, true, 'q1', 'q2')">Flying faster than sound</button>
-                        <button class="quiz-option" onclick="checkAnswer(this, false, 'q1', 'q2')">The plane's engine noise</button>
-                        <button class="quiz-option" onclick="checkAnswer(this, false, 'q1', 'q2')">Gravity pulling the plane</button>
+                    <div class="quiz-question" data-question="1">
+                        <h3>Question 1 of 3</h3>
+                        <p class="question-text">What does sound need to travel through?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="correct">
+                                Air, water, or solid materials
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Light and sunshine
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Nothing - it can travel through empty space
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
                     </div>
-                    <div class="quiz-question hidden" id="q2">
-                        <p>What are the rings representing in the simulation?</p>
-                        <button class="quiz-option" onclick="checkAnswer(this, false, 'q2', 'q3')">Smoke from the exhaust</button>
-                        <button class="quiz-option" onclick="checkAnswer(this, true, 'q2', 'q3')">Sound waves spreading out</button>
+                    
+                    <div class="quiz-question hidden" data-question="2">
+                        <h3>Question 2 of 3</h3>
+                        <p class="question-text">Can sound travel in outer space?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Yes, sound can travel anywhere
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                No, because there's no air in space
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Only if you shout really loud
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
                     </div>
-                    <div class="quiz-question hidden" id="q3">
-                        <p>When does a shockwave (Mach cone) form?</p>
-                        <button class="quiz-option" onclick="finishQuiz(this, true)">When speed > speed of sound</button>
-                        <button class="quiz-option" onclick="finishQuiz(this, false)">When speed < speed of sound</button>
+                    
+                    <div class="quiz-question hidden" data-question="3">
+                        <h3>Question 3 of 3</h3>
+                        <p class="question-text">Does sound travel faster through air or through metal?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Faster through air
+                            </button>
+                            <button class="quiz-option" data-answer="correct">
+                                Faster through metal
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Same speed in both
+                            </button>
+                        </div>
+                        <div class="quiz-feedback"></div>
                     </div>
-                    <div class="quiz-results hidden" id="results">
+                    
+                    <div class="quiz-results hidden" id="quizResults">
                         <h3>🎉 Mission Complete!</h3>
-                        <p id="scoreText"></p>
+                        <div class="results-content">
+                            <div class="results-score">
+                                <span class="score-label">You got:</span>
+                                <span class="score-value" id="finalScore">0/3</span>
+                            </div>
+                            <p class="results-message" id="resultsMessage"></p>
+                            <div class="results-xp">
+                                <span class="xp-earned" id="xpEarned">+15 ⭐</span>
+                            </div>
+                        </div>
                         <a href="dashboard.html" class="return-button">Back to Dashboard</a>
                     </div>
                 </div>
@@ -105,7 +162,12 @@
         </section>
     </div>
 
+
+    <script src="app.js"></script>
     <script>
+        createStarfield();
+        displayCurrentXP();
+        
         const canvas = document.getElementById("layer1");
         const ctx = canvas.getContext("2d");
         const WIDTH = 768, HEIGHT = 576;
@@ -214,28 +276,68 @@
             document.getElementById('supersonicBar').style.width = Math.max(0, Math.min((ratio - 1.2) / 0.8, 1)) * 100 + '%';
         }
 
-        // Quiz Logic
-        let score = 0;
-        function checkAnswer(btn, isCorrect, currentId, nextId) {
-            if (isCorrect) { btn.classList.add('correct'); score++; }
-            else { btn.classList.add('wrong'); }
-            setTimeout(() => {
-                document.getElementById(currentId).classList.add('hidden');
-                document.getElementById(nextId).classList.remove('hidden');
-            }, 600);
+        // Quiz functionality
+        let currentQuestion = 1;
+        let correctAnswers = 0;
+        
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                if (this.classList.contains('selected')) return;
+                
+                const isCorrect = this.dataset.answer === 'correct';
+                const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
+                const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
+                
+                allOptions.forEach(opt => opt.classList.add('selected'));
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<span class="correct-feedback">✓ Yes! That\'s right!</span>';
+                    correctAnswers++;
+                } else {
+                    this.classList.add('wrong');
+                    feedback.innerHTML = '<span class="wrong-feedback">Not quite. Try to remember!</span>';
+                }
+                
+                setTimeout(() => {
+                    if (currentQuestion < 3) {
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
+                        currentQuestion++;
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+                    } else {
+                        document.querySelector(`[data-question="3"]`).classList.add('hidden');
+                        showResults();
+                    }
+                }, 1500);
+            });
+        });
+        
+        function showResults() {
+            const resultsDiv = document.getElementById('quizResults');
+            const finalScore = document.getElementById('finalScore');
+            const resultsMessage = document.getElementById('resultsMessage');
+            const xpEarned = document.getElementById('xpEarned');
+            
+            finalScore.textContent = `${correctAnswers}/3`;
+            
+            let stars = 0;
+            let message = '';
+            
+            if (correctAnswers === 3) {
+                message = '🌟 Perfect! You understand how sound travels!';
+            } else if (correctAnswers === 2) {
+                message = '😊 Good job! You learned about sound travel!';
+            } else {
+                message = '👍 Nice try! Review the material and try again!';
+            }
+            
+            xpEarned.textContent = message;
+            resultsMessage.textContent = 'Mission 7 Complete!';
+            
+            saveProgress('lesson7', correctAnswers >= 2, correctAnswers);
+            
+            resultsDiv.classList.remove('hidden');
         }
-
-        function finishQuiz(btn, isCorrect) {
-            if (isCorrect) { btn.classList.add('correct'); score++; }
-            else { btn.classList.add('wrong'); }
-            setTimeout(() => {
-                document.getElementById('q3').classList.add('hidden');
-                document.getElementById('results').classList.remove('hidden');
-                document.getElementById('scoreText').innerText = `You scored ${score}/3!`;
-            }, 600);
-        }
-
-        update();
     </script>
 </body>
 </html>
