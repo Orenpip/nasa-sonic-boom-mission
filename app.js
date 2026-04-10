@@ -50,29 +50,82 @@ function recordPageExit() {
 function exportToCSV() {
     const progress = getProgress();
     const pageMetrics = JSON.parse(localStorage.getItem('pageMetrics') || '[]');
-    const pageVisits = JSON.parse(localStorage.getItem('pageVisits') || '[]');
     const sessionId = getOrCreateSessionId();
+    const exportDate = new Date().toLocaleString();
     
-    let csvContent = 'Session Report\\n\\n';
-    csvContent += 'SESSION ID,' + sessionId + '\\n';
-    csvContent += 'EXPORT DATE,' + new Date().toISOString() + '\\n\\n';
+    let csvContent = '';
     
-    csvContent += 'MISSION PROGRESS\\n';
-    csvContent += 'Mission,Completed,Score\\n';
-    Object.entries(progress.missionScores).forEach(([mission, data]) => {
-        csvContent += mission + ',' + (data.completed ? 'Yes' : 'No') + ',' + (data.score || 0) + '\\n';
+    // Header section
+    csvContent += '=== NASA SONIC BOOM MISSION - STUDENT REPORT ===\n';
+    csvContent += 'Session ID,' + sessionId + '\n';
+    csvContent += 'Export Date,' + exportDate + '\n';
+    csvContent += 'Total Missions Completed,' + progress.completedMissions.length + '\n';
+    csvContent += '\n';
+    
+    // Mission Summary
+    csvContent += '=== MISSION PROGRESS SUMMARY ===\n';
+    csvContent += 'Mission,Status,Score out of 3,Quiz Answers,Completion Date\n';
+    
+    const missions = ['lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson6'];
+    missions.forEach(mission => {
+        const data = progress.missionScores[mission];
+        if (data) {
+            const status = data.completed ? 'COMPLETED' : 'Not Started';
+            const score = data.score || 0;
+            const answers = data.quizAnswers ? data.quizAnswers.join('/') : 'N/A';
+            const date = data.completedDate ? new Date(data.completedDate).toLocaleString() : 'N/A';
+            csvContent += mission + ',' + status + ',' + score + ',' + answers + ',' + date + '\n';
+        } else {
+            csvContent += mission + ',Not Started,0,N/A,N/A\n';
+        }
     });
+    csvContent += '\n';
     
-    csvContent += '\\nPAGE METRICS\\n';
-    csvContent += 'Page,Time Spent (seconds),Visit Time,Exit Time\\n';
+    // Time spent per lesson
+    csvContent += '=== TIME SPENT ON EACH LESSON ===\n';
+    csvContent += 'Lesson,Total Time (seconds),Total Time (minutes),Visits\n';
+    
+    const lessonTimes = {};
+    const lessonVisits = {};
+    
     pageMetrics.forEach(metric => {
-        csvContent += metric.page + ',' + metric.timeSpent + ',' + new Date(metric.visitTime || metric.exitTime).toLocaleString() + ',' + new Date(metric.exitTime).toLocaleString() + '\\n';
+        const lesson = metric.page.toLowerCase();
+        if (lesson.includes('mission') || lesson.includes('lesson') || lesson.includes('dashboard')) {
+            if (!lessonTimes[lesson]) {
+                lessonTimes[lesson] = 0;
+                lessonVisits[lesson] = 0;
+            }
+            lessonTimes[lesson] += metric.timeSpent || 0;
+            lessonVisits[lesson]++;
+        }
     });
     
-    csvContent += '\\nPAGE VISITS\\n';
-    csvContent += 'Page,Visit Time\\n';
-    pageVisits.forEach(visit => {
-        csvContent += visit.page + ',' + new Date(visit.visitTime).toLocaleString() + '\\n';
+    Object.keys(lessonTimes).sort().forEach(lesson => {
+        const seconds = lessonTimes[lesson];
+        const minutes = (seconds / 60).toFixed(2);
+        const visits = lessonVisits[lesson];
+        csvContent += lesson + ',' + seconds + ',' + minutes + ',' + visits + '\n';
+    });
+    csvContent += '\n';
+    
+    // Detailed page activity
+    csvContent += '=== DETAILED PAGE ACTIVITY ===\n';
+    csvContent += 'Page,Time Spent (seconds),Visits\n';
+    
+    const pageActivity = {};
+    pageMetrics.forEach(metric => {
+        const page = metric.page;
+        if (!pageActivity[page]) {
+            pageActivity[page] = { time: 0, visits: 0 };
+        }
+        pageActivity[page].time += metric.timeSpent || 0;
+        pageActivity[page].visits++;
+    });
+    
+    Object.keys(pageActivity).sort().forEach(page => {
+        const time = pageActivity[page].time;
+        const visits = pageActivity[page].visits;
+        csvContent += page + ',' + time + ',' + visits + '\n';
     });
     
     return csvContent;
@@ -200,17 +253,19 @@ function getProgress() {
 }
 
 // Save mission progress
-function saveProgress(missionId, completed, score = 0) {
+function saveProgress(missionId, completed, score = 0, quizAnswers = null) {
     const progress = getProgress();
     
     // Update mission data
     if (!progress.missionScores[missionId]) {
-        progress.missionScores[missionId] = { completed: false, score: 0 };
+        progress.missionScores[missionId] = { completed: false, score: 0, quizAnswers: null, completedDate: null };
     }
     
     if (!progress.missionScores[missionId].completed && completed) {
         progress.missionScores[missionId].completed = true;
         progress.missionScores[missionId].score = score;
+        progress.missionScores[missionId].quizAnswers = quizAnswers;
+        progress.missionScores[missionId].completedDate = new Date().toISOString();
         
         // Add to completed missions
         if (!progress.completedMissions.includes(missionId)) {

@@ -291,38 +291,50 @@ simulateFluidDynamics();
         // ===== QUIZ - FIXED VERSION =====
         let quizCurrentQuestion = 1;
         let quizCorrectAnswers = 0;
+        let quizAnswers = []; // Track right/wrong for each question
         
-        document.querySelectorAll('.quiz-option').forEach(option => {
-            option.addEventListener('click', function() {
-                if (this.classList.contains('selected')) return;
-                
-                const isCorrect = this.dataset.answer === 'correct';
-                const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
-                const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
-                
-                allOptions.forEach(opt => opt.classList.add('selected'));
-                
-                if (isCorrect) {
-                    this.classList.add('correct');
-                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
-                    quizCorrectAnswers++;
-                } else {
-                    this.classList.add('wrong');
-                    feedback.innerHTML = '<span class="wrong-feedback">Not quite!</span>';
-                }
-                
-                setTimeout(() => {
-                    if (quizCurrentQuestion < 3) {
-                        document.querySelector(`[data-question="${quizCurrentQuestion}"]`).classList.add('hidden');
-                        quizCurrentQuestion++;
-                        document.querySelector(`[data-question="${quizCurrentQuestion}"]`).classList.remove('hidden');
+        function initQuiz() {
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    if (this.classList.contains('selected')) return;
+                    
+                    const isCorrect = this.dataset.answer === 'correct';
+                    const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
+                    const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
+                    
+                    allOptions.forEach(opt => opt.classList.add('selected'));
+                    
+                    // Track answer
+                    quizAnswers.push(isCorrect ? 'Correct' : 'Wrong');
+                    
+                    if (isCorrect) {
+                        this.classList.add('correct');
+                        feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
+                        quizCorrectAnswers++;
                     } else {
-                        document.querySelector(`[data-question="3"]`).classList.add('hidden');
-                        showQuizResults();
+                        this.classList.add('wrong');
+                        feedback.innerHTML = '<span class="wrong-feedback">Not quite!</span>';
                     }
-                }, 1500);
+                    
+                    setTimeout(() => {
+                        if (quizCurrentQuestion < 3) {
+                            document.querySelector(`[data-question="${quizCurrentQuestion}"]`).classList.add('hidden');
+                            quizCurrentQuestion++;
+                            document.querySelector(`[data-question="${quizCurrentQuestion}"]`).classList.remove('hidden');
+                        } else {
+                            document.querySelector(`[data-question="3"]`).classList.add('hidden');
+                            showQuizResults();
+                        }
+                    }, 1500);
+                });
             });
-        });
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initQuiz);
+        } else {
+            initQuiz();
+        }
         
         function showQuizResults() {
             const resultsDiv = document.getElementById('quizResults');
@@ -345,7 +357,7 @@ simulateFluidDynamics();
             xpEarned.textContent = message;
             resultsMessage.textContent = 'Mission 6 Complete!';
             
-            saveProgress('lesson6', quizCorrectAnswers >= 2, quizCorrectAnswers);
+            saveProgress('lesson6', quizCorrectAnswers >= 2, quizCorrectAnswers, quizAnswers);
             
             resultsDiv.classList.remove('hidden');
         }

@@ -279,6 +279,7 @@
         // Quiz functionality
         let currentQuestion = 1;
         let correctAnswers = 0;
+        let quizAnswers = []; // Track right/wrong for each question
         
         function initQuiz() {
             document.querySelectorAll('.quiz-option').forEach(option => {
@@ -290,6 +291,9 @@
                     const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
                     
                     allOptions.forEach(opt => opt.classList.add('selected'));
+                    
+                    // Track answer
+                    quizAnswers.push(isCorrect ? 'Correct' : 'Wrong');
                     
                     if (isCorrect) {
                         this.classList.add('correct');
@@ -324,6 +328,7 @@
         
         function showResults() {
             console.log('showResults() called, correctAnswers:', correctAnswers);
+            console.log('Quiz Answers:', quizAnswers);
             
             const resultsDiv = document.getElementById('quizResults');
             const finalScore = document.getElementById('finalScore');
@@ -346,8 +351,8 @@
             xpEarned.textContent = message;
             resultsMessage.textContent = 'Mission 4 Complete!';
             
-            console.log('About to call saveProgress with:', {lesson: 'lesson4', completed: correctAnswers >= 2, score: correctAnswers});
-            saveProgress('lesson4', correctAnswers >= 2, correctAnswers);
+            console.log('About to call saveProgress with:', {lesson: 'lesson4', completed: correctAnswers >= 2, score: correctAnswers, answers: quizAnswers.join('/')});
+            saveProgress('lesson4', correctAnswers >= 2, correctAnswers, quizAnswers);
             console.log('✓ saveProgress called successfully');
             
             resultsDiv.classList.remove('hidden');

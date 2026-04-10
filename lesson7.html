@@ -279,38 +279,50 @@
         // Quiz functionality
         let currentQuestion = 1;
         let correctAnswers = 0;
+        let quizAnswers = []; // Track right/wrong for each question
         
-        document.querySelectorAll('.quiz-option').forEach(option => {
-            option.addEventListener('click', function() {
-                if (this.classList.contains('selected')) return;
-                
-                const isCorrect = this.dataset.answer === 'correct';
-                const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
-                const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
-                
-                allOptions.forEach(opt => opt.classList.add('selected'));
-                
-                if (isCorrect) {
-                    this.classList.add('correct');
-                    feedback.innerHTML = '<span class="correct-feedback">✓ Yes! That\'s right!</span>';
-                    correctAnswers++;
-                } else {
-                    this.classList.add('wrong');
-                    feedback.innerHTML = '<span class="wrong-feedback">Not quite. Try to remember!</span>';
-                }
-                
-                setTimeout(() => {
-                    if (currentQuestion < 3) {
-                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
-                        currentQuestion++;
-                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+        function initQuiz() {
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    if (this.classList.contains('selected')) return;
+                    
+                    const isCorrect = this.dataset.answer === 'correct';
+                    const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
+                    const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
+                    
+                    allOptions.forEach(opt => opt.classList.add('selected'));
+                    
+                    // Track answer
+                    quizAnswers.push(isCorrect ? 'Correct' : 'Wrong');
+                    
+                    if (isCorrect) {
+                        this.classList.add('correct');
+                        feedback.innerHTML = '<span class="correct-feedback">✓ Yes! That\'s right!</span>';
+                        correctAnswers++;
                     } else {
-                        document.querySelector(`[data-question="3"]`).classList.add('hidden');
-                        showResults();
+                        this.classList.add('wrong');
+                        feedback.innerHTML = '<span class="wrong-feedback">Not quite. Try to remember!</span>';
                     }
-                }, 1500);
+                    
+                    setTimeout(() => {
+                        if (currentQuestion < 3) {
+                            document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
+                            currentQuestion++;
+                            document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+                        } else {
+                            document.querySelector(`[data-question="3"]`).classList.add('hidden');
+                            showResults();
+                        }
+                    }, 1500);
+                });
             });
-        });
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initQuiz);
+        } else {
+            initQuiz();
+        }
         
         function showResults() {
             const resultsDiv = document.getElementById('quizResults');
@@ -334,7 +346,7 @@
             xpEarned.textContent = message;
             resultsMessage.textContent = 'Mission 7 Complete!';
             
-            saveProgress('lesson7', correctAnswers >= 2, correctAnswers);
+            saveProgress('lesson7', correctAnswers >= 2, correctAnswers, quizAnswers);
             
             resultsDiv.classList.remove('hidden');
         }

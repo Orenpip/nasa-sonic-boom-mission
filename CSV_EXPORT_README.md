@@ -63,30 +63,83 @@ nasa-sonic-boom-progress-[timestamp].csv
 
 ## CSV File Format
 
-Your exported file will look like:
+Your exported file will have multiple sections for easy analysis:
+
+### 1. Header Information
 ```
-Session Report
-
-SESSION ID,session_1712819204000_abc123def
-EXPORT DATE,2024-04-10 14:20:30
-
-MISSION PROGRESS
-Mission,Completed,Score
-lesson1,Yes,3
-lesson2,No,0
-lesson3,Yes,2
-lesson4,No,0
-
-PAGE METRICS
-Page,Time Spent (seconds),Visit Time,Exit Time
-Dashboard,120,2024-04-10 14:15:00,2024-04-10 14:17:00
-Lesson 1,300,2024-04-10 14:17:05,2024-04-10 14:22:10
-
-PAGE VISITS
-Page,Visit Time
-Dashboard,2024-04-10 14:15:00
-Lesson 1,2024-04-10 14:17:05
+=== NASA SONIC BOOM MISSION - STUDENT REPORT ===
+Session ID,session_1712819204000_abc123def
+Export Date,4/10/2026, 2:30:45 PM
+Total Missions Completed,4
 ```
+
+### 2. Mission Progress Summary
+```
+Mission,Status,Score out of 3,Quiz Answers,Completion Date
+lesson1,COMPLETED,3,Correct/Correct/Correct,4/10/2026, 2:15:30 PM
+lesson2,COMPLETED,2,Correct/Wrong/Correct,4/10/2026, 2:20:15 PM
+lesson3,Not Started,0,N/A,N/A
+lesson4,COMPLETED,2,Correct/Correct/Wrong,4/10/2026, 2:25:45 PM
+lesson6,COMPLETED,3,Correct/Correct/Correct,4/10/2026, 2:28:10 PM
+```
+
+**Shows per-question performance:**
+- ✓ Correct = Student answered correctly
+- ✗ Wrong = Student answered incorrectly
+- Easy to spot problem areas across your class
+
+### 3. Time Spent on Each Lesson
+```
+Lesson,Total Time (seconds),Total Time (minutes),Visits
+dashboard,120,2.0,3
+lesson1,300,5.0,1
+lesson2,180,3.0,1
+lesson4,240,4.0,1
+lesson6,360,6.0,2
+```
+
+**Time metrics help you understand:**
+- How long students spend per mission
+- Whether they revisit lessons
+- Pacing and engagement levels
+
+### 4. Detailed Page Activity
+```
+Page,Time Spent (seconds),Visits
+Dashboard,120,3
+Lesson 1,300,1
+Lesson 2,180,1
+Lesson 4,240,1
+Lesson 6,360,2
+```
+
+**Activity summary for all interactions**
+
+---
+
+## What Can Educators Do With This Data?
+
+### Identify Learning Patterns
+- **Quiz Performance** - See which exact questions are causing confusion ("Quiz Answers" column shows Correct/Wrong per question)
+- **Time Analysis** - Compare time spent to performance (fast + high score = mastery, slow + low score = struggling)
+- **Engagement** - Track whether students revisit lessons ("Visits" column)
+- **Class Trends** - Collect multiple student exports to find class-wide problem areas
+
+### Example Use Cases
+| Observation | Action |
+|---|---|
+| All students get Q2 wrong | Reteach that concept |
+| Student spends 20 min but scores 0/3 | Offer one-on-one help |
+| Student skips missions | Check participation status |
+| High engagement but low scores | May indicate difficulty/confusion |
+| Low engagement (2-3 min/lesson) | May indicate rushing/skipping |
+
+### Analysis Tips
+1. **Excel/Sheets Import** - Open CSV in Excel to create pivot tables and charts
+2. **Export Weekly** - Build a trend report over time
+3. **Export per Student** - Use one browser per student to track individuals
+4. **Compare Against Benchmarks** - 3-5 min per lesson is typical
+5. **Share with Parents** - Show time metrics and quiz performance
 
 ---
 
