@@ -93,9 +93,7 @@ function initializeProgress() {
                 lesson2: { completed: false, score: 0 },
                 lesson3: { completed: false, score: 0 },
                 lesson4: { completed: false, score: 0 },
-                lesson6: { completed: false, score: 0 },
-                lesson7: { completed: false, score: 0 },
-                lesson8: { completed: false, score: 0 }
+                lesson6: { completed: false, score: 0 }
             },
             startTime: Date.now()
         };
@@ -192,7 +190,7 @@ function updateDashboard() {
         // Calculate average score from quiz missions
         let totalScore = 0;
         let quizCount = 0;
-        const quizLessons = ['lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson6', 'lesson7'];
+        const quizLessons = ['lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson6'];
         quizLessons.forEach(lesson => {
             if (progress.missionScores[lesson] && typeof progress.missionScores[lesson].score === 'number') {
                 totalScore += progress.missionScores[lesson].score;
@@ -209,7 +207,7 @@ function updateDashboard() {
 
 function updateBoomDisplay(progress) {
     const boomLetters = ['B', 'O', 'O', 'M'];
-    const lessonMapping = ['lesson1', 'lesson2', 'lesson3', 'lesson7'];
+    const lessonMapping = ['lesson1', 'lesson2', 'lesson3', 'lesson4'];
     
     boomLetters.forEach((letter, index) => {
         const letterElement = document.getElementById(`boomLetter${index + 1}`);
@@ -234,26 +232,20 @@ function updateBoomButton(boomComplete) {
     if (!boomButton) return;
     
     if (boomComplete) {
-        boomButton.href = 'lesson8.html';
+        boomButton.onclick = function() { window.location.href = 'lesson8.html'; return false; };
         boomButton.style.cursor = 'pointer';
         boomButton.style.opacity = '1';
         boomButton.style.filter = 'drop-shadow(0 0 10px #00ff88)';
         boomSubtitle.textContent = '✓ BOOM Complete! Click to start the Paper Airplane Challenge!';
         boomSubtitle.style.color = '#00ff88';
     } else {
-        boomButton.href = '#';
+        boomButton.onclick = function(e) { if (e) e.preventDefault(); return false; };
         boomButton.style.cursor = 'not-allowed';
         boomButton.style.opacity = '0.6';
         boomButton.style.filter = 'none';
         boomSubtitle.textContent = 'Complete Missions 1-4 to spell BOOM and unlock the final challenge!';
         boomSubtitle.style.color = 'inherit';
     }
-    
-    boomButton.addEventListener('click', function(e) {
-        if (!boomComplete) {
-            e.preventDefault();
-        }
-    });
 }
 
 function updateMissionStatuses() {
@@ -262,12 +254,11 @@ function updateMissionStatuses() {
         1: 'lesson1',
         2: 'lesson2',
         3: 'lesson3',
-        4: 'lesson4',
-        7: 'lesson7'
+        4: 'lesson4'
     };
     
-    // Check if BOOM is complete (lessons 1, 2, 3, 7 completed)
-    const boomComplete = ['lesson1', 'lesson2', 'lesson3', 'lesson7'].every(lesson => 
+    // Check if BOOM is complete (lessons 1-4 completed)
+    const boomComplete = ['lesson1', 'lesson2', 'lesson3', 'lesson4'].every(lesson => 
         progress.missionScores[lesson] && progress.missionScores[lesson].completed
     );
     
@@ -295,49 +286,6 @@ function updateMissionStatuses() {
             return;
         }
         
-        // Special case for mission 7 - unlocks after mission 4
-        if (missionNum === '7') {
-            const prevMissionId = 'lesson4';
-            const prevCompleted = progress.missionScores[prevMissionId] && progress.missionScores[prevMissionId].completed;
-            
-            if (prevCompleted) {
-                if (progress.missionScores[missionId] && progress.missionScores[missionId].completed) {
-                    statusBadge.textContent = '✓ DONE';
-                    statusBadge.classList.remove('locked');
-                    statusBadge.classList.add('completed');
-                } else {
-                    statusBadge.textContent = 'READY!';
-                    statusBadge.classList.remove('locked');
-                }
-                
-                if (missionCard) missionCard.classList.remove('locked-card');
-                
-                if (launchBtn) {
-                    launchBtn.classList.remove('locked');
-                    launchBtn.href = `lesson7.html`;
-                    const btnText = launchBtn.querySelector('span:first-child');
-                    const btnArrow = launchBtn.querySelector('.launch-arrow');
-                    if (btnText) btnText.textContent = 'START MISSION';
-                    if (btnArrow) btnArrow.textContent = '→';
-                }
-            } else {
-                statusBadge.textContent = '🔒 LOCKED';
-                statusBadge.classList.add('locked');
-                statusBadge.classList.remove('completed');
-                
-                if (missionCard) missionCard.classList.add('locked-card');
-                
-                if (launchBtn) {
-                    launchBtn.classList.add('locked');
-                    launchBtn.href = '#';
-                    const btnText = launchBtn.querySelector('span:first-child');
-                    const btnArrow = launchBtn.querySelector('.launch-arrow');
-                    if (btnText) btnText.textContent = 'LOCKED';
-                    if (btnArrow) btnArrow.textContent = '🔒';
-                }
-            }
-            return;
-        }
         
         const prevMissionNum = String(Number(missionNum) - 1);
         const prevMissionId = missions[prevMissionNum];
