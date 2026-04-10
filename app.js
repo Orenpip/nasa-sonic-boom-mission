@@ -93,7 +93,6 @@ function initializeProgress() {
                 lesson2: { completed: false, score: 0 },
                 lesson3: { completed: false, score: 0 },
                 lesson4: { completed: false, score: 0 },
-                lesson5: { completed: false, score: 0 },
                 lesson6: { completed: false, score: 0 },
                 lesson7: { completed: false, score: 0 },
                 lesson8: { completed: false, score: 0 }
@@ -193,7 +192,7 @@ function updateDashboard() {
         // Calculate average score from quiz missions
         let totalScore = 0;
         let quizCount = 0;
-        const quizLessons = ['lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson5', 'lesson6', 'lesson7', 'lesson8'];
+        const quizLessons = ['lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson6', 'lesson7', 'lesson8'];
         quizLessons.forEach(lesson => {
             if (progress.missionScores[lesson] && typeof progress.missionScores[lesson].score === 'number') {
                 totalScore += progress.missionScores[lesson].score;
@@ -210,7 +209,7 @@ function updateDashboard() {
 
 function updateBoomDisplay(progress) {
     const boomLetters = ['B', 'O', 'O', 'M'];
-    const lessonMapping = ['lesson1', 'lesson2', 'lesson3', 'lesson4'];
+    const lessonMapping = ['lesson1', 'lesson2', 'lesson3', 'lesson7'];
     
     boomLetters.forEach((letter, index) => {
         const letterElement = document.getElementById(`boomLetter${index + 1}`);
@@ -235,11 +234,12 @@ function updateMissionStatuses() {
         2: 'lesson2',
         3: 'lesson3',
         4: 'lesson4',
+        7: 'lesson7',
         8: 'lesson8'
     };
     
-    // Check if BOOM is complete (lessons 1-4 completed)
-    const boomComplete = ['lesson1', 'lesson2', 'lesson3', 'lesson4'].every(lesson => 
+    // Check if BOOM is complete (lessons 1, 2, 3, 7 completed)
+    const boomComplete = ['lesson1', 'lesson2', 'lesson3', 'lesson7'].every(lesson => 
         progress.missionScores[lesson] && progress.missionScores[lesson].completed
     );
     
@@ -299,6 +299,50 @@ function updateMissionStatuses() {
                     const btnText = launchBtn.querySelector('span:first-child');
                     const btnArrow = launchBtn.querySelector('.launch-arrow');
                     if (btnText) btnText.textContent = 'COMPLETE BOOM';
+                    if (btnArrow) btnArrow.textContent = '🔒';
+                }
+            }
+            return;
+        }
+        
+        // Special case for mission 7 - unlocks after mission 4
+        if (missionNum === '7') {
+            const prevMissionId = 'lesson4';
+            const prevCompleted = progress.missionScores[prevMissionId] && progress.missionScores[prevMissionId].completed;
+            
+            if (prevCompleted) {
+                if (progress.missionScores[missionId] && progress.missionScores[missionId].completed) {
+                    statusBadge.textContent = '✓ DONE';
+                    statusBadge.classList.remove('locked');
+                    statusBadge.classList.add('completed');
+                } else {
+                    statusBadge.textContent = 'READY!';
+                    statusBadge.classList.remove('locked');
+                }
+                
+                if (missionCard) missionCard.classList.remove('locked-card');
+                
+                if (launchBtn) {
+                    launchBtn.classList.remove('locked');
+                    launchBtn.href = `lesson7.html`;
+                    const btnText = launchBtn.querySelector('span:first-child');
+                    const btnArrow = launchBtn.querySelector('.launch-arrow');
+                    if (btnText) btnText.textContent = 'START MISSION';
+                    if (btnArrow) btnArrow.textContent = '→';
+                }
+            } else {
+                statusBadge.textContent = '🔒 LOCKED';
+                statusBadge.classList.add('locked');
+                statusBadge.classList.remove('completed');
+                
+                if (missionCard) missionCard.classList.add('locked-card');
+                
+                if (launchBtn) {
+                    launchBtn.classList.add('locked');
+                    launchBtn.href = '#';
+                    const btnText = launchBtn.querySelector('span:first-child');
+                    const btnArrow = launchBtn.querySelector('.launch-arrow');
+                    if (btnText) btnText.textContent = 'LOCKED';
                     if (btnArrow) btnArrow.textContent = '🔒';
                 }
             }
