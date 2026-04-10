@@ -8,6 +8,367 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        /* ─── Race Game Styles ─────────────────────────────────────────── */
+
+        /* Racer picker buttons */
+        .racer-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .racer-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1.5px solid rgba(255,255,255,0.12);
+            border-radius: 12px;
+            padding: 12px 16px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            color: #cdd6f4;
+            transition: background 0.15s, border-color 0.15s, transform 0.1s;
+            text-align: center;
+            min-width: 90px;
+        }
+
+        .racer-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .racer-btn.selected {
+            background: rgba(100, 180, 255, 0.15);
+            border-color: #64b4ff;
+            color: #a8d8ff;
+        }
+
+        .racer-btn .racer-icon {
+            font-size: 26px;
+            line-height: 1;
+            display: inline-block;
+        }
+
+        .racer-btn.selected .racer-icon {
+            animation: iconPulse 0.7s ease-in-out infinite;
+        }
+
+        .racer-btn .racer-name {
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 6px;
+            letter-spacing: 0.05em;
+        }
+
+        .racer-btn .racer-speed {
+            font-size: 10px;
+            color: rgba(255,255,255,0.45);
+            margin-top: 2px;
+        }
+
+        .racer-btn.selected .racer-speed {
+            color: rgba(168, 216, 255, 0.7);
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        /* Track */
+        .race-section-label {
+            font-family: 'Orbitron', monospace;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
+            margin: 0 0 12px;
+        }
+
+        .race-lanes {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .race-lane-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            height: 48px;
+        }
+
+        .lane-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            color: rgba(255,255,255,0.45);
+            text-transform: uppercase;
+            width: 88px;
+            flex-shrink: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .lane-track {
+            flex: 1;
+            height: 36px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lane-fill {
+            position: absolute;
+            top: 0; left: 0;
+            height: 100%;
+            width: 0%;
+            border-radius: 8px;
+            transition: none;
+        }
+
+        .lane-fill.sound-fill {
+            background: linear-gradient(90deg, rgba(192,72,40,0.0), rgba(192,72,40,0.45));
+        }
+
+        .lane-fill.obj-fill {
+            background: linear-gradient(90deg, rgba(59,139,212,0.0), rgba(59,139,212,0.45));
+        }
+
+        .lane-runner {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 4px;
+            font-size: 20px;
+            line-height: 1;
+            z-index: 2;
+            transition: left 0.016s linear;
+        }
+
+        /* animated wave marks on the sound lane */
+        .sound-wave-marks {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .wave-mark {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            opacity: 0;
+            font-size: 14px;
+            animation: wavePop 1.2s ease-out infinite;
+        }
+
+        @keyframes wavePop {
+            0% { opacity: 0; transform: translateY(-50%) scale(0.6); }
+            20% { opacity: 0.6; transform: translateY(-50%) scale(1); }
+            100% { opacity: 0; transform: translateY(-50%) scale(1.4); }
+        }
+
+        .lane-flag {
+            font-size: 20px;
+            flex-shrink: 0;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Start button */
+        .start-race-btn {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.1em;
+            background: linear-gradient(135deg, #1a3a6b, #0e2244);
+            border: 1.5px solid #4a9eff;
+            border-radius: 10px;
+            color: #7ec8ff;
+            padding: 12px 28px;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+            box-shadow: 0 0 16px rgba(74,158,255,0.15);
+        }
+
+        .start-race-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #1f4a8a, #122d5a);
+            box-shadow: 0 0 24px rgba(74,158,255,0.3);
+            transform: translateY(-1px);
+        }
+
+        .start-race-btn:active:not(:disabled) {
+            transform: scale(0.97) translateY(0);
+        }
+
+        .start-race-btn:disabled {
+            opacity: 0.35;
+            cursor: default;
+            box-shadow: none;
+        }
+
+        .race-controls-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .race-status-text {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 0.06em;
+        }
+
+        /* Result card */
+        .race-result-card {
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 18px 22px;
+            margin-top: 4px;
+            display: none;
+            animation: resultSlide 0.35s ease-out;
+        }
+
+        .race-result-card.show { display: block; }
+
+        @keyframes resultSlide {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .race-result-card.sound-won {
+            background: rgba(192, 72, 40, 0.08);
+            border-color: rgba(192, 72, 40, 0.3);
+        }
+
+        .race-result-card.obj-won {
+            background: rgba(59, 139, 212, 0.1);
+            border-color: rgba(59, 139, 212, 0.35);
+        }
+
+        .result-headline {
+            font-family: 'Orbitron', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 6px;
+            color: #fff;
+        }
+
+        .result-detail {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            color: rgba(255,255,255,0.55);
+            margin: 0 0 10px;
+            line-height: 1.6;
+        }
+
+        .sonic-boom-badge {
+            display: inline-block;
+            font-family: 'Orbitron', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            background: rgba(239, 159, 39, 0.15);
+            color: #ffb84d;
+            border: 1px solid rgba(239,159,39,0.4);
+            padding: 4px 12px;
+            border-radius: 6px;
+        }
+
+        .slower-note {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            color: rgba(255,255,255,0.35);
+        }
+
+        /* Confetti */
+        .confetti-stage {
+            position: relative;
+            height: 0;
+            overflow: visible;
+            pointer-events: none;
+        }
+
+        .conf-dot {
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            border-radius: 2px;
+            top: -8px;
+            animation: confFall 1.3s ease-out forwards;
+        }
+
+        @keyframes confFall {
+            0%   { opacity: 1; transform: translateY(0) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(90px) rotate(720deg); }
+        }
+
+        /* Speed chart */
+        .speed-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .speed-row {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .speed-row-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .speed-row-name {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .speed-row-mph {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            color: rgba(255,255,255,0.35);
+        }
+
+        .speed-row-mph.highlight {
+            color: #ff8866;
+            font-weight: 700;
+        }
+
+        .speed-bar-track {
+            height: 6px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .speed-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        /* Divider between sections */
+        .section-divider {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.07);
+            margin: 24px 0;
+        }
+    </style>
 </head>
 <body class="lesson-page">
     <div class="starfield" id="starfield"></div>
@@ -64,58 +425,145 @@
                 </div>
             </div>
             
-            <!-- INTERACTIVE RACE GAME -->
+            <!-- ═══════════════════════════════════════════════
+                 IMPROVED INTERACTIVE RACE GAME
+            ════════════════════════════════════════════════ -->
             <div class="content-card interactive-card">
                 <h2>🎮 Play the Race Game!</h2>
                 <p class="simple-text">
-                    Choose an object and watch it race against sound waves!
+                    Pick a racer and see if it can beat the speed of sound!
                 </p>
-                
-                <div class="race-controls">
-                    <h3>Pick Your Racer:</h3>
-                    <div class="racer-buttons">
-                        <button class="racer-btn" data-speed="15" data-name="Person" data-emoji="🏃">
-                            🏃 Person<br><small>15 mph</small>
-                        </button>
-                        <button class="racer-btn" data-speed="60" data-name="Car" data-emoji="🚗">
-                            🚗 Car<br><small>60 mph</small>
-                        </button>
-                        <button class="racer-btn" data-speed="200" data-name="Race Car" data-emoji="🏎️">
-                            🏎️ Race Car<br><small>200 mph</small>
-                        </button>
-                        <button class="racer-btn" data-speed="500" data-name="Plane" data-emoji="✈️">
-                            ✈️ Plane<br><small>500 mph</small>
-                        </button>
-                        <button class="racer-btn" data-speed="1500" data-name="Jet" data-emoji="🚀">
-                            🚀 Jet<br><small>1500 mph</small>
-                        </button>
-                    </div>
-                    
-                    <button class="start-race-btn" id="startRaceBtn">START RACE!</button>
+
+                <!-- Racer picker -->
+                <p class="race-section-label">Pick your racer</p>
+                <div class="racer-grid" id="racerGrid">
+                    <button class="racer-btn" data-speed="15" data-name="Person" data-emoji="🏃">
+                        <div class="racer-icon">🏃</div>
+                        <div class="racer-name">Person</div>
+                        <div class="racer-speed">15 mph</div>
+                    </button>
+                    <button class="racer-btn" data-speed="60" data-name="Car" data-emoji="🚗">
+                        <div class="racer-icon">🚗</div>
+                        <div class="racer-name">Car</div>
+                        <div class="racer-speed">60 mph</div>
+                    </button>
+                    <button class="racer-btn" data-speed="200" data-name="Race Car" data-emoji="🏎️">
+                        <div class="racer-icon">🏎️</div>
+                        <div class="racer-name">Race Car</div>
+                        <div class="racer-speed">200 mph</div>
+                    </button>
+                    <button class="racer-btn" data-speed="500" data-name="Airplane" data-emoji="✈️">
+                        <div class="racer-icon">✈️</div>
+                        <div class="racer-name">Airplane</div>
+                        <div class="racer-speed">500 mph</div>
+                    </button>
+                    <button class="racer-btn" data-speed="1500" data-name="Fighter Jet" data-emoji="🚀">
+                        <div class="racer-icon">🚀</div>
+                        <div class="racer-name">Fighter Jet</div>
+                        <div class="racer-speed">1500 mph</div>
+                    </button>
                 </div>
-                
-                <div class="race-track" id="raceTrack">
-                    <div class="race-lane">
-                        <div class="lane-label">SOUND WAVE 🔊</div>
-                        <div class="race-line"></div>
-                        <div class="racer-sprite sound-racer" id="soundRacer">
-                            <span class="wave-emoji">〰️</span>
+
+                <!-- Track -->
+                <p class="race-section-label">Track</p>
+                <div class="race-lanes">
+                    <!-- Sound lane -->
+                    <div class="race-lane-row">
+                        <div class="lane-label">Sound 🔊</div>
+                        <div class="lane-track" id="soundTrack">
+                            <div class="lane-fill sound-fill" id="soundFill"></div>
+                            <div class="lane-runner" id="soundRunner">〰️</div>
                         </div>
-                        <div class="finish-flag">🏁</div>
+                        <div class="lane-flag">🏁</div>
                     </div>
-                    
-                    <div class="race-lane">
-                        <div class="lane-label" id="objectLabel">PICK A RACER</div>
-                        <div class="race-line"></div>
-                        <div class="racer-sprite object-racer" id="objectRacer">
-                            <span class="object-emoji" id="objectEmoji">❓</span>
+                    <!-- Object lane -->
+                    <div class="race-lane-row">
+                        <div class="lane-label" id="objLaneLabel" style="opacity:0.35">— pick one</div>
+                        <div class="lane-track" id="objTrack">
+                            <div class="lane-fill obj-fill" id="objFill"></div>
+                            <div class="lane-runner" id="objRunner">❓</div>
                         </div>
-                        <div class="finish-flag">🏁</div>
+                        <div class="lane-flag">🏁</div>
                     </div>
                 </div>
-                
-                <div class="race-result" id="raceResult"></div>
+
+                <!-- Start button + status -->
+                <div class="race-controls-row">
+                    <button class="start-race-btn" id="startRaceBtn" disabled>START RACE</button>
+                    <span class="race-status-text" id="raceStatusText"></span>
+                </div>
+
+                <!-- Result card -->
+                <div class="race-result-card" id="raceResultCard">
+                    <div class="result-headline" id="resultHeadline"></div>
+                    <div class="result-detail" id="resultDetail"></div>
+                    <div id="resultBadge"></div>
+                </div>
+
+                <!-- Confetti layer -->
+                <div class="confetti-stage" id="confettiStage"></div>
+
+                <!-- Speed reference chart -->
+                <hr class="section-divider">
+                <p class="race-section-label">Speed comparison</p>
+                <div class="speed-chart">
+                    <div class="speed-row">
+                        <div class="speed-row-header">
+                            <span class="speed-row-name">🏃 Person running</span>
+                            <span class="speed-row-mph">15 mph</span>
+                        </div>
+                        <div class="speed-bar-track">
+                            <div class="speed-bar-fill" style="width:1%; background:#888780;"></div>
+                        </div>
+                    </div>
+                    <div class="speed-row">
+                        <div class="speed-row-header">
+                            <span class="speed-row-name">🚗 Car</span>
+                            <span class="speed-row-mph">60 mph</span>
+                        </div>
+                        <div class="speed-bar-track">
+                            <div class="speed-bar-fill" style="width:4%; background:#1D9E75;"></div>
+                        </div>
+                    </div>
+                    <div class="speed-row">
+                        <div class="speed-row-header">
+                            <span class="speed-row-name">🏎️ Race car</span>
+                            <span class="speed-row-mph">200 mph</span>
+                        </div>
+                        <div class="speed-bar-track">
+                            <div class="speed-bar-fill" style="width:13%; background:#EF9F27;"></div>
+                        </div>
+                    </div>
+                    <div class="speed-row">
+                        <div class="speed-row-header">
+                            <span class="speed-row-name">✈️ Airplane</span>
+                            <span class="speed-row-mph">500 mph</span>
+                        </div>
+                        <div class="speed-bar-track">
+                            <div class="speed-bar-fill" style="width:33%; background:#378ADD;"></div>
+                        </div>
+                    </div>
+                    <div class="speed-row">
+                        <div class="speed-row-header">
+                            <span class="speed-row-name">🔊 Speed of sound</span>
+                            <span class="speed-row-mph highlight">767 mph</span>
+                        </div>
+                        <div class="speed-bar-track">
+                            <div class="speed-bar-fill" style="width:51%; background:#C04828;"></div>
+                        </div>
+                    </div>
+                    <div class="speed-row">
+                        <div class="speed-row-header">
+                            <span class="speed-row-name">🚀 Fighter jet</span>
+                            <span class="speed-row-mph">1500 mph</span>
+                        </div>
+                        <div class="speed-bar-track">
+                            <div class="speed-bar-fill" style="width:100%; background:#534AB7;"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <!-- ═══ end race game ═══════════════════════════════════════ -->
             
             <div class="content-card">
                 <h2>🎯 What Did You Learn?</h2>
@@ -219,135 +667,159 @@
     
     <script src="app.js"></script>
     <script>
+        // ── App init ──────────────────────────────────────────────────────
         createStarfield();
         displayCurrentXP();
-        
-        // Race Game Logic
-        let selectedSpeed = 0;
-        let selectedName = '';
-        let selectedEmoji = '';
-        let isRacing = false;
-        
-        const racerButtons = document.querySelectorAll('.racer-btn');
-        const startRaceBtn = document.getElementById('startRaceBtn');
-        const soundRacer = document.getElementById('soundRacer');
-        const objectRacer = document.getElementById('objectRacer');
-        const objectLabel = document.getElementById('objectLabel');
-        const objectEmoji = document.getElementById('objectEmoji');
-        const raceResult = document.getElementById('raceResult');
-        
-        const SOUND_SPEED = 767; // mph
-        const RACE_DURATION = 3000; // 3 seconds
-        
-        racerButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
-                if (isRacing) return;
-                
-                racerButtons.forEach(b => b.classList.remove('selected'));
-                this.classList.add('selected');
-                
-                selectedSpeed = parseInt(this.dataset.speed);
-                selectedName = this.dataset.name;
-                selectedEmoji = this.dataset.emoji;
-                
-                objectLabel.textContent = selectedName.toUpperCase();
-                objectEmoji.textContent = selectedEmoji;
-                
-                raceResult.textContent = '';
+
+        // ── Race Game ─────────────────────────────────────────────────────
+        const SOUND_SPEED  = 767;   // mph
+        const RACE_MS      = 3400;  // total race duration in ms
+        const FPS          = 60;
+
+        let selected  = null;   // { speed, name, emoji }
+        let racing    = false;
+
+        const allBtns       = document.querySelectorAll('.racer-btn');
+        const startBtn      = document.getElementById('startRaceBtn');
+        const soundFillEl   = document.getElementById('soundFill');
+        const objFillEl     = document.getElementById('objFill');
+        const soundRunnerEl = document.getElementById('soundRunner');
+        const objRunnerEl   = document.getElementById('objRunner');
+        const objLabelEl    = document.getElementById('objLaneLabel');
+        const resultCard    = document.getElementById('raceResultCard');
+        const resultHL      = document.getElementById('resultHeadline');
+        const resultDetail  = document.getElementById('resultDetail');
+        const resultBadge   = document.getElementById('resultBadge');
+        const statusText    = document.getElementById('raceStatusText');
+        const confettiStage = document.getElementById('confettiStage');
+
+        // Racer selection
+        allBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (racing) return;
+                allBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selected = {
+                    speed: parseInt(btn.dataset.speed),
+                    name:  btn.dataset.name,
+                    emoji: btn.dataset.emoji
+                };
+                objRunnerEl.textContent = selected.emoji;
+                objLabelEl.textContent  = selected.name;
+                objLabelEl.style.opacity = '';
+                startBtn.disabled = false;
+                hideResult();
+                statusText.textContent = '';
+                resetPositions();
             });
         });
-        
-        startRaceBtn.addEventListener('click', function() {
-            if (isRacing || selectedSpeed === 0) {
-                if (selectedSpeed === 0) {
-                    alert('Pick a racer first!');
-                }
-                return;
-            }
-            
+
+        startBtn.addEventListener('click', () => {
+            if (racing || !selected) return;
             startRace();
         });
-        
+
+        function resetPositions() {
+            soundFillEl.style.width   = '0%';
+            objFillEl.style.width     = '0%';
+            soundRunnerEl.style.left  = '4px';
+            objRunnerEl.style.left    = '4px';
+        }
+
+        function hideResult() {
+            resultCard.classList.remove('show', 'sound-won', 'obj-won');
+        }
+
         function startRace() {
-            isRacing = true;
-            raceResult.textContent = '🏁 Racing...';
-            raceResult.className = 'race-result racing';
-            
-            // Reset positions
-            soundRacer.style.left = '0%';
-            objectRacer.style.left = '0%';
-            
-            // Calculate speeds (as percentage of track per frame)
-            const soundProgress = 100 / (RACE_DURATION / 16); // 60fps
-            const objectProgress = (selectedSpeed / SOUND_SPEED) * soundProgress;
-            
-            let soundPos = 0;
-            let objectPos = 0;
-            
-            const raceInterval = setInterval(() => {
-                soundPos += soundProgress;
-                objectPos += objectProgress;
-                
-                soundRacer.style.left = Math.min(soundPos, 95) + '%';
-                objectRacer.style.left = Math.min(objectPos, 95) + '%';
-                
-                if (soundPos >= 95 || objectPos >= 95) {
-                    clearInterval(raceInterval);
-                    finishRace(objectPos >= soundPos);
+            racing = true;
+            startBtn.disabled = true;
+            hideResult();
+            statusText.textContent = 'RACING...';
+            resetPositions();
+
+            const trackW    = document.getElementById('soundTrack').offsetWidth;
+            const runnerW   = 28;
+            const maxLeft   = trackW - runnerW - 4;
+            const objRatio  = selected.speed / SOUND_SPEED;
+            const totalF    = (RACE_MS / 1000) * FPS;
+            let frame = 0;
+
+            const tick = setInterval(() => {
+                frame++;
+                const t = Math.min(frame / totalF, 1);
+
+                const sndPct = Math.min(t * 100, 100);
+                const objPct = Math.min(t * objRatio * 100, 100);
+
+                soundFillEl.style.width  = sndPct + '%';
+                objFillEl.style.width    = objPct + '%';
+                soundRunnerEl.style.left = Math.min((sndPct / 100) * maxLeft, maxLeft) + 'px';
+                objRunnerEl.style.left   = Math.min((objPct / 100) * maxLeft, maxLeft) + 'px';
+
+                if (sndPct >= 100 || objPct >= 100) {
+                    clearInterval(tick);
+                    setTimeout(finishRace, 100);
                 }
-            }, 16);
+            }, 1000 / FPS);
         }
-        
-        function finishRace(objectWon) {
-            isRacing = false;
-            
-            if (objectWon) {
-                raceResult.innerHTML = `
-                    <div class="result-winner">
-                        <h3>🎉 ${selectedEmoji} ${selectedName} WON!</h3>
-                        <p><strong>${selectedName}</strong> is FASTER than sound!</p>
-                        <p>Speed: ${selectedSpeed} mph > 767 mph</p>
-                        <p class="sonic-note">💥 This makes a SONIC BOOM!</p>
-                    </div>
-                `;
-                raceResult.className = 'race-result winner';
+
+        function finishRace() {
+            racing = false;
+            startBtn.disabled = false;
+            statusText.textContent = '';
+
+            const objWon = selected.speed >= SOUND_SPEED;
+            const pct    = Math.round((selected.speed / SOUND_SPEED) * 100);
+
+            resultCard.classList.add('show', objWon ? 'obj-won' : 'sound-won');
+
+            if (objWon) {
+                resultHL.textContent     = selected.emoji + ' ' + selected.name + ' wins!';
+                resultDetail.textContent = selected.speed + ' mph vs 767 mph — that\'s ' + pct + '% of sound speed... over the top!';
+                resultBadge.innerHTML    = '<span class="sonic-boom-badge">💥 SONIC BOOM!</span>';
+                spawnConfetti();
             } else {
-                raceResult.innerHTML = `
-                    <div class="result-loser">
-                        <h3>🔊 Sound Wave Won!</h3>
-                        <p><strong>${selectedName}</strong> is slower than sound.</p>
-                        <p>Speed: ${selectedSpeed} mph < 767 mph</p>
-                        <p class="info-note">Most things are slower than sound!</p>
-                    </div>
-                `;
-                raceResult.className = 'race-result loser';
+                resultHL.textContent     = '🔊 Sound wins!';
+                resultDetail.textContent = selected.name + ' reached ' + pct + '% of sound\'s speed (' + selected.speed + ' mph vs 767 mph).';
+                resultBadge.innerHTML    = '<span class="slower-note">Most things around us are slower than sound — that\'s totally normal!</span>';
             }
-            
-            setTimeout(() => {
-                soundRacer.style.left = '0%';
-                objectRacer.style.left = '0%';
-            }, 3000);
+
+            setTimeout(resetPositions, 3000);
         }
-        
-        // Quiz functionality
+
+        function spawnConfetti() {
+            const colors = ['#EF9F27','#C04828','#534AB7','#1D9E75','#D4537E','#378ADD'];
+            for (let i = 0; i < 22; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'conf-dot';
+                dot.style.cssText = [
+                    'left:'             + (8 + Math.random() * 84) + '%',
+                    'background:'       + colors[i % colors.length],
+                    'animation-delay:'  + (Math.random() * 0.45) + 's',
+                    'animation-duration:' + (0.9 + Math.random() * 0.7) + 's'
+                ].join(';');
+                confettiStage.appendChild(dot);
+                setTimeout(() => dot.remove(), 1800);
+            }
+        }
+
+        // ── Quiz ──────────────────────────────────────────────────────────
         let currentQuestion = 1;
-        let correctAnswers = 0;
-        let quizAnswers = []; // Track right/wrong for each question
-        
+        let correctAnswers  = 0;
+        let quizAnswers     = [];
+
         function initQuiz() {
             document.querySelectorAll('.quiz-option').forEach(option => {
-                option.addEventListener('click', function() {
+                option.addEventListener('click', function () {
                     if (this.classList.contains('selected')) return;
-                    
+
                     const isCorrect = this.dataset.answer === 'correct';
-                    const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
-                    const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
-                    
-                    allOptions.forEach(opt => opt.classList.add('selected'));
-                    
-                    // Track answer
+                    const feedback  = this.closest('.quiz-question').querySelector('.quiz-feedback');
+                    const allOpts   = this.closest('.quiz-options').querySelectorAll('.quiz-option');
+
+                    allOpts.forEach(opt => opt.classList.add('selected'));
                     quizAnswers.push(isCorrect ? 'Correct' : 'Wrong');
-                    
+
                     if (isCorrect) {
                         this.classList.add('correct');
                         feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
@@ -356,50 +828,48 @@
                         this.classList.add('wrong');
                         feedback.innerHTML = '<span class="wrong-feedback">Not quite right.</span>';
                     }
-                    
+
                     setTimeout(() => {
                         if (currentQuestion < 3) {
                             document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
                             currentQuestion++;
                             document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
                         } else {
-                            document.querySelector(`[data-question="3"]`).classList.add('hidden');
+                            document.querySelector('[data-question="3"]').classList.add('hidden');
                             showResults();
                         }
                     }, 1500);
                 });
             });
         }
-        
+
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initQuiz);
         } else {
             initQuiz();
         }
-        
+
         function showResults() {
-            const resultsDiv = document.getElementById('quizResults');
-            const finalScore = document.getElementById('finalScore');
-            const resultsMessage = document.getElementById('resultsMessage');
-            const xpEarned = document.getElementById('xpEarned');
-            
-            finalScore.textContent = `${correctAnswers}/3`;
-            
+            const resultsDiv    = document.getElementById('quizResults');
+            const finalScore    = document.getElementById('finalScore');
+            const resultsMsg    = document.getElementById('resultsMessage');
+            const xpEarned      = document.getElementById('xpEarned');
+
+            finalScore.textContent = correctAnswers + '/3';
+
             let message = '';
-            
             if (correctAnswers === 3) {
                 message = '🌟 Perfect! You understand speed and sound!';
             } else if (correctAnswers === 2) {
                 message = '😊 Good job! You learned about sound speed!';
             } else {
-                message = '👍 Nice try! Review the race results!';
+                message = '👍 Nice try! Review the race results and try again!';
             }
-            
-            xpEarned.textContent = message;
-            resultsMessage.textContent = 'Mission 3 Complete!';
-            
+
+            xpEarned.textContent    = message;
+            resultsMsg.textContent  = 'Mission 3 Complete!';
+
             saveProgress('lesson3', correctAnswers >= 2, correctAnswers, quizAnswers);
-            
             resultsDiv.classList.remove('hidden');
         }
     </script>
