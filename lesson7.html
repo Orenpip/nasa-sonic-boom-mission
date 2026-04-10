@@ -85,26 +85,25 @@
                 </div>
             </div>
         </div>
-
-        <!-- QUIZ SECTION -->
+<!-- Quiz Section -->
         <section class="quiz-section">
             <div class="content-card quiz-card">
-                <h2>🧠 Mission Quiz!</h2>
-                <p class="quiz-intro">Answer these questions to complete the mission!</p>
+                <h2>🧠 Check What You Learned!</h2>
+                <p class="quiz-intro">Answer these questions to earn your stars!</p>
                 
                 <div id="quizContainer">
                     <div class="quiz-question" data-question="1">
                         <h3>Question 1 of 3</h3>
-                        <p class="question-text">What causes a sonic boom?</p>
+                        <p class="question-text">What does sound need to travel through?</p>
                         <div class="quiz-options">
                             <button class="quiz-option" data-answer="correct">
-                                Flying faster than sound
+                                Air, water, or solid materials
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                The plane's engine noise
+                                Light and sunshine
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                Gravity pulling the plane
+                                Nothing - it can travel through empty space
                             </button>
                         </div>
                         <div class="quiz-feedback"></div>
@@ -112,13 +111,16 @@
                     
                     <div class="quiz-question hidden" data-question="2">
                         <h3>Question 2 of 3</h3>
-                        <p class="question-text">What are the rings representing in the simulation?</p>
+                        <p class="question-text">Can sound travel in outer space?</p>
                         <div class="quiz-options">
                             <button class="quiz-option" data-answer="wrong">
-                                Smoke from the exhaust
+                                Yes, sound can travel anywhere
                             </button>
                             <button class="quiz-option" data-answer="correct">
-                                Sound waves spreading out
+                                No, because there's no air in space
+                            </button>
+                            <button class="quiz-option" data-answer="wrong">
+                                Only if you shout really loud
                             </button>
                         </div>
                         <div class="quiz-feedback"></div>
@@ -126,13 +128,16 @@
                     
                     <div class="quiz-question hidden" data-question="3">
                         <h3>Question 3 of 3</h3>
-                        <p class="question-text">When does a shockwave (Mach cone) form?</p>
+                        <p class="question-text">Does sound travel faster through air or through metal?</p>
                         <div class="quiz-options">
+                            <button class="quiz-option" data-answer="wrong">
+                                Faster through air
+                            </button>
                             <button class="quiz-option" data-answer="correct">
-                                When speed > speed of sound
+                                Faster through metal
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                When speed < speed of sound
+                                Same speed in both
                             </button>
                         </div>
                         <div class="quiz-feedback"></div>
@@ -147,7 +152,7 @@
                             </div>
                             <p class="results-message" id="resultsMessage"></p>
                             <div class="results-xp">
-                                <span class="xp-earned" id="xpEarned">+20 ⭐</span>
+                                <span class="xp-earned" id="xpEarned">+15 ⭐</span>
                             </div>
                         </div>
                         <a href="dashboard.html" class="return-button">Back to Dashboard</a>
@@ -157,7 +162,12 @@
         </section>
     </div>
 
+
+    <script src="app.js"></script>
     <script>
+        createStarfield();
+        displayCurrentXP();
+        
         const canvas = document.getElementById("layer1");
         const ctx = canvas.getContext("2d");
         const WIDTH = 768, HEIGHT = 576;
@@ -266,7 +276,7 @@
             document.getElementById('supersonicBar').style.width = Math.max(0, Math.min((ratio - 1.2) / 0.8, 1)) * 100 + '%';
         }
 
-        // ===== QUIZ FUNCTIONALITY =====
+        // Quiz functionality
         let currentQuestion = 1;
         let correctAnswers = 0;
         
@@ -282,11 +292,11 @@
                 
                 if (isCorrect) {
                     this.classList.add('correct');
-                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
+                    feedback.innerHTML = '<span class="correct-feedback">✓ Yes! That\'s right!</span>';
                     correctAnswers++;
                 } else {
                     this.classList.add('wrong');
-                    feedback.innerHTML = '<span class="wrong-feedback">Not quite!</span>';
+                    feedback.innerHTML = '<span class="wrong-feedback">Not quite. Try to remember!</span>';
                 }
                 
                 setTimeout(() => {
@@ -310,14 +320,15 @@
             
             finalScore.textContent = `${correctAnswers}/3`;
             
+            let stars = 0;
             let message = '';
             
             if (correctAnswers === 3) {
-                message = '🌟 Perfect! You mastered sonic booms!';
+                message = '🌟 Perfect! You understand how sound travels!';
             } else if (correctAnswers === 2) {
-                message = '😊 Great job! You understand sound speed!';
+                message = '😊 Good job! You learned about sound travel!';
             } else {
-                message = '👍 Good try! Review the simulation!';
+                message = '👍 Nice try! Review the material and try again!';
             }
             
             xpEarned.textContent = message;
@@ -327,8 +338,6 @@
             
             resultsDiv.classList.remove('hidden');
         }
-
-        update();
     </script>
 </body>
 </html>
