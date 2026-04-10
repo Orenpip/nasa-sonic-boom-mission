@@ -235,7 +235,6 @@ function updateMissionStatuses() {
         2: 'lesson2',
         3: 'lesson3',
         4: 'lesson4',
-        5: 'lesson5',
         8: 'lesson8'
     };
     
