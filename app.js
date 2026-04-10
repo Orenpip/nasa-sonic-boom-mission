@@ -47,43 +47,52 @@ function recordPageExit() {
     }
 }
 
-function exportToCSV() {
+function exportToTXT() {
     const progress = getProgress();
     const pageMetrics = JSON.parse(localStorage.getItem('pageMetrics') || '[]');
     const sessionId = getOrCreateSessionId();
     const exportDate = new Date().toLocaleString();
     
-    let csvContent = '';
+    let txtContent = '';
     
-    // Header section
-    csvContent += '=== NASA SONIC BOOM MISSION - STUDENT REPORT ===\n';
-    csvContent += 'Session ID,' + sessionId + '\n';
-    csvContent += 'Export Date,' + exportDate + '\n';
-    csvContent += 'Total Missions Completed,' + progress.completedMissions.length + '\n';
-    csvContent += '\n';
+    // Header
+    txtContent += '=====================================\n';
+    txtContent += 'NASA SONIC BOOM MISSION - STUDENT REPORT\n';
+    txtContent += '=====================================\n\n';
+    txtContent += 'SESSION ID: ' + sessionId + '\n';
+    txtContent += 'EXPORT DATE: ' + exportDate + '\n';
+    txtContent += 'TOTAL MISSIONS COMPLETED: ' + progress.completedMissions.length + '\n\n';
     
-    // Mission Summary
-    csvContent += '=== MISSION PROGRESS SUMMARY ===\n';
-    csvContent += 'Mission,Status,Score out of 3,Quiz Answers,Completion Date\n';
+    // Mission Progress
+    txtContent += '-------------------------------------\n';
+    txtContent += 'MISSION PROGRESS\n';
+    txtContent += '-------------------------------------\n';
     
     const missions = ['lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson6'];
     missions.forEach(mission => {
         const data = progress.missionScores[mission];
+        txtContent += '\n' + mission.toUpperCase() + ':\n';
+        
         if (data) {
-            const status = data.completed ? 'COMPLETED' : 'Not Started';
-            const score = data.score || 0;
-            const answers = data.quizAnswers ? data.quizAnswers.join('/') : 'N/A';
-            const date = data.completedDate ? new Date(data.completedDate).toLocaleString() : 'N/A';
-            csvContent += mission + ',' + status + ',' + score + ',' + answers + ',' + date + '\n';
+            txtContent += '  Status: ' + (data.completed ? 'COMPLETED' : 'Not Started') + '\n';
+            txtContent += '  Score: ' + (data.score || 0) + '/3\n';
+            if (data.quizAnswers) {
+                txtContent += '  Answers: ' + data.quizAnswers.join(' | ') + '\n';
+            }
+            if (data.completedDate) {
+                txtContent += '  Completed: ' + new Date(data.completedDate).toLocaleString() + '\n';
+            }
         } else {
-            csvContent += mission + ',Not Started,0,N/A,N/A\n';
+            txtContent += '  Status: Not Started\n';
+            txtContent += '  Score: 0/3\n';
+            txtContent += '  Answers: N/A\n';
         }
     });
-    csvContent += '\n';
     
-    // Time spent per lesson
-    csvContent += '=== TIME SPENT ON EACH LESSON ===\n';
-    csvContent += 'Lesson,Total Time (seconds),Total Time (minutes),Visits\n';
+    // Time Metrics
+    txtContent += '\n-------------------------------------\n';
+    txtContent += 'TIME SPENT ON LESSONS\n';
+    txtContent += '-------------------------------------\n\n';
     
     const lessonTimes = {};
     const lessonVisits = {};
@@ -104,13 +113,15 @@ function exportToCSV() {
         const seconds = lessonTimes[lesson];
         const minutes = (seconds / 60).toFixed(2);
         const visits = lessonVisits[lesson];
-        csvContent += lesson + ',' + seconds + ',' + minutes + ',' + visits + '\n';
+        txtContent += lesson + ':\n';
+        txtContent += '  Time: ' + minutes + ' minutes (' + seconds + ' seconds)\n';
+        txtContent += '  Visits: ' + visits + '\n\n';
     });
-    csvContent += '\n';
     
-    // Detailed page activity
-    csvContent += '=== DETAILED PAGE ACTIVITY ===\n';
-    csvContent += 'Page,Time Spent (seconds),Visits\n';
+    // Page Activity
+    txtContent += '-------------------------------------\n';
+    txtContent += 'ALL PAGE ACTIVITY\n';
+    txtContent += '-------------------------------------\n\n';
     
     const pageActivity = {};
     pageMetrics.forEach(metric => {
@@ -124,29 +135,37 @@ function exportToCSV() {
     
     Object.keys(pageActivity).sort().forEach(page => {
         const time = pageActivity[page].time;
+        const minutes = (time / 60).toFixed(2);
         const visits = pageActivity[page].visits;
-        csvContent += page + ',' + time + ',' + visits + '\n';
+        txtContent += page + ':\n';
+        txtContent += '  Time: ' + minutes + ' minutes (' + time + ' seconds)\n';
+        txtContent += '  Visits: ' + visits + '\n\n';
     });
     
-    return csvContent;
+    // Summary
+    txtContent += '=====================================\n';
+    txtContent += 'END OF REPORT\n';
+    txtContent += '=====================================\n';
+    
+    return txtContent;
 }
 
-// Download CSV file
+// Download TXT file
 function downloadProgressCSV() {
-    const csvContent = exportToCSV();
+    const txtContent = exportToTXT();
     const element = document.createElement('a');
-    element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
-    element.setAttribute('download', 'nasa-sonic-boom-progress-' + Date.now() + '.csv');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(txtContent));
+    element.setAttribute('download', 'nasa-sonic-boom-progress-' + Date.now() + '.txt');
     element.style.display = 'none';
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
-    console.log('✅ CSV exported successfully!');
+    console.log('✅ Progress report exported successfully!');
 }
 
 // Make function available in console
 window.downloadProgressCSV = downloadProgressCSV;
-window.exportToCSV = exportToCSV;
+window.exportToTXT = exportToTXT;
 
 // ===== STARFIELD ANIMATION =====
 function createStarfield() {
