@@ -3,6 +3,98 @@
    All interactive functionality and game logic
    ============================================ */
 
+// ===== PAGE TRACKING & CSV EXPORT =====
+function initPageTracking() {
+    const currentPage = document.title || 'Dashboard';
+    const pageEntry = {
+        page: currentPage,
+        visitTime: new Date().toISOString(),
+        sessionId: getOrCreateSessionId()
+    };
+    
+    // Store page visit
+    let pageVisits = JSON.parse(localStorage.getItem('pageVisits') || '[]');
+    pageVisits.push(pageEntry);
+    localStorage.setItem('pageVisits', JSON.stringify(pageVisits));
+    
+    // Track time on page
+    window.pageStartTime = Date.now();
+}
+
+function getOrCreateSessionId() {
+    let sessionId = sessionStorage.getItem('sessionId');
+    if (!sessionId) {
+        sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        sessionStorage.setItem('sessionId', sessionId);
+    }
+    return sessionId;
+}
+
+function recordPageExit() {
+    if (window.pageStartTime) {
+        const timeSpent = Math.round((Date.now() - window.pageStartTime) / 1000);
+        const currentPage = document.title || 'Dashboard';
+        const sessionId = sessionStorage.getItem('sessionId');
+        
+        let pageMetrics = JSON.parse(localStorage.getItem('pageMetrics') || '[]');
+        pageMetrics.push({
+            page: currentPage,
+            timeSpent: timeSpent,
+            exitTime: new Date().toISOString(),
+            sessionId: sessionId
+        });
+        localStorage.setItem('pageMetrics', JSON.stringify(pageMetrics));
+    }
+}
+
+function exportToCSV() {
+    const progress = getProgress();
+    const pageMetrics = JSON.parse(localStorage.getItem('pageMetrics') || '[]');
+    const pageVisits = JSON.parse(localStorage.getItem('pageVisits') || '[]');
+    const sessionId = getOrCreateSessionId();
+    
+    let csvContent = 'Session Report\\n\\n';
+    csvContent += 'SESSION ID,' + sessionId + '\\n';
+    csvContent += 'EXPORT DATE,' + new Date().toISOString() + '\\n\\n';
+    
+    csvContent += 'MISSION PROGRESS\\n';
+    csvContent += 'Mission,Completed,Score\\n';
+    Object.entries(progress.missionScores).forEach(([mission, data]) => {
+        csvContent += mission + ',' + (data.completed ? 'Yes' : 'No') + ',' + (data.score || 0) + '\\n';
+    });
+    
+    csvContent += '\\nPAGE METRICS\\n';
+    csvContent += 'Page,Time Spent (seconds),Visit Time,Exit Time\\n';
+    pageMetrics.forEach(metric => {
+        csvContent += metric.page + ',' + metric.timeSpent + ',' + new Date(metric.visitTime || metric.exitTime).toLocaleString() + ',' + new Date(metric.exitTime).toLocaleString() + '\\n';
+    });
+    
+    csvContent += '\\nPAGE VISITS\\n';
+    csvContent += 'Page,Visit Time\\n';
+    pageVisits.forEach(visit => {
+        csvContent += visit.page + ',' + new Date(visit.visitTime).toLocaleString() + '\\n';
+    });
+    
+    return csvContent;
+}
+
+// Download CSV file
+function downloadProgressCSV() {
+    const csvContent = exportToCSV();
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
+    element.setAttribute('download', 'nasa-sonic-boom-progress-' + Date.now() + '.csv');
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+    console.log('✅ CSV exported successfully!');
+}
+
+// Make function available in console
+window.downloadProgressCSV = downloadProgressCSV;
+window.exportToCSV = exportToCSV;
+
 // ===== STARFIELD ANIMATION =====
 function createStarfield() {
     const starfield = document.getElementById('starfield');
@@ -187,17 +279,17 @@ function updateDashboard() {
     }
     
     if (accuracy) {
-        // Calculate average score from quiz missions
+        // Calculate average score only from completed missions
         let totalScore = 0;
-        let quizCount = 0;
+        let completedCount = 0;
         const quizLessons = ['lesson1', 'lesson2', 'lesson3', 'lesson4', 'lesson6'];
         quizLessons.forEach(lesson => {
-            if (progress.missionScores[lesson] && typeof progress.missionScores[lesson].score === 'number') {
-                totalScore += progress.missionScores[lesson].score;
-                quizCount++;
+            if (progress.missionScores[lesson] && progress.missionScores[lesson].completed) {
+                totalScore += progress.missionScores[lesson].score || 0;
+                completedCount++;
             }
         });
-        const accuracyPercent = quizCount > 0 ? Math.round((totalScore / (quizCount * 3)) * 100) : 0;
+        const accuracyPercent = completedCount > 0 ? Math.round((totalScore / (completedCount * 3)) * 100) : 0;
         accuracy.textContent = `${accuracyPercent}%`;
     }
     
@@ -376,8 +468,15 @@ function resetProgress() {
 // Add reset button to console
 console.log('%c NASA SONIC BOOM MISSION ', 'background: #00ffff; color: #0a0a1a; font-size: 20px; font-weight: bold; padding: 10px;');
 console.log('To reset progress, type: resetProgress()');
+console.log('To export CSV data, type: downloadProgressCSV()');
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
     initializeProgress();
+    initPageTracking();
+});
+
+// Track page exit
+window.addEventListener('beforeunload', () => {
+    recordPageExit();
 });
