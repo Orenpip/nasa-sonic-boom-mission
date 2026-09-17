@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sonic Boom Simulator</title>
+  <link rel="stylesheet" href="simulator.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">NASA // SOUND EXPLORER</a>
+    <nav>
+      <a href="dashboard.html">Missions</a>
+      <a href="#leaderboard" data-view="leaderboard">Leaderboard</a>
+    </nav>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">FLIGHT TEST LAB // MACH 1.6</p>
+      <h1>Design the quietest supersonic aircraft.</h1>
+      <p>Shape the airframe, watch the pressure signature change, and submit your best run to the mission leaderboard.</p>
+    </section>
+
+    <section id="designer-view" class="view">
+      <div class="workbench">
+        <div class="panel preview-panel">
+          <div class="panel-heading"><span>LIVE AIRFRAME</span><span class="signal">● ONLINE</span></div>
+          <svg id="aircraft" viewBox="0 0 500 200" role="img" aria-label="Aircraft preview">
+            <defs><linearGradient id="airframe-gradient"><stop offset="0" stop-color="#6ee7f9"/><stop offset="1" stop-color="#147d9e"/></linearGradient></defs>
+            <g id="airframe-shape"></g>
+          </svg>
+          <div class="readout-grid"><div><small>PLdB</small><strong id="pldb">--</strong></div><div><small>GROUND ΔP</small><strong id="pressure">--</strong></div><div><small>ASSESSMENT</small><strong id="grade">--</strong></div></div>
+        </div>
+        <div class="panel controls-panel">
+          <div class="panel-heading"><span>DESIGN PARAMETERS</span><span class="unit">LOWER IS BETTER</span></div>
+          <div id="sliders"></div>
+          <button class="button primary wide" id="run-button">Run flight test <span>→</span></button>
+          <p class="form-note" id="run-note">Runs are saved locally in this browser for this mission.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="simulation-view" class="view" hidden>
+      <div class="panel simulation-panel">
+        <div class="panel-heading"><span>FLIGHT TEST PLAYBACK</span><button class="button quiet" id="back-button">← Redesign</button></div>
+        <canvas id="simulation-canvas" width="800" height="400"></canvas>
+        <div id="simulation-result" class="result-banner" hidden></div>
+      </div>
+    </section>
+
+    <section id="history-view" class="view" hidden>
+      <div class="panel"><div class="panel-heading"><span>MY FLIGHT TESTS</span><button class="button quiet" data-view="designer">← Designer</button></div><div id="history-list"></div></div>
+    </section>
+
+    <section id="leaderboard-view" class="view" hidden>
+      <div class="panel"><div class="panel-heading"><span>GLOBAL LEADERBOARD</span><button class="button quiet" data-view="designer">← Designer</button></div><div class="table-wrap"><table><thead><tr><th>#</th><th>PILOT</th><th>PLdB</th><th>ΔP</th><th>NOSE</th><th>RATIO</th><th>SWEEP</th></tr></thead><tbody id="leaderboard-list"></tbody></table></div></div>
+    </section>
+  </main>
+  <script src="simulator.js"></script>
+</body>
+</html>
