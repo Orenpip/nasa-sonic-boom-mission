@@ -402,7 +402,7 @@ function updateBoomButton(boomComplete) {
         boomButton.style.cursor = 'pointer';
         boomButton.style.opacity = '1';
         boomButton.style.filter = 'drop-shadow(0 0 10px #00ff88)';
-        boomSubtitle.textContent = '✓ BOOM Complete! Click to start the Paper Airplane Challenge!';
+        boomSubtitle.textContent = '✓ BOOM Complete! Click to open the Sonic Boom Flight Lab!';
         boomSubtitle.style.color = '#00ff88';
     } else {
         boomButton.onclick = function(e) { if (e) e.preventDefault(); return false; };

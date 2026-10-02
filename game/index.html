@@ -25,6 +25,23 @@
     </div>
     <script>
       var canvas = document.querySelector("#unity-canvas");
+      var flightDesignParams = Object.fromEntries(
+        Array.from(new URLSearchParams(window.location.search).entries())
+          .map(([key, value]) => [key, Number(value)])
+          .filter(([, value]) => Number.isFinite(value))
+      );
+      window.flightDesignParams = flightDesignParams;
+
+      function notifyParent(type, details = {}) {
+        if (window.parent !== window) {
+          window.parent.postMessage({ type, ...details }, "*");
+        }
+      }
+
+      window.addEventListener("message", (event) => {
+        if (event.source !== window.parent || event.data?.type !== "flight-design") return;
+        window.flightDesignParams = event.data.design;
+      });
 
       // Shows a temporary message banner/ribbon for a few seconds, or
       // a permanent error message on top of the canvas if type=='error'.
@@ -90,6 +107,7 @@
         document.getElementsByTagName('head')[0].appendChild(meta);
         document.querySelector("#unity-container").className = "unity-mobile";
         canvas.className = "unity-mobile";
+        config.devicePixelRatio = 1;
 
         // To lower canvas resolution on mobile devices to gain some
         // performance, uncomment the following line:
@@ -109,14 +127,17 @@
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+          notifyParent("unity-progress", { progress });
               }).then((unityInstance) => {
+                window.unityInstance = unityInstance;
                 document.querySelector("#unity-loading-bar").style.display = "none";
                 document.querySelector("#unity-fullscreen-button").onclick = () => {
                   unityInstance.SetFullscreen(1);
                 };
-
+                notifyParent("unity-ready", { design: flightDesignParams });
               }).catch((message) => {
-                alert(message);
+                unityShowBanner(String(message), "error");
+                notifyParent("unity-error", { message: String(message) });
               });
             };
 

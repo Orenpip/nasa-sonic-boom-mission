@@ -1,10 +1,12 @@
-# Sonic Boom Simulator Integration
+# Sonic Boom Flight Lab
 
-The simulator is available at `simulator.html` and uses `simulator.css` and `simulator.js`. It is fully client-side so it works when deployed as the existing static site on Vercel.
+The Flight Lab is built into Mission 8 at `lesson8.html#flight-lab`. It presents five design sliders and live sonic-boom and ground-overpressure readouts. Once BOOM is complete, the dashboard begins caching the Unity WebGL build in the background. Opening Mission 8 starts the Unity player and displays its loading progress. The current design values are passed to the Unity page as URL/runtime data.
+
+This checkout contains only the compiled Unity WebGL player, not its Unity project, scene, or aircraft scripts. The browser can pass design values to the Unity page, but the compiled aircraft cannot use them until the Unity project adds an in-game receiver/3D preview and is rebuilt.
 
 ## Run locally
 
-No server is required on Vercel. Deploy the repository and open `/simulator.html`, or use the new **OPEN FLIGHT LAB** link on `dashboard.html`.
+On Vercel, use the HTTPS site URL and open the dashboard. Once BOOM is complete, the dashboard starts caching the Unity build; Mission 8 opens the game from that cache when available.
 
 For optional local Python serving, from the repository root:
 
@@ -12,7 +14,7 @@ For optional local Python serving, from the repository root:
 python sonic_boom_server.py
 ```
 
-Open http://127.0.0.1:8000/simulator.
+Open http://127.0.0.1:8000/dashboard.html. Service-worker preloading works on localhost and HTTPS, but not when opening files directly with `file://`.
 
 The Python server uses only the standard library and is not required for the Vercel deployment. It remains available for local experiments and provides:
 
@@ -24,4 +26,4 @@ The Python server uses only the standard library and is not required for the Ver
 - `GET /api/history`
 - `GET /api/leaderboard`
 
-The original NASA lesson pages remain static and unchanged apart from the new Flight Lab link on `dashboard.html`. Browser-local runs are intentionally scoped to the current device and browser; persistent cross-user accounts would require a hosted database and serverless API.
+The Flight Lab calculates and displays the design readouts entirely in the browser.

@@ -7,9 +7,7 @@ const configs = [
   ['volumeDistribution', 'Volume distribution', -1, 1, 0.01, value => value < -0.4 ? 'Rear heavy' : value < -0.1 ? 'Optimal' : value < 0.1 ? 'Uniform' : value < 0.5 ? 'Forward biased' : 'Front heavy', 'Optimal near -0.2'],
 ];
 let params = { ...defaults };
-let currentResult;
 const get = id => document.getElementById(id);
-const storedRuns = () => JSON.parse(localStorage.getItem('sonicBoomRuns') || '[]');
 
 function calculateBoom(p) {
   const M = 1.6, length = 50, count = 200, pi = Math.PI;
@@ -73,82 +71,13 @@ function render() {
     get(key).value = params[key];
     get(`${key}-value`).value = format(params[key]);
   });
-  currentResult = calculateBoom(params);
-  get('pldb').textContent = currentResult.pldb.toFixed(1);
-  get('pressure').textContent = `${currentResult.overpressure.toFixed(1)} Pa`;
-  get('grade').textContent = currentResult.pldb < 77 ? 'Excellent' : currentResult.pldb < 83 ? 'Good' : currentResult.pldb < 93 ? 'Average' : currentResult.pldb < 107 ? 'Loud' : 'Very loud';
-  drawAircraft();
+  const result = calculateBoom(params);
+  get('pldb').textContent = `${result.pldb.toFixed(1)} PLdB`;
+  get('pressure').textContent = `${result.overpressure.toFixed(1)} Pa`;
+  get('grade').textContent = result.pldb < 77 ? 'Excellent' : result.pldb < 83 ? 'Good' : result.pldb < 93 ? 'Average' : result.pldb < 107 ? 'Loud' : 'Very loud';
 }
 
-function drawAircraft() {
-  const halfHeight = 20 + (1 - (params.fuselageRatio - 3) / 9) * 20;
-  const wingOffset = params.wingSweep / 75 * 80;
-  const wingSpan = 60 + (1 - params.wingSweep / 75) * 20;
-  const nose = 50 + params.noseAngle * 40;
-  const tailCut = halfHeight * (1 - params.tailTaper) + 2;
-  const points = (a, b, c, d) => `${a},${b} ${c},${b} ${c + wingOffset},${d} ${a + wingOffset * 0.8},${d}`;
-  get('airframe-shape').innerHTML = `<polygon points="${points(220, 100 + halfHeight, 270, 100 + halfHeight + wingSpan)}" fill="#426b78"/><polygon points="${points(220, 100 - halfHeight, 270, 100 - halfHeight - wingSpan)}" fill="#426b78"/><rect x="170" y="${100 - halfHeight}" width="160" height="${halfHeight * 2}" fill="url(#airframe-gradient)"/><path d="M170 ${100 - halfHeight} C150 ${100 - halfHeight},${nose + 20} 94,${nose} 100 C${nose + 20} 106,150 ${100 + halfHeight},170 ${100 + halfHeight}Z" fill="url(#airframe-gradient)"/><path d="M330 ${100 - halfHeight} C370 ${100 - halfHeight},430 ${100 - tailCut},450 ${100 - tailCut} L450 ${100 + tailCut} C430 ${100 + tailCut},370 ${100 + halfHeight},330 ${100 + halfHeight}Z" fill="url(#airframe-gradient)"/><ellipse cx="200" cy="${96 - halfHeight}" rx="18" ry="8" fill="#b5f6ff" opacity=".7"/>`;
-}
+window.getFlightDesignParams = () => ({ ...params });
 
-function show(view) {
-  ['designer', 'simulation', 'history', 'leaderboard'].forEach(name => { get(`${name}-view`).hidden = name !== view; });
-  if (view === 'leaderboard') renderLeaderboard();
-  if (view === 'history') renderHistory();
-  location.hash = view;
-}
-
-function drawSimulation(result) {
-  show('simulation');
-  const canvas = get('simulation-canvas');
-  const context = canvas.getContext('2d');
-  const started = performance.now();
-  const intensity = Math.max(0, Math.min(1, (result.pldb - 75) / 49));
-  function frame(now) {
-    const elapsed = (now - started) / 1000;
-    context.fillStyle = '#081b28'; context.fillRect(0, 0, 800, 400);
-    context.fillStyle = '#163d32'; context.fillRect(0, 340, 800, 60);
-    context.strokeStyle = '#4f8b75'; context.beginPath(); context.moveTo(0, 340); context.lineTo(800, 340); context.stroke();
-    const x = Math.min(750, 80 + elapsed * 180);
-    context.fillStyle = '#a7d2d8'; context.beginPath(); context.ellipse(x, 120, 34, 7, 0, 0, Math.PI * 2); context.fill();
-    context.fillStyle = '#5b8994'; context.beginPath(); context.moveTo(x - 4, 114); context.lineTo(x - 30, 88); context.lineTo(x + 10, 114); context.fill();
-    if (elapsed > 0.7) {
-      const progress = Math.min(1, (elapsed - 0.7) / 2);
-      context.globalAlpha = 0.2 + 0.4 * progress;
-      context.strokeStyle = `rgb(${Math.round(intensity * 255)},${Math.round((1 - intensity) * 200)},40)`;
-      context.beginPath(); context.moveTo(x, 120); context.lineTo(x - 700 * progress, 120 - 700 * progress * 0.85); context.moveTo(x, 120); context.lineTo(x - 700 * progress, 120 + 700 * progress * 0.85); context.stroke(); context.globalAlpha = 1;
-    }
-    if (elapsed < 4) requestAnimationFrame(frame);
-    else {
-      get('simulation-result').hidden = false;
-      get('simulation-result').innerHTML = `<strong>${result.pldb.toFixed(1)} PLdB</strong> · ${result.overpressure.toFixed(1)} Pa ground overpressure · Run saved locally`;
-    }
-  }
-  requestAnimationFrame(frame);
-}
-
-function run() {
-  const runs = storedRuns();
-  runs.push({ id: Date.now(), username: 'Local Pilot', design: { ...params }, ...currentResult, runAt: new Date().toISOString() });
-  localStorage.setItem('sonicBoomRuns', JSON.stringify(runs.slice(-100)));
-  drawSimulation(currentResult);
-}
-
-function renderHistory() {
-  const runs = storedRuns().reverse();
-  get('history-list').innerHTML = runs.map(run => `<div class="history-item"><span>${new Date(run.runAt).toLocaleString()}</span><strong>${run.pldb.toFixed(1)} PLdB</strong><span>${run.overpressure.toFixed(1)} Pa</span><span>nose ${run.design.noseAngle.toFixed(2)} · sweep ${run.design.wingSweep.toFixed(0)}°</span></div>`).join('') || '<p class="form-note">No flight tests yet.</p>';
-}
-
-function renderLeaderboard() {
-  const runs = storedRuns().sort((a, b) => a.pldb - b.pldb).slice(0, 50);
-  get('leaderboard-list').innerHTML = runs.map((run, index) => `<tr><td>${index + 1}</td><td>${run.username}</td><td>${run.pldb.toFixed(1)}</td><td>${run.overpressure.toFixed(1)} Pa</td><td>${run.design.noseAngle.toFixed(2)}</td><td>${run.design.fuselageRatio.toFixed(1)}</td><td>${run.design.wingSweep.toFixed(0)}°</td></tr>`).join('') || '<tr><td colspan="7">No flight tests yet.</td></tr>';
-}
-
-get('run-button').onclick = run;
-get('back-button').onclick = () => show('designer');
-document.body.onclick = event => {
-  const target = event.target.closest('[data-view]');
-  if (target) { event.preventDefault(); show(target.dataset.view); }
-};
 renderSliders();
 render();
-if (location.hash === '#leaderboard') show('leaderboard');

@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mission 08: Paper Airplane Challenge!</title>
+    <title>Mission 08: Sonic Boom Flight Lab</title>
+    <link rel="stylesheet" href="simulator.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        .flight-lab-section { margin: 30px 0; }
+        .flight-game-stage { position: relative; margin-top: 16px; background: #07131c; }
+        .flight-game-frame { display: block; width: 100%; aspect-ratio: 16 / 10; border: 0; background: #07131c; }
+        .flight-loading { position: absolute; z-index: 1; inset: 0; display: grid; align-content: center; gap: 12px; padding: 24px; text-align: center; color: var(--muted); background: #07131c; border: 1px solid var(--line); }
+        .flight-loading progress { width: 100%; accent-color: var(--cyan); }
+    </style>
 </head>
 <body class="lesson-page">
     <div class="starfield" id="starfield"></div>
@@ -15,15 +23,15 @@
     
     <nav class="nav-bar">
         <a href="dashboard.html" class="nav-back">← DASHBOARD</a>
-        <div class="nav-logo">Final MISSION // PAPER AIRPLANE CHALLENGE</div>
+        <div class="nav-logo">Final MISSION // SONIC BOOM FLIGHT LAB</div>
         <div class="nav-xp" id="currentXP">0 ⭐</div>
     </nav>
     
     <div class="lesson-container">
         <section class="learning-section">
             <div class="mission-header">
-                <h1>🛩️ Paper Airplane Challenge!</h1>
-                <p class="mission-objective">Build, test, and share your airplane design!</p>
+                <h1>Sonic Boom Flight Lab</h1>
+                <p class="mission-objective">Adjust aircraft design parameters and see how they affect a sonic boom.</p>
             </div>
             
             <div class="content-card celebrate-card">
@@ -34,169 +42,38 @@
                     real engineering challenge!
                 </p>
                 <p class="simple-text">
-                    Just like NASA engineers design airplanes to fly fast and quiet, 
-                    YOU will design a paper airplane!
+                    Just like NASA engineers, you will explore how aircraft design parameters affect the sonic boom.
                 </p>
             </div>
             
-            <div class="content-card">
-                <h2>🎯 Your Challenge</h2>
-                <div class="challenge-steps">
-                    <div class="challenge-step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h3>Build Your Paper Airplane</h3>
-                            <p>Follow the directions on your paper to fold your airplane</p>
-                        </div>
-                    </div>
-                    <div class="challenge-step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h3>Test Your Design</h3>
-                            <p>Fly your airplane and measure how far it goes</p>
-                        </div>
-                    </div>
-                    <div class="challenge-step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h3>Take Photos & Upload</h3>
-                            <p>Take a photo of your airplane and upload it using the QR code!</p>
-                        </div>
+            <section class="flight-lab-section" id="flight-lab">
+                <div class="panel controls-panel">
+                    <div class="panel-heading"><span>DESIGN PARAMETERS</span><span class="unit">LOWER IS QUIETER</span></div>
+                    <div id="sliders"></div>
+                    <div class="readout-grid">
+                        <div><small>SONIC BOOM</small><strong id="pldb">--</strong></div>
+                        <div><small>GROUND OVERPRESSURE</small><strong id="pressure">--</strong></div>
+                        <div><small>ASSESSMENT</small><strong id="grade">--</strong></div>
                     </div>
                 </div>
-            </div>
+            </section>
             
             <div class="content-card">
-                <h2>✈️ Build Your Paper Airplane</h2>
-                <p class="simple-text">Your teacher will hand out a sheet of paper with step-by-step folding directions printed on it. Follow each step carefully to build your airplane!</p>
-                
-                <div class="testing-guide">
-                    <div class="test-step">
-                        <span class="test-icon">📄</span>
-                        <p><strong>Get your instruction sheet</strong> from your teacher</p>
+                <h2>Unity Flight Simulator</h2>
+                <p class="simple-text" id="flightGateNote">Finish collecting all four BOOM letters to unlock the flight simulator.</p>
+                <div class="flight-game-stage" id="flightGameStage" hidden>
+                    <div class="flight-loading" id="flightLoading" role="status" aria-live="polite">
+                        <strong id="flightLoadingTitle">Loading the 3D flight simulator...</strong>
+                        <progress id="flightLoadingProgress" max="100" value="0"></progress>
+                        <span id="flightLoadingStatus">Starting Unity WebGL player</span>
                     </div>
-                    <div class="test-step">
-                        <span class="test-icon">👀</span>
-                        <p><strong>Read through all the steps</strong> before you start folding</p>
-                    </div>
-                    <div class="test-step">
-                        <span class="test-icon">✂️</span>
-                        <p><strong>Follow the directions on the paper</strong>, one fold at a time</p>
-                    </div>
-                    <div class="test-step">
-                        <span class="test-icon">📐</span>
-                        <p><strong>Make your folds sharp and neat</strong> — it makes a big difference!</p>
-                    </div>
-                    <div class="test-step">
-                        <span class="test-icon">🚀</span>
-                        <p><strong>When you're done</strong>, test it out and measure how far it flies!</p>
+                    <div id="unityGameContainer">
+                        <iframe id="unityGame" class="flight-game-frame" title="Sonic Boom Unity flight simulator" allow="fullscreen; gamepad"></iframe>
                     </div>
                 </div>
+                <p class="form-note" id="flightLoadError" role="alert" hidden></p>
             </div>
             
-            <div class="content-card">
-                <h2>📏 Testing Your Airplane</h2>
-                <div class="testing-guide">
-                    <div class="test-step">
-                        <span class="test-icon">📍</span>
-                        <p><strong>Stand at a starting line</strong> (or make one with tape)</p>
-                    </div>
-                    <div class="test-step">
-                        <span class="test-icon">🎯</span>
-                        <p><strong>Throw your airplane</strong> three times</p>
-                    </div>
-                    <div class="test-step">
-                        <span class="test-icon">📏</span>
-                        <p><strong>Measure the distance</strong> where it lands (use steps or a ruler)</p>
-                    </div>
-                    <div class="test-step">
-                        <span class="test-icon">📝</span>
-                        <p><strong>Write down your best distance</strong> to share with the class</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="content-card upload-card">
-                <h2>📸 Upload Your Photos!</h2>
-                <p class="simple-text">
-                    Take a photo of your airplane and upload it to share 
-                    with your class!
-                </p>
-                
-                <div class="qr-section">
-                    <div class="qr-code-container">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://forms.gle/paperairplane" 
-                             alt="QR Code for Upload" 
-                             class="qr-code"
-                             id="qrCode">
-                        <p class="qr-instruction">
-                            Scan this QR code with a phone or tablet
-                        </p>
-                    </div>
-                    
-                    <div class="upload-instructions">
-                        <h3>How to Upload:</h3>
-                        <ol class="upload-steps">
-                            <li>Open your camera app on a phone/tablet</li>
-                            <li>Point it at the QR code above</li>
-                            <li>Tap the notification to open the link</li>
-                            <li>Upload your photo and enter your name</li>
-                            <li>Tell us how far your airplane flew!</li>
-                        </ol>
-                        
-                        <div class="manual-link">
-                            <p><strong>Or upload manually:</strong></p>
-                            <a href="#" target="_blank" class="upload-link" id="uploadLink">
-                                📤 Click Here to Upload
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="teacher-note">
-                    <strong>📌 Teachers:</strong> 
-                    <a href="#" class="teacher-setup-link" id="teacherSetup">
-                        Click here to set up your Google Form
-                    </a> for photo uploads.
-                </div>
-            </div>
-            
-            <div class="content-card">
-                <h2>� Play the Game</h2>
-                <iframe 
-                    src="game/index.html" 
-                    width="960" 
-                    height="600" 
-                    style="border:none;" 
-                    allowfullscreen>
-                </iframe>
-            </div>
-            
-            <div class="content-card">
-                <h2>�🏆 What Makes a Good Design?</h2>
-                <div class="design-tips">
-                    <div class="tip-card">
-                        <div class="tip-icon">🎯</div>
-                        <h4>Pointy Nose</h4>
-                        <p>Sharp noses cut through air better (less air resistance!)</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-icon">⚖️</div>
-                        <h4>Good Balance</h4>
-                        <p>Weight in the front helps it fly straight</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-icon">✈️</div>
-                        <h4>Even Wings</h4>
-                        <p>Both wings should be exactly the same size</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-icon">📐</div>
-                        <h4>Straight Folds</h4>
-                        <p>Neat, straight folds = better flight!</p>
-                    </div>
-                </div>
-            </div>
         </section>
         
         <!-- Completion Section -->
@@ -243,21 +120,21 @@
         <section class="quiz-section">
             <div class="content-card quiz-card">
                 <h2>🧠 Final Check - Show What You Know!</h2>
-                <p class="quiz-intro">Answer these questions about the paper airplane challenge!</p>
+                <p class="quiz-intro">Answer these questions about designing a quieter supersonic aircraft.</p>
                 
                 <div id="quizContainer">
                     <div class="quiz-question" data-question="1">
                         <h3>Question 1 of 3</h3>
-                        <p class="question-text">Which design feature helps an airplane fly faster?</p>
+                        <p class="question-text">Which design choice can help reduce a sonic boom?</p>
                         <div class="quiz-options">
                             <button class="quiz-option" data-answer="correct">
-                                A pointy nose and light weight
+                                A carefully shaped, slender airframe
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                Heavy wings
+                                A blunter nose
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                Curved folds
+                                More volume near the front
                             </button>
                         </div>
                         <div class="quiz-feedback"></div>
@@ -265,16 +142,16 @@
                     
                     <div class="quiz-question hidden" data-question="2">
                         <h3>Question 2 of 3</h3>
-                        <p class="question-text">What is air resistance?</p>
+                        <p class="question-text">What does a lower PLdB result mean?</p>
                         <div class="quiz-options">
                             <button class="quiz-option" data-answer="correct">
-                                The force of air pushing against flying objects
+                                The sonic boom is perceived as quieter
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                The sound a plane makes
+                                The aircraft is flying slower
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                The weight of the airplane
+                                The ground overpressure is higher
                             </button>
                         </div>
                         <div class="quiz-feedback"></div>
@@ -282,16 +159,16 @@
                     
                     <div class="quiz-question hidden" data-question="3">
                         <h3>Question 3 of 3</h3>
-                        <p class="question-text">Why is it important to make neat, straight folds?</p>
+                        <p class="question-text">Why adjust one aircraft design parameter at a time?</p>
                         <div class="quiz-options">
                             <button class="quiz-option" data-answer="wrong">
-                                Because it looks nicer
+                                To compare how each change affects the boom
                             </button>
                             <button class="quiz-option" data-answer="correct">
-                                Neat folds help the airplane fly better
+                                To identify the effect of each parameter
                             </button>
                             <button class="quiz-option" data-answer="wrong">
-                                Because engineers only fold once
+                                To make the aircraft look different
                             </button>
                         </div>
                         <div class="quiz-feedback"></div>
@@ -317,35 +194,60 @@
     </div>
     
     <script src="app.js"></script>
+    <script src="simulator.js"></script>
     <script>
         createStarfield();
         displayCurrentXP();
-        
-        // Teacher Setup Instructions
-        document.getElementById('teacherSetup').addEventListener('click', function(e) {
-            e.preventDefault();
-            alert(`TEACHER SETUP INSTRUCTIONS:
 
-1. Go to Google Forms (forms.google.com)
-2. Create a new form titled "Paper Airplane Challenge"
-3. Add these fields:
-   - Student Name (Short answer)
-   - How far did your airplane fly? (Short answer)
-   - Upload your airplane photo (File upload)
-4. Get the shareable link
-5. Update the QR code with your form link
-6. Share the link with students!
+        const flightGateNote = document.getElementById('flightGateNote');
+        const flightLoading = document.getElementById('flightLoading');
+        const flightGameStage = document.getElementById('flightGameStage');
+        const flightLoadingTitle = document.getElementById('flightLoadingTitle');
+        const flightLoadingProgress = document.getElementById('flightLoadingProgress');
+        const flightLoadingStatus = document.getElementById('flightLoadingStatus');
+        const flightLoadError = document.getElementById('flightLoadError');
+        const unityGame = document.getElementById('unityGame');
+        const unityGameContainer = document.getElementById('unityGameContainer');
+        const boomComplete = ['lesson1', 'lesson2', 'lesson3', 'lesson4'].every(mission =>
+            getProgress().missionScores[mission]?.completed
+        );
 
-Tip: Go to Settings > Responses to collect photos in Google Drive!`);
+        if (boomComplete) {
+            flightGateNote.hidden = true;
+            flightGameStage.hidden = false;
+            const design = window.getFlightDesignParams();
+            const query = new URLSearchParams(Object.entries(design).map(([key, value]) => [key, value.toString()]));
+            unityGame.src = `game/index.html?${query.toString()}`;
+        }
+
+        document.getElementById('sliders').addEventListener('input', function() {
+            if (unityGame.src) {
+                unityGame.contentWindow.postMessage({
+                    type: 'flight-design',
+                    design: window.getFlightDesignParams()
+                }, '*');
+            }
         });
-        
-        // Update upload link with teacher's form
-        const uploadLink = document.getElementById('uploadLink');
-        uploadLink.href = 'https://forms.gle/paperairplane'; // Replace with actual form
-        uploadLink.addEventListener('click', function(e) {
-            if (this.href.includes('paperairplane')) {
-                e.preventDefault();
-                alert('Ask your teacher for the upload link!');
+
+        window.addEventListener('message', function(event) {
+            if (event.source !== unityGame.contentWindow || !event.data) return;
+
+            if (event.data.type === 'unity-progress') {
+                const percent = Math.round(event.data.progress * 100);
+                flightLoadingProgress.value = percent;
+                flightLoadingStatus.textContent = `Loading flight simulator: ${percent}%`;
+            } else if (event.data.type === 'unity-ready') {
+                flightLoadingTitle.textContent = 'Flight simulator ready';
+                flightLoadingProgress.value = 100;
+                flightLoadingStatus.textContent = 'Your flight is ready.';
+                unityGameContainer.hidden = false;
+                flightLoading.hidden = true;
+            } else if (event.data.type === 'unity-error') {
+                flightLoading.hidden = true;
+                flightLoadError.textContent = 'The flight simulator could not start. Refresh the page and try again.';
+                flightLoadError.hidden = false;
+                flightGameStage.hidden = true;
+                unityGame.removeAttribute('src');
             }
         });
         

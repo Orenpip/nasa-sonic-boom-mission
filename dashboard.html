@@ -119,20 +119,6 @@
                     </a>
                 </div>
 
-                <div class="mission-card" data-mission="simulator">
-                    <div class="mission-status">
-                        <span class="status-badge completed">FLIGHT LAB</span>
-                    </div>
-                    <div class="mission-number">SONIC BOOM LAB</div>
-                    <h3 class="mission-title">Design a Quiet Aircraft</h3>
-                    <p class="mission-description">
-                        Tune an experimental supersonic airframe and submit your best sonic boom result.
-                    </p>
-                    <a href="simulator.html" class="mission-launch-btn">
-                        <span>OPEN FLIGHT LAB</span>
-                        <span class="launch-arrow">→</span>
-                    </a>
-                </div>
             </div>
         </div>
         
@@ -147,6 +133,10 @@
             </div>
             <p class="boom-subtitle" id="boomSubtitle">Complete Missions 1-4 to spell BOOM and unlock the final challenge!</p>
         </a>
+        <div class="unity-preload-status" id="unityPreloadStatus" role="status" aria-live="polite" hidden>
+            <span id="unityPreloadMessage">Preparing the Unity flight simulator...</span>
+            <progress id="unityPreloadProgress" max="100" value="0"></progress>
+        </div>
     </div>
     
     <script src="app.js"></script>
@@ -155,6 +145,32 @@
         updateDashboard();
         startMissionClock();
         updateMissionStatuses();
+
+        const boomIsComplete = ['lesson1', 'lesson2', 'lesson3', 'lesson4'].every(mission =>
+            getProgress().missionScores[mission]?.completed
+        );
+        const preloadStatus = document.getElementById('unityPreloadStatus');
+        const preloadMessage = document.getElementById('unityPreloadMessage');
+        const preloadProgress = document.getElementById('unityPreloadProgress');
+
+        if (boomIsComplete && 'serviceWorker' in navigator && location.protocol !== 'file:') {
+            preloadStatus.hidden = false;
+            navigator.serviceWorker.addEventListener('message', event => {
+                if (event.data?.type !== 'unity-preload-progress') return;
+                preloadProgress.value = event.data.progress;
+                preloadMessage.textContent = event.data.status;
+            });
+
+            navigator.serviceWorker.register('game-precache-sw.js')
+                .then(() => navigator.serviceWorker.ready)
+                .then(registration => {
+                    const worker = registration.active;
+                    if (worker) worker.postMessage({ type: 'preload-unity' });
+                })
+                .catch(() => {
+                    preloadMessage.textContent = 'The simulator will load when Mission 8 opens.';
+                });
+        }
         
         document.getElementById('resetProgressBtn').addEventListener('click', function() {
             if (confirm('⚠️ Delete all progress?\n\nAre you sure?')) {

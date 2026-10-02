@@ -3514,3 +3514,22 @@ body {
     max-width: 600px;
     margin: 0 auto;
 }
+
+.unity-preload-status {
+    display: grid;
+    gap: 8px;
+    max-width: 600px;
+    margin: 14px auto 0;
+    color: var(--gray-light);
+    font-size: 13px;
+    text-align: center;
+}
+
+.unity-preload-status[hidden] {
+    display: none;
+}
+
+.unity-preload-status progress {
+    width: 100%;
+    accent-color: var(--electric-cyan);
+}

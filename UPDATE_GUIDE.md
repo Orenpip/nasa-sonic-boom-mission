@@ -8,8 +8,7 @@ Your NASA Sonic Boom Mission website has been completely rebuilt with:
 1. **8 Lessons Instead of 4** - More content and learning!
 2. **Simpler Content** - Written for grades 3-5 (ages 8-10)
 3. **Sound Wave Race Game** (Lesson 5) - Watch objects race against sound!
-4. **Paper Airplane Challenge** (Lesson 8) - Build, test, and upload photos!
-5. **QR Code Photo Upload** - Students can scan and submit their work
+4. **Sonic Boom Flight Lab** (Lesson 8) - Design, test, and refine a supersonic aircraft
 6. **Stars Instead of XP** - More kid-friendly terminology
 7. **New Ranks** - Sound Explorer → Sound Scientist → Sound Master
 8. **More Interactive Elements** - Games, animations, clicking buttons
@@ -30,7 +29,7 @@ Your NASA Sonic Boom Mission website has been completely rebuilt with:
 ✅ lesson5.html     (NEW - Sound Wave Race Game!)
 ✅ lesson6.html     (NEW - placeholder, customize later)
 ✅ lesson7.html     (NEW - placeholder, customize later)
-✅ lesson8.html     (NEW - Paper Airplane Challenge!)
+✅ lesson8.html     (NEW - Sonic Boom Flight Lab!)
 ✅ styles.css       (NEW - added race game & upload styles)
 ✅ app.js           (NEW - 8 mission support)
 ❌ design.html      (DELETE - no longer needed)
@@ -91,41 +90,15 @@ Your NASA Sonic Boom Mission website has been completely rebuilt with:
 **Lesson 7: Sonic Booms** ⚠️ PLACEHOLDER
 - Customize with your own content
 
-**Lesson 8: Paper Airplane Challenge** ✅ COMPLETE
-- Build 3 airplane designs
-- Test and measure
-- Upload photos via QR code
-- Links to folding instructions
+**Lesson 8: Sonic Boom Flight Lab** ✅ COMPLETE
+- Adjust aircraft design parameters with interactive sliders
+- Compare live sonic boom and ground overpressure readouts
+- The dashboard caches the Unity player after BOOM is complete
+- Mission 8 opens the Unity player with a loading progress screen
 
----
+The Unity page receives the slider values, but the compiled aircraft does not apply them. An in-game 3D preview and flight response require the Unity project, a parameter receiver in its scene, and a rebuilt WebGL player; only compiled Unity files are included here.
 
-## 📸 Setting Up Photo Upload (Lesson 8)
-
-The Paper Airplane Challenge includes QR code photo upload!
-
-### For Teachers:
-
-1. **Create a Google Form**:
-   - Go to forms.google.com
-   - Create new form: "Paper Airplane Challenge"
-   - Add fields:
-     * Student Name (Short answer)
-     * Which design flew farthest? (Multiple choice)
-     * How far did it fly? (Short answer)
-     * Upload photo (File upload)
-
-2. **Get Your Form Link**:
-   - Click "Send" button
-   - Copy the share link
-
-3. **Update lesson8.html**:
-   - Find this line: `href="https://forms.gle/paperairplane"`
-   - Replace with your actual Google Form link
-   - Do this in 2 places (QR code and manual link)
-
-4. **Update QR Code**:
-   - Find this line: `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://forms.gle/paperairplane`
-   - Replace the URL after `data=` with your form link
+The Flight Lab is part of Mission 8 at `lesson8.html#flight-lab`. The previous `simulator.html` address redirects to the embedded lab.
 
 ---
 
@@ -208,7 +181,7 @@ After uploading:
    - ✅ Lessons 2-8 are locked
    - ✅ Complete Mission 1 → Mission 2 unlocks
    - ✅ Lesson 5 race game works
-   - ✅ Lesson 8 shows paper airplane instructions
+   - ✅ Lesson 8 opens the Sonic Boom Flight Lab
    - ✅ Stars appear instead of XP
 
 ---
@@ -217,7 +190,6 @@ After uploading:
 
 1. **Progress Resets**: Students' old progress won't work with the new version. They'll need to start over.
 2. **Placeholder Lessons**: Lessons 2, 3, 4, 6, 7 have basic content. Customize them!
-3. **QR Code**: Update the Google Form link in lesson8.html for photo uploads
 4. **Mobile Friendly**: All games and features work on phones/tablets
 
 ---
@@ -233,9 +205,6 @@ After uploading:
 **Problem**: Race game not working
 - **Solution**: Clear browser cache and refresh (Ctrl+Shift+R)
 
-**Problem**: QR code doesn't work
-- **Solution**: Update the Google Form link in lesson8.html
-
 **Problem**: Content too easy/hard
 - **Solution**: Edit the lesson HTML files to adjust difficulty
 
@@ -249,8 +218,7 @@ Before going live:
 - [ ] Test on GitHub Pages URL
 - [ ] Complete Mission 1 to test unlocking
 - [ ] Play the race game (Lesson 5)
-- [ ] View paper airplane challenge (Lesson 8)
-- [ ] Update Google Form link if using photo upload
+- [ ] Complete BOOM, confirm simulator caching begins, then open Mission 8
 - [ ] Customize placeholder lessons (optional)
 - [ ] Test on mobile device
 
@@ -262,7 +230,7 @@ Before going live:
 
 1. **Assign missions as homework** - Students complete at their own pace
 2. **Use as stations** - Set up computers with different lessons
-3. **Paper airplane day** - Dedicate class time for Lesson 8
+3. **Flight Lab session** - Let students compare aircraft designs in Lesson 8
 4. **Print certificates** - For students who reach Sound Master rank
 5. **Customize content** - Edit placeholder lessons to match your curriculum
 
@@ -270,7 +238,9 @@ Before going live:
 
 - No accounts needed - progress saves in browser
 - Students can take screenshots of their dashboard
-- Use Google Form from Lesson 8 to collect final projects
+- Slider changes update the live sonic-boom and overpressure readouts
+- Slider changes update the live sonic-boom and overpressure readouts
+- The dashboard starts downloading the Unity player only after BOOM is complete
 - No login required = easy classroom use
 
 ---
@@ -281,7 +251,7 @@ Your enhanced NASA Sonic Boom Mission website is ready to deploy!
 
 Students will love:
 - ⭐ The race game
-- 🛩️ Building paper airplanes
+- ✈️ Designing quieter supersonic aircraft
 - 🎮 Interactive activities
 - 🏆 Earning stars and ranks
 
