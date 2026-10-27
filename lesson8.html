@@ -15,6 +15,9 @@
         .flight-game-frame { display: block; width: 100%; aspect-ratio: 16 / 10; border: 0; background: #07131c; }
         .flight-loading { position: absolute; z-index: 1; inset: 0; display: grid; align-content: center; gap: 12px; padding: 24px; text-align: center; color: var(--muted); background: #07131c; border: 1px solid var(--line); }
         .flight-loading progress { width: 100%; accent-color: var(--cyan); }
+        #planeSliders { display: grid; gap: 14px; margin: 16px 0; }
+        #planeSliders label { display: grid; gap: 6px; font-family: 'Share Tech Mono', monospace; letter-spacing: 1px; }
+        #planeSliders input[type=range] { width: 100%; }
         #confirmPlane { margin-top: 16px; width: 100%; cursor: pointer; }
         #confirmPlane:disabled { opacity: 0.5; cursor: not-allowed; }
     </style>
@@ -52,6 +55,13 @@
                 <div class="panel controls-panel">
                     <div class="panel-heading"><span>DESIGN PARAMETERS</span><span class="unit">LOWER IS QUIETER</span></div>
                     <div id="sliders"></div>
+
+                    <div id="planeSliders">
+                        <label>NOSE TYPE (1 to 3) <input type="range" id="planeNose" min="1" max="3" step="1" value="1"></label>
+                        <label>WING TYPE (1 to 3) <input type="range" id="planeWing" min="1" max="3" step="1" value="1"></label>
+                        <label>TAIL TYPE (1 to 2) <input type="range" id="planeTail" min="1" max="2" step="1" value="1"></label>
+                    </div>
+
                     <div class="readout-grid">
                         <div><small>SONIC BOOM</small><strong id="pldb">--</strong></div>
                         <div><small>GROUND OVERPRESSURE</small><strong id="pressure">--</strong></div>
@@ -177,4 +187,176 @@
                         <div class="quiz-feedback"></div>
                     </div>
                     
-                    <div class="quiz-results
+                    <div class="quiz-results hidden" id="quizResults">
+                        <h3>🎉 Mission Complete!</h3>
+                        <div class="results-content">
+                            <div class="results-score">
+                                <span class="score-label">You got:</span>
+                                <span class="score-value" id="finalScore">0/3</span>
+                            </div>
+                            <p class="results-message" id="resultsMessage"></p>
+                            <div class="results-xp">
+                                <span class="xp-earned" id="xpEarned">🏆 MISSION COMPLETE!</span>
+                            </div>
+                        </div>
+                        <a href="dashboard.html" class="return-button">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script src="app.js"></script>
+    <script src="simulator.js"></script>
+    <script>
+        createStarfield();
+        displayCurrentXP();
+
+        // Merge the plane choices into whatever the existing sliders return
+        const baseGetParams = window.getFlightDesignParams;
+        window.getFlightDesignParams = function() {
+            return {
+                ...(baseGetParams ? baseGetParams() : {}),
+                nose: document.getElementById('planeNose').value,
+                wing: document.getElementById('planeWing').value,
+                tail: document.getElementById('planeTail').value
+            };
+        };
+
+        const flightGateNote = document.getElementById('flightGateNote');
+        const flightLoading = document.getElementById('flightLoading');
+        const flightGameStage = document.getElementById('flightGameStage');
+        const flightLoadingTitle = document.getElementById('flightLoadingTitle');
+        const flightLoadingProgress = document.getElementById('flightLoadingProgress');
+        const flightLoadingStatus = document.getElementById('flightLoadingStatus');
+        const flightLoadError = document.getElementById('flightLoadError');
+        const unityGame = document.getElementById('unityGame');
+        const unityGameContainer = document.getElementById('unityGameContainer');
+        const confirmBtn = document.getElementById('confirmPlane');
+        const boomComplete = ['lesson1', 'lesson2', 'lesson3', 'lesson4'].every(mission =>
+            getProgress().missionScores[mission]?.completed
+        );
+        // For local testing only, use: const boomComplete = true;
+
+        if (boomComplete) {
+            flightGateNote.hidden = true;
+            flightGameStage.hidden = false;
+            const design = window.getFlightDesignParams();
+            const query = new URLSearchParams(Object.entries(design).map(([key, value]) => [key, value.toString()]));
+            unityGame.src = `game/index.html?${query.toString()}`;
+        }
+
+        // Live preview: send current values to the Unity selector scene
+        function sendDesignToGame() {
+            if (unityGame.src && unityGame.contentWindow) {
+                unityGame.contentWindow.postMessage({
+                    type: 'flight-design',
+                    design: window.getFlightDesignParams()
+                }, '*');
+            }
+        }
+
+        document.getElementById('sliders').addEventListener('input', sendDesignToGame);
+        document.getElementById('planeSliders').addEventListener('input', sendDesignToGame);
+
+        // Confirm: tell Unity to load the flight scene with the chosen plane
+        confirmBtn.addEventListener('click', function() {
+            if (!unityGame.contentWindow) return;
+            unityGame.contentWindow.postMessage({
+                type: 'flight-confirm',
+                design: window.getFlightDesignParams()
+            }, '*');
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = 'LAUNCHING...';
+            document.getElementById('sliders').style.pointerEvents = 'none';
+            document.getElementById('planeSliders').style.pointerEvents = 'none';
+        });
+
+        window.addEventListener('message', function(event) {
+            if (event.source !== unityGame.contentWindow || !event.data) return;
+
+            if (event.data.type === 'unity-progress') {
+                const percent = Math.round(event.data.progress * 100);
+                flightLoadingProgress.value = percent;
+                flightLoadingStatus.textContent = `Loading flight simulator: ${percent}%`;
+            } else if (event.data.type === 'unity-ready') {
+                flightLoadingTitle.textContent = 'Flight simulator ready';
+                flightLoadingProgress.value = 100;
+                flightLoadingStatus.textContent = 'Your flight is ready.';
+                unityGameContainer.hidden = false;
+                flightLoading.hidden = true;
+                sendDesignToGame();
+                confirmBtn.disabled = false;
+            } else if (event.data.type === 'unity-error') {
+                flightLoading.hidden = true;
+                flightLoadError.textContent = 'The flight simulator could not start. Refresh the page and try again.';
+                flightLoadError.hidden = false;
+                flightGameStage.hidden = true;
+                unityGame.removeAttribute('src');
+            }
+        });
+        
+        // Quiz functionality
+        let currentQuestion = 1;
+        let correctAnswers = 0;
+        
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                if (this.classList.contains('selected')) return;
+                
+                const isCorrect = this.dataset.answer === 'correct';
+                const feedback = this.closest('.quiz-question').querySelector('.quiz-feedback');
+                const allOptions = this.closest('.quiz-options').querySelectorAll('.quiz-option');
+                
+                allOptions.forEach(opt => opt.classList.add('selected'));
+                
+                if (isCorrect) {
+                    this.classList.add('correct');
+                    feedback.innerHTML = '<span class="correct-feedback">✓ Correct!</span>';
+                    correctAnswers++;
+                } else {
+                    this.classList.add('wrong');
+                    feedback.innerHTML = '<span class="wrong-feedback">Not quite right.</span>';
+                }
+                
+                setTimeout(() => {
+                    if (currentQuestion < 3) {
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('hidden');
+                        currentQuestion++;
+                        document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('hidden');
+                    } else {
+                        document.querySelector(`[data-question="3"]`).classList.add('hidden');
+                        showResults();
+                    }
+                }, 1500);
+            });
+        });
+        
+        function showResults() {
+            const resultsDiv = document.getElementById('quizResults');
+            const finalScore = document.getElementById('finalScore');
+            const resultsMessage = document.getElementById('resultsMessage');
+            const xpEarned = document.getElementById('xpEarned');
+            
+            finalScore.textContent = `${correctAnswers}/3`;
+            
+            let message = '';
+            
+            if (correctAnswers === 3) {
+                message = '🌟 Perfect! You mastered all 8 missions!';
+            } else if (correctAnswers === 2) {
+                message = '😊 Great job! You learned so much!';
+            } else {
+                message = '👍 You completed the challenge!';
+            }
+            
+            xpEarned.textContent = message;
+            resultsMessage.textContent = 'You are now a NASA Sound Explorer!';
+            
+            saveProgress('lesson8', true, correctAnswers);
+            
+            resultsDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
