@@ -220,14 +220,16 @@
             unityGame.src = `game/index.html?${query.toString()}`;
         }
 
-        document.getElementById('sliders').addEventListener('input', function() {
-            if (unityGame.src) {
+        function sendDesignToGame() {
+            if (unityGame.src && unityGame.contentWindow) {
                 unityGame.contentWindow.postMessage({
                     type: 'flight-design',
                     design: window.getFlightDesignParams()
                 }, '*');
             }
-        });
+        }
+
+        document.getElementById('sliders').addEventListener('input', sendDesignToGame);
 
         window.addEventListener('message', function(event) {
             if (event.source !== unityGame.contentWindow || !event.data) return;
@@ -242,6 +244,7 @@
                 flightLoadingStatus.textContent = 'Your flight is ready.';
                 unityGameContainer.hidden = false;
                 flightLoading.hidden = true;
+                sendDesignToGame();   // NEW: sync the plane with the current slider values
             } else if (event.data.type === 'unity-error') {
                 flightLoading.hidden = true;
                 flightLoadError.textContent = 'The flight simulator could not start. Refresh the page and try again.';
