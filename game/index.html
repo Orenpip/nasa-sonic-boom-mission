@@ -38,10 +38,41 @@
         }
       }
 
+      // ---------- Plane selector bridge ----------
+      var unityInstanceRef = null;   // set once Unity has loaded
+      var pendingDesign = flightDesignParams;   // starting values from the URL
+
+      function toInt(v, min, max, fallback) {
+        var n = Math.round(parseFloat(v));
+        if (Number.isNaN(n)) return fallback;
+        return Math.min(max, Math.max(min, n));
+      }
+
+      function designToCsv(d) {
+        var nose = toInt(d && d.nose, 1, 3, 1);
+        var wing = toInt(d && d.wing, 1, 3, 1);
+        var tail = toInt(d && d.tail, 1, 2, 1);
+        return nose + "," + wing + "," + tail;
+      }
+
+      // Live preview in the selector scene
+      function applyDesign(d) {
+        if (!d) return;
+        if (!unityInstanceRef) { pendingDesign = d; return; }   // not loaded yet, hold it
+        unityInstanceRef.SendMessage("PlaneSelector", "ApplyDesign", designToCsv(d));
+      }
+
       window.addEventListener("message", (event) => {
-        if (event.source !== window.parent || event.data?.type !== "flight-design") return;
-        window.flightDesignParams = event.data.design;
+        if (event.source !== window.parent || !event.data) return;
+
+        if (event.data.type === "flight-design") {
+          window.flightDesignParams = event.data.design;
+          applyDesign(event.data.design);
+        } else if (event.data.type === "flight-confirm" && unityInstanceRef) {
+          unityInstanceRef.SendMessage("PlaneSelector", "ConfirmFlight", designToCsv(event.data.design));
+        }
       });
+      // ---------- End bridge ----------
 
       // Shows a temporary message banner/ribbon for a few seconds, or
       // a permanent error message on top of the canvas if type=='error'.
@@ -130,10 +161,12 @@
           notifyParent("unity-progress", { progress });
               }).then((unityInstance) => {
                 window.unityInstance = unityInstance;
+                unityInstanceRef = unityInstance;
                 document.querySelector("#unity-loading-bar").style.display = "none";
                 document.querySelector("#unity-fullscreen-button").onclick = () => {
                   unityInstance.SetFullscreen(1);
                 };
+                applyDesign(pendingDesign);   // show the starting plane in the selector scene
                 notifyParent("unity-ready", { design: flightDesignParams });
               }).catch((message) => {
                 unityShowBanner(String(message), "error");
