@@ -36,7 +36,7 @@
         <section class="learning-section">
             <div class="mission-header">
                 <h1>Sonic Boom Flight Lab</h1>
-                <p class="mission-objective">Adjust aircraft design parameters and see how they affect a sonic boom.</p>
+                <p class="mission-objective">Choose an aircraft configuration, then take it for a supersonic flight.</p>
             </div>
             
             <div class="content-card celebrate-card">
@@ -47,14 +47,13 @@
                     real engineering challenge!
                 </p>
                 <p class="simple-text">
-                    Just like NASA engineers, you will explore how aircraft design parameters affect the sonic boom.
+                    Just like NASA engineers, you will choose an aircraft configuration and explore a supersonic flight.
                 </p>
             </div>
             
             <section class="flight-lab-section" id="flight-lab">
                 <div class="panel controls-panel">
-                    <div class="panel-heading"><span>DESIGN PARAMETERS</span><span class="unit">LOWER IS QUIETER</span></div>
-                    <div id="sliders"></div>
+                    <div class="panel-heading"><span>AIRCRAFT CONFIGURATION</span></div>
 
                     <div id="planeSliders">
                         <label>NOSE TYPE (1 to 3) <input type="range" id="planeNose" min="1" max="3" step="1" value="1"></label>
@@ -256,7 +255,6 @@
             }
         }
 
-        document.getElementById('sliders').addEventListener('input', sendDesignToGame);
         document.getElementById('planeSliders').addEventListener('input', sendDesignToGame);
 
         // Confirm: tell Unity to load the flight scene with the chosen plane
@@ -268,7 +266,6 @@
             }, '*');
             confirmBtn.disabled = true;
             confirmBtn.textContent = 'LAUNCHING...';
-            document.getElementById('sliders').style.pointerEvents = 'none';
             document.getElementById('planeSliders').style.pointerEvents = 'none';
         });
 

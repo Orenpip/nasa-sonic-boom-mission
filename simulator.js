@@ -1,12 +1,4 @@
-const defaults = { noseAngle: 0.5, fuselageRatio: 7, wingSweep: 35, tailTaper: 0.5, volumeDistribution: 0 };
-const configs = [
-  ['noseAngle', 'Nose shape', 0, 1, 0.01, value => value < 0.15 ? 'Needle' : value < 0.3 ? 'Optimal' : value < 0.6 ? 'Rounded' : 'Blunt', 'Optimal near 0.2'],
-  ['fuselageRatio', 'Fineness ratio', 3, 12, 0.1, value => `${value.toFixed(1)}:1`, 'Longer and slimmer reduces the boom'],
-  ['wingSweep', 'Wing sweep', 0, 75, 1, value => `${value.toFixed(0)}°`, 'Optimal near 52° at Mach 1.6'],
-  ['tailTaper', 'Tail taper', 0, 1, 0.01, value => value < 0.2 ? 'Flat cut' : value < 0.4 ? 'Slight taper' : value < 0.6 ? 'Optimal' : value < 0.8 ? 'Sharp taper' : 'Needle', 'Optimal near 0.5'],
-  ['volumeDistribution', 'Volume distribution', -1, 1, 0.01, value => value < -0.4 ? 'Rear heavy' : value < -0.1 ? 'Optimal' : value < 0.1 ? 'Uniform' : value < 0.5 ? 'Forward biased' : 'Front heavy', 'Optimal near -0.2'],
-];
-let params = { ...defaults };
+const params = { noseAngle: 0.5, fuselageRatio: 7, wingSweep: 35, tailTaper: 0.5, volumeDistribution: 0 };
 const get = id => document.getElementById(id);
 
 function calculateBoom(p) {
@@ -56,21 +48,7 @@ function calculateBoom(p) {
   return { pldb: 20 * Math.log10(raw / 2e-5) - 53, overpressure: raw / 10 ** (53 / 20) };
 }
 
-function renderSliders() {
-  get('sliders').innerHTML = configs.map(([key, label, min, max, step, format, hint]) => `
-    <div class="slider-row"><div class="slider-label"><label for="${key}">${label}</label><output id="${key}-value"></output></div>
-    <input id="${key}" type="range" min="${min}" max="${max}" step="${step}"><p class="hint">${hint}</p></div>`).join('');
-  configs.forEach(([key]) => get(key).addEventListener('input', event => {
-    params[key] = Number(event.target.value);
-    render();
-  }));
-}
-
 function render() {
-  configs.forEach(([key, , , , , format]) => {
-    get(key).value = params[key];
-    get(`${key}-value`).value = format(params[key]);
-  });
   const result = calculateBoom(params);
   get('pldb').textContent = `${result.pldb.toFixed(1)} PLdB`;
   get('pressure').textContent = `${result.overpressure.toFixed(1)} Pa`;
@@ -79,5 +57,4 @@ function render() {
 
 window.getFlightDesignParams = () => ({ ...params });
 
-renderSliders();
 render();
